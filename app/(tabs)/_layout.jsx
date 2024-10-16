@@ -3,6 +3,7 @@ import { router, Tabs } from 'expo-router';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // Tab icon and label component
 function TabBarIcon({
   name,
@@ -70,7 +71,7 @@ export default function TabLayout() {
           color: '#fff',
           fontWeight: 'bold',
         },
-        headerRight: () => <View style={{display:'flex', flexDirection:'row'}}><ProfileCircle /><Signout /></View>,
+        headerRight: () => <View style={{ display: 'flex', flexDirection: 'row' }}><ProfileCircle /><Signout /></View>,
       })}
     >
       <Tabs.Screen
@@ -117,7 +118,7 @@ export default function TabLayout() {
         options={{
           title: 'Community',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="near-me" label="Nearby" focused={focused} />
+            <TabBarIcon name="forum" label="FOrum" focused={focused} />
           ),
         }}
       />

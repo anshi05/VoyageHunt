@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-
+import bg from '@/assets/images/background.jpg'
 export default function TabFourScreen() {
   const data = [
     {
@@ -43,17 +43,23 @@ export default function TabFourScreen() {
 
   ]
   return (
-    <View style={styles.container}>
-      {data.map((ele, index) => (
-        <Link href={ele.href} key={index} asChild>
-          <TouchableOpacity style={styles.card}>
-            <MaterialIcons name={ele.icon} size={40} color="#fff" />
-            <Text style={styles.cardTitle}>{ele.heading}</Text>
-            <Text style={styles.cardSubtitle}>{ele.subtitle}</Text>
-          </TouchableOpacity>
-        </Link>
-      ))}
-    </View>
+    <ImageBackground
+      source={bg} // Background image
+      style={styles.background}
+    // blurRadius={5} // Optional: to blur the background as in the screenshot
+    >
+      <View style={styles.container}>
+        {data.map((ele, index) => (
+          <Link href={ele.href} key={index} asChild>
+            <TouchableOpacity style={styles.card}>
+              <MaterialIcons name={ele.icon} size={40} color="#fff" />
+              <Text style={styles.cardTitle}>{ele.heading}</Text>
+              <Text style={styles.cardSubtitle}>{ele.subtitle}</Text>
+            </TouchableOpacity>
+          </Link>
+        ))}
+      </View>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
