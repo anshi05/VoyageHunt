@@ -26,12 +26,30 @@ export default function TabLayout() {
           height: 80, // Increased height to fit icon and label
           paddingBottom: 7,
         },
+        
+        headerStyle: {
+          backgroundColor: '#2C3E50',
+          // Add shadow
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.5,
+          shadowRadius: 6,
+          elevation: 10,
+          
+        },
+        headerTitleStyle: {
+          color: '#fff', // White text
+          fontWeight: 'bold', // Bold text
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'VoyageHunt',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon name="home" label="Home" focused={focused} />
           ),
@@ -43,7 +61,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="place"
         options={{
-          title: 'Places',
+          title: 'Toruists Spots',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon name="bookmark" label="Places" focused={focused} />
           ),

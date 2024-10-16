@@ -23,7 +23,7 @@ const Welcome = () => {
     getplaces();
   }, []);
   useEffect(() => {
-    console.log(places)
+    // console.log(places)
   }, [places])
 
   async function getplaces() {
