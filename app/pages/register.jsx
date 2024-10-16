@@ -9,8 +9,7 @@ import { router } from 'expo-router';
 
 const RegisterScreen = () => {
     const supabase = createClient(
-        process.env.EXPO_PUBLIC_SUPABASE_URL || "",
-        process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
+        "https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
         {
             auth: {
                 storage: AsyncStorage,
@@ -44,15 +43,17 @@ const RegisterScreen = () => {
             console.log("Formdata: ", formData)
             async function signUpNewUser() {
                 try {
+                    const form = {
+                        email,
+                        password
+                    }
+                    console.log(form)
                     //signup
-                    const { data, error } = await supabase.auth.signUp({
-                        email: email,
-                        password: password
-                    })
-                    data && console.log("email from data: " + data.user.email)
-
-                    console.log(data.session.user.aud)
-                    //insert user in table
+                    const { data, error } = await supabase.auth.signUp(form)
+                    data && console.log("email from data: " + data.user)
+                    console.log("error:", error)
+                    // console.log(data.session.user.aud)
+                    // insert user in table
                     if (data.user) {
                         const userobj = data.user;
                         const d = [

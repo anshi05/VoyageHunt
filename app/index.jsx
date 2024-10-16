@@ -16,7 +16,6 @@ const index = () => {
                 router.push('/pages/login');// Set loading to false if no session
             }
         };
-
         checkUser();
     }, []);
     return (

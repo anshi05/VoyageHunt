@@ -25,7 +25,7 @@ function TabBarIcon({
 function ProfileCircle() {
   return (
     <TouchableOpacity style={styles.profileCircle}>
-      <MaterialCommunityIcons onPress={() => { router.push('/pages/profile'); console.log("Hello") }} name="account-circle" size={38} color="#fff" />
+      <MaterialCommunityIcons onPress={() => { router.push('/pages/profile') }} name="account-circle" size={38} color="#fff" />
     </TouchableOpacity>
   );
 }
