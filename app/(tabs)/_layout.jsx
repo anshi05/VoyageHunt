@@ -51,7 +51,7 @@ export default function TabLayout() {
         options={{
           title: 'VoyageHunt',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="home" label="VoyageHunt" focused={focused} />
+            <TabBarIcon name="home" label="Home" focused={focused} />
           ),
         }}
       />
