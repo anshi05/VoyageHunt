@@ -43,7 +43,18 @@ export default function TabLayout() {
       />
      
 
+      
       <Tabs.Screen
+        name="place"
+        options={{
+          title: 'Places',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name="bookmark" label="Places" focused={focused} />
+          ),
+        }}
+      />
+
+<Tabs.Screen
         name="hunt"
         options={{
           title: 'Hunt',
@@ -52,15 +63,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="guide"
-        options={{
-          title: 'Guide',
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="bookmark" label="Guide" focused={focused} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="nearby"
         options={{
