@@ -59,10 +59,14 @@ Website:
     # press 'a' to start the android app
     # press 'r' to releoad if the changes are not reflected
     ```
-4. To commit
+4. To Create branch
    ```bash
     git checkout -b your_name # one time thing
-    git add .
-   git commit -m "your messages"
-   git push
     ```
+5. To commit and push
+    ```bash
+    
+    git add .
+    git commit -m "your messages"
+    git push
+```
