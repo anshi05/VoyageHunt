@@ -2,8 +2,7 @@
 
 **Team Name:** Access Denied
 
-**Problem Statement:** `<Tourism often lacks engaging and interactive experiences, resulting in missed opportunities for travelers to discover unique local attractions and fully immerse themselves in the local culture. Design a sophisticated gamified tourism app that encourages users to deeply explore their destination by earning points for uncovering hidden attractions and completing challenges and quests. These could include tasks like uploading photos taken from specific angles to match reference images. The app should also feature leaderboards, rewards, and integrated social sharing, enhancing the overall experience and fostering a sense of competition and achievement.
->`
+**Problem Statement:** Tourism often lacks engaging and interactive experiences, resulting in missed opportunities for travelers to discover unique local attractions and fully immerse themselves in the local culture. Design a sophisticated gamified tourism app that encourages users to deeply explore their destination by earning points for uncovering hidden attractions and completing challenges and quests. These could include tasks like uploading photos taken from specific angles to match reference images. The app should also feature leaderboards, rewards, and integrated social sharing, enhancing the overall experience and fostering a sense of competition and achievement.
 
 ## 📜 Introduction
 
@@ -36,66 +35,28 @@ Website:
 
 ## 🟢 Access
 
-🌐 Website link: https://example.com
-
 📱 App's APK file location: [`android/build/my-app.apk`](android/build/my-app.apk)
-
-OR
-
-📱 Play store link: https://play.google.com/store/apps/details?id=com.digilocker.android
-
-## 📦 Instructions For Local Deployment With Docker (Optional)
-
-To deploy the application locally using docker, follow these steps:
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/your-team-repo/manipal-hackathon-2024.git
-    cd manipal-hackathon-2024
-    ```
-
-1. Build the docker image
-
-    ```bash
-    sudo docker build -t hackathon .
-    ```
-
-1. Start a container using the built image and expose necessary ports
-
-    ```bash
-    sudo docker run -it --rm -p 3000:3000 hackathon
-    ```
-
-1. Access the application at http://localhost:3000
 
 ## ⚙️ Instructions For Local Deployment Without Docker
 
-```
-Python version: 3.10
-
-Operating system: Ubuntu 22
-```
-
-Follow these steps to run the project locally:
-
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-team-repo/manipal-hackathon-2024.git
-    cd manipal-hackathon-2024
+    git clone https://github.com/ManipalHackathon2024/Access-Denied.git
+    cd Access-Denied
     ```
 
-1. Install dependencies
+2. Install all the dependencies
 
     ```bash
-    npm install
+    npm i
     ```
 
-1. Start server
+3. Start the app
 
     ```bash
-    npm run start
+    npx expo start
+    # press 'a' to start the android app
+    # press 'r' to releoad if the changes are not reflected
     ```
 
-1. Access the application at http://localhost:3000
