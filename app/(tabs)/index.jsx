@@ -2,28 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
-import { router } from 'expo-router';
 
-export default function TabOneScreen() {
-
-  return (
-    <View style={styles.container}>
-      <Welcome />
-    </View>
-  );
-}
-
-const Welcome = () => {
+export default function HomePage() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
   const [places, setplaces] = useState([]);
 
   useEffect(() => {
     getplaces();
+
   }, []);
   useEffect(() => {
     // console.log(places)
   }, [places])
+
 
   async function getplaces() {
     console.log(supabase)
@@ -47,153 +39,200 @@ const Welcome = () => {
   };
 
   return (
-    <ImageBackground
-      source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
-      style={styles.image}
-      blurRadius={2}
-    >
-      <View style={styles.overlay} />
-      <View style={styles.headerContent}>
-        <Text style={styles.greeting}>Hello Abhi!</Text>
-        <Text style={styles.title}>Welcome to Udupi!</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Change Location &gt;</Text>
-        </TouchableOpacity>
+    <ScrollView>
+      <ImageBackground
+        source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
+        style={styles.image}
+        blurRadius={2}
+      >
+        <View style={styles.overlay} />
+        <View style={styles.headerContent}>
+          <Text style={styles.greeting}>Hello Abhi!</Text>
+          <Text style={styles.title}>Welcome to Udupi!</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Change Location &gt;</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-          <Text style={styles.buttonText}>Signout</Text>
-        </TouchableOpacity>
+        {/* About Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>About Udupi</Text>
+          <Text style={styles.sectionContent}>
+            Udupi is a coastal town in Karnataka, famous for its Krishna Temple and delicious cuisine.
+            Explore its rich culture and beautiful beaches!
+          </Text>
+        </View>
 
-      </View>
+        {/* Our Businesses Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Local Businesses</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {['Restaurants', 'Hotels', 'Shops', 'Tours'].map((business, index) => (
+              <TouchableOpacity key={index} style={styles.businessCard}>
+                <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
+                <Text style={styles.businessText}>{business}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
 
-      <ScrollView contentContainerStyle={styles.main}>
-        <Text style={styles.overviewTitle}>Overview of Places</Text>
-        {[1, 2, 3].map((i) => (
-          <View key={i} style={styles.article}>
-            <Image
-              source={{ uri: 'https://via.placeholder.com/150' }} // Replace with your image source
-              style={styles.articleImage}
-            />
-            <Text style={styles.articleText}>Place {i}</Text>
+        {/* Places to Discover */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Places to Discover</Text>
+          {places.map((place, index) =>
+          (
+            // console.log(place)
+            <Card place={place} key={index}></Card>
+          ))}
+
+          <TouchableOpacity style={styles.seeMoreButton}>
+            <Text style={styles.seeMoreText}>See More Places</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Gamification Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Your Adventure</Text>
+          <View style={styles.gamificationCard}>
+            <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
+            <Text style={styles.gamificationText}>Level 5 Explorer</Text>
+            <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
           </View>
-        ))}
-      </ScrollView>
-    </ImageBackground>
-  );
-};
-
-export function TabThreeScreen() {
-  const [places, setPlaces] = useState([]);
-
-  useEffect(() => {
-    getPlaces();
-  }, []);
-
-  const getPlaces = async () => {
-    const { data, error } = await supabase.from("hotspots").select();
-    if (error) console.error('Error fetching places:', error);
-    else setPlaces(data);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Three</Text>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {places.map((place, index) => (
-          <Card place={place} key={index} />
-        ))}
-      </ScrollView>
-    </View>
+        </View>
+        </ImageBackground>
+    </ScrollView>
   );
 }
 
-// Common styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Overlay to darken the background
-  },
-  headerContent: {
+
+
+  welcomeSection: {
     padding: 20,
-    alignItems: 'flex-start',
+
   },
-  greeting: {
+  welcomeText: {
+    fontSize: 18,
+    color: '#2C3E50',
+  },
+  locationText: {
     fontSize: 28,
-    color: '#fff',
-    fontWeight: 'bold', // Make the greeting bold
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginTop: 5,
   },
-  title: {
-    fontSize: 30, // Increased font size for better visibility
-    color: '#fff',
-    marginBottom: 10,
-    fontWeight: '600', // Semi-bold
-  },
-  button: {
-    backgroundColor: '#FF6347', // Tomato color
-    paddingVertical: 12, // Increased padding for a larger button
-    paddingHorizontal: 20,
-    borderRadius: 30, // Rounded button
+  changeLocationButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+
+    alignSelf: 'flex-start',
     marginTop: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5, // Elevation for Android
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18, // Increased font size
-    textAlign: 'center',
+  changeLocationText: {
+    color: 'gray',
   },
-  main: {
+  section: {
     padding: 20,
-    paddingBottom: 100, // Extra space for scrollable content
   },
-  overviewTitle: {
-    fontSize: 24, // Increased font size
-    marginBottom: 15,
-    color: '#333',
-    fontWeight: '600', // Semi-bold
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  article: {
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    overflow: 'hidden',
-    elevation: 5, // Add some shadow effect
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  articleImage: {
-    width: '100%',
-    height: 100,
-  },
-  articleText: {
-    padding: 10,
+  sectionContent: {
     fontSize: 16,
     color: '#333',
-    fontWeight: '500', // Medium weight for the text
   },
-  scrollContainer: {
-    paddingBottom: 20,
+  businessCard: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginRight: 10,
+    width: 100,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  businessText: {
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  placeCard: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  placeImage: {
+    width: 100,
+    height: 100,
+  },
+  placeInfo: {
+    flex: 1,
+    padding: 10,
+  },
+  placeName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  placeDescription: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+  },
+  seeMoreButton: {
+    backgroundColor: '#4A90E2',
+    padding: 10,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  seeMoreText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  gamificationCard: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  gamificationText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  gamificationSubtext: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 5,
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+  },
+  navItem: {
+    padding: 10,
   },
 });

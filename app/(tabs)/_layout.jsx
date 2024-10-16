@@ -1,7 +1,7 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Tab icon and label component
 function TabBarIcon({
@@ -11,25 +11,35 @@ function TabBarIcon({
 }) {
   return (
     <View style={[styles.wrapper, focused && styles.focusedTab]}>
-      <FontAwesome name={name} size={24} color={focused ? 'black' : 'gray'} />
+      <MaterialCommunityIcons name={name} size={24} color={focused ? 'black' : 'gray'} />
       <Text style={[styles.tabLabel, focused && { color: 'black' }]}>{label}</Text>
     </View>
+  );
+}
+
+// Profile circle component
+function ProfileCircle() {
+  return (
+    <TouchableOpacity style={styles.profileCircle}>
+      <MaterialCommunityIcons name="account-circle" size={38} color="#fff" />
+    </TouchableOpacity>
   );
 }
 
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={{
-        tabBarShowLabel: false, // Disable default label to avoid duplication
+      screenOptions={({ route }) => ({
+        tabBarShowLabel: false,
         tabBarStyle: {
-          height: 80, // Increased height to fit icon and label
+          height: 80,
           paddingBottom: 7,
         },
-        
         headerStyle: {
+          height: 110, // Increased height 
+          borderBottomLeftRadius:8,
+          borderBottomRightRadius:8,
           backgroundColor: '#2C3E50',
-          // Add shadow
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -37,14 +47,14 @@ export default function TabLayout() {
           },
           shadowOpacity: 0.5,
           shadowRadius: 6,
-          elevation: 10,
           
         },
         headerTitleStyle: {
-          color: '#fff', // White text
-          fontWeight: 'bold', // Bold text
+          color: '#fff',
+          fontWeight: 'bold',
         },
-      }}
+        headerRight: route.name === 'index' ? () => <ProfileCircle /> : undefined,
+      })}
     >
       <Tabs.Screen
         name="index"
@@ -56,14 +66,12 @@ export default function TabLayout() {
         }}
       />
 
-
-
       <Tabs.Screen
         name="place"
         options={{
-          title: 'Toruists Spots',
+          title: 'Tourist Spots',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="bookmark" label="Places" focused={focused} />
+            <TabBarIcon name="map-marker-path" label="Places" focused={focused} />
           ),
         }}
       />
@@ -73,7 +81,7 @@ export default function TabLayout() {
         options={{
           title: 'Hunt',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="diamond" label="Hunt" focused={focused} />
+            <TabBarIcon name="gift" label="Hunt" focused={focused} />
           ),
         }}
       />
@@ -83,15 +91,11 @@ export default function TabLayout() {
         options={{
           title: 'Nearby',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="location-arrow" label="Nearby" focused={focused} />
+            <TabBarIcon name="near-me" label="Nearby" focused={focused} />
           ),
-
         }}
       />
-
     </Tabs>
-    
-
   );
 }
 
@@ -108,11 +112,20 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   focusedTab: {
-    backgroundColor: 'rgba(128, 128, 128, 0.2)', // Grey background for focused tab
-    borderRadius: 15, // Rounded border
-    padding: 6, // Increased padding for a wider focused area
-    width: 80, // Adjusted width to make the focus area wider
+    backgroundColor: 'rgba(128, 128, 128, 0.2)',
+    borderRadius: 15,
+    padding: 6,
+    width: 80,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  profileCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
   },
 });
