@@ -14,7 +14,7 @@ const index = () => {
                 // User is authenticated, redirect to dashboard or home
                 router.push('/(tabs)/)'); // Adjust the route as necessary
             } else {
-                router.push('/pages/login)');// Set loading to false if no session
+                router.push('/pages/login');// Set loading to false if no session
             }
         };
 
