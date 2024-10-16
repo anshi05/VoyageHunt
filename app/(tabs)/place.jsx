@@ -25,7 +25,7 @@ export default function TabThreeScreen() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab three</Text>
+      <Text style={styles.title}>Places</Text>
       <ScrollView>
         {places.map((place, index) => (
           <Card place={place} key={index}></Card>

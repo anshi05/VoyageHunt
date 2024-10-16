@@ -8,10 +8,6 @@ function TabBarIcon({
   name,
   label,
   focused,
-}: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  label: string;
-  focused: boolean;
 }) {
   return (
     <View style={[styles.wrapper, focused && styles.focusedTab]}>
@@ -41,9 +37,9 @@ export default function TabLayout() {
           ),
         }}
       />
-     
 
-      
+
+
       <Tabs.Screen
         name="place"
         options={{
@@ -54,7 +50,7 @@ export default function TabLayout() {
         }}
       />
 
-<Tabs.Screen
+      <Tabs.Screen
         name="hunt"
         options={{
           title: 'Hunt',
@@ -71,10 +67,10 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <TabBarIcon name="location-arrow" label="Nearby" focused={focused} />
           ),
-          
+
         }}
       />
-      
+
     </Tabs>
 
   );

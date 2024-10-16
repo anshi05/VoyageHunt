@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Home, Search, Book, MapPin } from 'lucide-react-native'; // Assuming you are using a compatible package
-import type { ReactNode } from 'react'; // Import ReactNode type
+import { createClient } from '@supabase/supabase-js';
+import Card from '@/components/ui/Card';
 
 export default function TabOneScreen() {
+
   return (
     <View style={styles.container}>
       <Welcome />
@@ -12,6 +14,21 @@ export default function TabOneScreen() {
 }
 
 const Welcome = () => {
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+
+  const [places, setplaces] = useState([]);
+
+  useEffect(() => {
+    getplaces();
+  }, []);
+  useEffect(() => {
+    console.log(places)
+  }, [places])
+
+  async function getplaces() {
+    const { data } = await supabase.from("hotspots").select().limit(3);
+    setplaces(data);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,45 +48,10 @@ const Welcome = () => {
 
       <ScrollView contentContainerStyle={styles.main}>
         <Text style={styles.overviewTitle}>Overview of places</Text>
-        {[1, 2, 3].map((i) => (
-          <View key={i} style={styles.article}>
-            <Image
-              source={{ uri: 'https://example.com/placeholder.svg?height=64&width=64' }}
-              style={styles.articleImage}
-            />
-            <View>
-              <Text style={styles.articleTitle}>Udupi Krishna Mutt</Text>
-              <Text style={styles.articleDescription}>
-                Lord Krishna is depicted here as a small boy (Balakrishna). The idol is
-                richly adorned and is viewed through a silver-plated window called the Navagraha Kitiki.
-              </Text>
-            </View>
-          </View>
+        {places.map((ele, index) => (
+          <Card place={ele} key={index}></Card>
         ))}
       </ScrollView>
-
-      <View style={styles.nav}>
-        <NavItem icon={<Home size={24} />} label="Home" active />
-        <NavItem icon={<Search size={24} />} label="Hunt" />
-        <NavItem icon={<Book size={24} />} label="Guide" />
-        <NavItem icon={<MapPin size={24} />} label="Nearby" />
-      </View>
-    </View>
-  );
-};
-
-// Define types for the NavItem props
-interface NavItemProps {
-  icon: ReactNode;
-  label: string;
-  active?: boolean;
-}
-
-const NavItem: React.FC<NavItemProps> = ({ icon, label, active = false }) => {
-  return (
-    <View style={[styles.navItem, active ? styles.activeNavItem : {}]}>
-      {icon}
-      <Text style={styles.navLabel}>{label}</Text>
     </View>
   );
 };

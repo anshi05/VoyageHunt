@@ -15,5 +15,5 @@
     "app/index.jsx",
     "app/_layout.jsx",
     "app/modal.jsx"
-, "app/(tabs)/nearby.jsx", "app/(tabs)/index.jsx", "app/(tabs)/place.jsx", "app/(tabs)/hunt.jsx", "app/(tabs)/_layout.tsx"  ]
+, "app/(tabs)/nearby.jsx", "app/(tabs)/index.jsx", "app/(tabs)/place.jsx", "app/(tabs)/hunt.jsx", "app/(tabs)/_layout.jsx", "app/+html.jsx", "app/_not-found.jsx"  ]
 }

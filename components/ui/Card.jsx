@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, Linking, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
 
 const Card = ({ place }) => {
     const handlePress = () => {
@@ -19,21 +19,23 @@ const Card = ({ place }) => {
     };
 
     return (
-        <View className="bg-white shadow-lg rounded-xl p-6 m-4">
+        <View className="bg-white  shadow-lg rounded-xl p-6 m-4" >
             {/* Card Title */}
-            <Text className="text-2xl font-bold text-gray-800 mb-2">{place.place_names}</Text>
+            <Text className="text-2xl font-boldmb-2">{place.place_names}</Text>
 
             {/* Card Description */}
-            <Text className="text-gray-600 text-base mb-4">{place.info_history}</Text>
+            <Text className="text-base mb-4">{place.info_history.substring(0, 100)}...</Text>
 
             {/* Button */}
             <TouchableOpacity
                 className="bg-blue-600 p-3 rounded-lg"
                 onPress={handlePress}
             >
-                <Text className="text-center text-white text-lg font-semibold">Click Me</Text>
+                <Text className="text-center text-white text-lg font-semibold">Get Location</Text>
             </TouchableOpacity>
+
         </View>
+
     );
 };
 
