@@ -15,7 +15,7 @@ export default function TabThreeScreen() {
 
   }, []);
   useEffect(() => {
-    console.log(places)
+    // console.log(places)
   }, [places])
 
 
@@ -27,7 +27,9 @@ export default function TabThreeScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Places</Text>
       <ScrollView>
-        {places.map((place, index) => (
+        {places.map((place, index) => 
+        (
+          // console.log(place)
           <Card place={place} key={index}></Card>
         ))}
       </ScrollView>

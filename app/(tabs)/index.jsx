@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import Card from '@/components/ui/Card';
 import { createClient } from '@supabase/supabase-js';
+import Card from '@/components/ui/Card';
 
 export default function TabOneScreen() {
 
@@ -21,7 +21,7 @@ const Welcome = () => {
     getplaces();
   }, []);
   useEffect(() => {
-    console.log(places)
+    // console.log(places)
   }, [places])
 
   async function getplaces() {
@@ -35,129 +35,148 @@ const Welcome = () => {
     }
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={{ uri: 'https://example.com/placeholder.svg?height=400&width=300' }}
-          style={styles.image}
-        />
-        <View style={styles.overlay} />
-        <View style={styles.headerContent}>
-          <Text style={styles.greeting}>Hello Abhi!</Text>
-          <Text style={styles.title}>Welcome to Udupi!</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Change Location &gt;</Text>
-          </TouchableOpacity>
-        </View>
+    <ImageBackground
+      source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
+      style={styles.image}
+      blurRadius={2}
+    >
+      <View style={styles.overlay} />
+      <View style={styles.headerContent}>
+        <Text style={styles.greeting}>Hello Abhi!</Text>
+        <Text style={styles.title}>Welcome to Udupi!</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Change Location &gt;</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.main}>
-        <Text style={styles.overviewTitle}>Overview of places</Text>
-        {places.map((ele, index) => (
-          <Card place={ele} key={index}></Card>
+        <Text style={styles.overviewTitle}>Overview of Places</Text>
+        {[1, 2, 3].map((i) => (
+          <View key={i} style={styles.article}>
+            <Image
+              source={{ uri: 'https://via.placeholder.com/150' }} // Replace with your image source
+              style={styles.articleImage}
+            />
+            <Text style={styles.articleText}>Place {i}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </ImageBackground>
+  );
+};
+
+export function TabThreeScreen() {
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    getPlaces();
+  }, []);
+
+  const getPlaces = async () => {
+    const { data, error } = await supabase.from("hotspots").select();
+    if (error) console.error('Error fetching places:', error);
+    else setPlaces(data);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Tab Three</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {places.map((place, index) => (
+          <Card place={place} key={index} />
         ))}
       </ScrollView>
     </View>
   );
-};
+}
 
+// Common styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f1f1f',
-  },
-  header: {
-    height: '50%',
-    position: 'relative',
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    flex: 1,
+    justifyContent: 'center',
   },
   overlay: {
     position: 'absolute',
     top: 0,
+    bottom: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Overlay to darken the background
   },
   headerContent: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    padding: 16,
+    padding: 20,
+    alignItems: 'flex-start',
   },
   greeting: {
-    fontSize: 18,
+    fontSize: 28,
     color: '#fff',
+    fontWeight: 'bold', // Make the greeting bold
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 30, // Increased font size for better visibility
     color: '#fff',
+    marginBottom: 10,
+    fontWeight: '600', // Semi-bold
   },
   button: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginTop: 8,
+    backgroundColor: '#FF6347', // Tomato color
+    paddingVertical: 12, // Increased padding for a larger button
+    paddingHorizontal: 20,
+    borderRadius: 30, // Rounded button
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Elevation for Android
   },
   buttonText: {
-    color: '#000',
-    fontSize: 14,
+    color: '#fff',
+    fontSize: 18, // Increased font size
+    textAlign: 'center',
   },
   main: {
-    flexGrow: 1,
-    padding: 16,
+    padding: 20,
+    paddingBottom: 100, // Extra space for scrollable content
   },
   overviewTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 16,
+    fontSize: 24, // Increased font size
+    marginBottom: 15,
+    color: '#333',
+    fontWeight: '600', // Semi-bold
   },
   article: {
-    backgroundColor: '#2a2a2a',
-    padding: 16,
+    marginBottom: 15,
+    backgroundColor: '#fff',
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+    overflow: 'hidden',
+    elevation: 5, // Add some shadow effect
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   articleImage: {
-    width: 64,
-    height: 64,
-    backgroundColor: '#3a3a3a',
-    borderRadius: 8,
-    marginRight: 12,
+    width: '100%',
+    height: 100,
   },
-  articleTitle: {
-    fontWeight: '600',
-    color: '#fff',
+  articleText: {
+    padding: 10,
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500', // Medium weight for the text
   },
-  articleDescription: {
-    color: '#b0b0b0',
-  },
-  nav: {
-    backgroundColor: '#2a2a2a',
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  navItem: {
-    alignItems: 'center',
-    color: '#b0b0b0',
-  },
-  activeNavItem: {
-    color: '#1e90ff',
-  },
-  navLabel: {
-    fontSize: 12,
-    marginTop: 4,
-    color: 'inherit',
+  scrollContainer: {
+    paddingBottom: 20,
   },
 });
-
