@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   tabLabel: {
     color: '#FFF',
     fontSize: 12,
-    marginTop: 4,
+    marginTop: 3,
   },
 });
