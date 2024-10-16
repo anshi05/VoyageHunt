@@ -1,6 +1,6 @@
 # Manipal Hackathon 2024 README Template
 
-**Team Name:** `<Insert Team Name>`
+**Team Name:** Access Denied
 
 **Problem Statement:** `<Insert Problem Statement>`
 
