@@ -23,7 +23,7 @@ export default function TabFourScreen() {
     },
     {
       heading: "Tourists",
-      href: "../pages/tourists",
+      href: "../pages/Nearby Tourists",
       subtitle: "20 nearby",
       icon: "person"
     },
