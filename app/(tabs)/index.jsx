@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
-
-const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw"); // Replace with your Supabase key
 
 export default function TabOneScreen() {
 
@@ -27,8 +25,14 @@ const Welcome = () => {
   }, [places])
 
   async function getplaces() {
-    const { data } = await supabase.from("hotspots").select().limit(3);
-    setplaces(data);
+    console.log(supabase)
+    const { data, error } = await supabase.from("hotspots").select().limit(3);
+    if (data) {
+      setplaces(data);
+    }
+    else {
+      console.log(error)
+    }
   }
   return (
     <ImageBackground
