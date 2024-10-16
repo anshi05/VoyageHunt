@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
+import { createClient } from '@supabase/supabase-js';
 
 export default function TabOneScreen() {
 
@@ -25,8 +25,14 @@ const Welcome = () => {
   }, [places])
 
   async function getplaces() {
-    const { data } = await supabase.from("hotspots").select().limit(3);
-    setplaces(data);
+    console.log(supabase)
+    const { data, error } = await supabase.from("hotspots").select().limit(3);
+    if (data) {
+      setplaces(data);
+    }
+    else {
+      console.log(error)
+    }
   }
   return (
     <View style={styles.container}>
