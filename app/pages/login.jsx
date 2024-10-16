@@ -1,12 +1,13 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-
-
-import 'react-native-url-polyfill/auto'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createClient } from '@supabase/supabase-js'
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, StyleSheet, Image, ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import 'react-native-url-polyfill/auto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createClient } from '@supabase/supabase-js';
 import { router } from 'expo-router';
+
+
 const LoginScreen = () => {
     const supabase = createClient(
         process.env.EXPO_PUBLIC_SUPABASE_URL || "",
@@ -18,85 +19,154 @@ const LoginScreen = () => {
                 persistSession: true,
                 detectSessionInUrl: false,
             },
-        })
+        }
+    );
+
     const [email, setEmail] = useState('abhijithsogal@gmail.com');
     const [password, setPassword] = useState('abhijith');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = () => {
         if (!email || !password) {
             Alert.alert('Error', 'Please fill all fields.');
-        } else {
-            // Handle registration logic here
-            const formData = {
-                email, password
-            }
-            console.log("Formdata: ", formData)
-            async function loginUser() {
-                try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password,
-                    })
-                    console.log(data.session.user.id)
-                    if (error) {
-                        Alert.alert('Error', error.message);
-                    }
-                    else {
-                        alert('Logged in successfully');
-                        console.log("data: ".data)
-                        const { data, error } = await supabase.auth.getSession()
-                        console.log(data, error)
-                        router.push('/(tabs)/')
-                    }
-
-                    console.log('Data inserted successfully:');
-
-                } catch (error) {
-                    console.log("catch error: " + error)
-                }
-            }
-            loginUser()
-            // Alert.alert('Success', `Logined as ${userType}${businessType ? ` - ${businessType}` : ''}`);
+            return;
         }
+
+        async function loginUser() {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) {
+                    Alert.alert('Error', error.message);
+                } else {
+                    Alert.alert('Success', 'Logged in successfully');
+                    router.push('/(tabs)/'); // Navigate to the main tabs
+                }
+            } catch (error) {
+                console.log("Catch error: " + error);
+            }
+        }
+
+        loginUser();
     };
 
     return (
-        <View className="flex-1 bg-gray-100 p-6 justify-center">
-            <Text className="text-3xl font-bold text-gray-800 mb-8 text-center">Login</Text>
+        
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+            <View style={styles.content}>
+                <Image source={require('../../assets/images/login.png')} style={styles.logo} resizeMode="contain" />
+                <Text style={styles.welcomeText}>Fun's calling, you in?</Text>
+                <Text style={styles.subText}>Login to dive back in!</Text>
 
-            {/* Email Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Email"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={setEmail}
-            />
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        placeholderTextColor="#A0A0A0"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+                </View>
 
-            {/* Password Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-            />
-            {/* Submit Button */}
-            <TouchableOpacity
-                className="w-full p-4 bg-blue-600 rounded-lg"
-                onPress={handleSubmit}
-            >
-                <Text className="text-center text-white text-lg font-semibold">Login</Text>
-            </TouchableOpacity>
-            {/* Login Button */}
-            <TouchableOpacity
-                className="w-full p-4"
-                onPress={() => router.replace('/pages/register')}
-            >
-                <Text className="text-center  text-lg font-semibold">Register if you don't have an account</Text>
-            </TouchableOpacity>
-        </View>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        placeholderTextColor="#A0A0A0"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                        <Icon name={showPassword ? "eye" : "eye-off"} size={20} color="#A0A0A0" marginTop={5} />
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
+
+                <View style={styles.signupContainer}>
+                    <Text style={styles.signupText}>Don't have an account? </Text>
+                    <TouchableOpacity onPress={() => router.push('/pages/register')}>
+                        <Text style={styles.signupLink}>Sign up</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            </ScrollView>
+        </SafeAreaView>
+        
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#1E1E2E',
+    },
+    content: {
+        alignItems: 'center',
+        padding: 0,
+        position: 'relative',
+        
+    },
+    logo: {
+        marginTop: 40,
+    },
+    welcomeText: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        marginBottom: 10,
+        marginTop: 40,
+    },
+    subText: {
+        fontSize: 14,
+        color: '#CCCCCC',
+        marginBottom: 30,
+    },
+    inputContainer: {
+        width: '90%',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 10,
+        marginBottom: 15,
+        position: 'relative',
+    },
+    input: {
+        width: '100%',
+        padding: 15,
+        color: '#FFFFFF',
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: 10,
+        top: 12,
+    },
+    loginButton: {
+        width: '88%',
+        backgroundColor: '#FFD700',
+        padding: 10,
+        borderRadius: 50,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    loginButtonText: {
+        color: '#000000',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    signupContainer: {
+        flexDirection: 'row',
+        marginTop: 10,
+    },
+    signupText: {
+        color: '#FFFFFF',
+    },
+    signupLink: {
+        color: '#FFD700',
+    },
+});
 
 export default LoginScreen;

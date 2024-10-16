@@ -1,13 +1,11 @@
-import { Picker } from '@react-native-picker/picker';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-
-import 'react-native-url-polyfill/auto'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createClient } from '@supabase/supabase-js'
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, SafeAreaView, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
+import { createClient } from '@supabase/supabase-js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 
-const RegisterScreen = () => {
+const SignUpScreen = () => {
     const supabase = createClient(
         "https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
         {
@@ -17,23 +15,37 @@ const RegisterScreen = () => {
                 persistSession: true,
                 detectSessionInUrl: false,
             },
-        })
-    const [name, setName] = useState('Abhijith');
-    const [email, setEmail] = useState('abhijithsogal@gmail.com');
-    const [password, setPassword] = useState('abhijith');
-    const [userType, setUserType] = useState('Tourist');  // Default to "Tourist"
-    const [location, setLocation] = useState('Udupi');
-    const [businessType, setBusinessType] = useState('');
-
-    useEffect(() => {
-        if (userType === 'Tourist') {
-            setBusinessType('')
         }
-    }, [userType])
+    );
 
+    const [name, setName] = useState('');
+    const [location, setLocation] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [userType, setUserType] = useState('');
+    const [passwordStrength, setPasswordStrength] = useState('');
 
-    const handleSubmit = () => {
-        if (!name || !location || !email || !password || !userType || (userType === 'Business' && !businessType)) {
+    const handlePasswordChange = (inputPassword) => {
+        setPassword(inputPassword);
+        evaluatePasswordStrength(inputPassword);
+    };
+
+    const evaluatePasswordStrength = (inputPassword) => {
+        let strength = '';
+        if (inputPassword.length === 0) {
+            strength = '';
+        } else if (inputPassword.length < 5) {
+            strength = 'easy';
+        } else if (inputPassword.length < 7) {
+            strength = 'medium';
+        } else {
+            strength = 'strong';
+        }
+        setPasswordStrength(strength);
+    };
+
+    const handleSignUp = async () => {
+        if (!name || !location || !email || !password || !userType) {
             Alert.alert('Error', 'Please fill all fields.');
         } else {
             // Handle registration logic here
@@ -86,86 +98,172 @@ const RegisterScreen = () => {
     };
 
     return (
-        <View className="flex-1 bg-gray-100 p-6 justify-center">
-            <Text className="text-3xl font-bold text-gray-800 mb-8 text-center">Register</Text>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <View style={styles.content}>
+                    <Image source={require('../../assets/images/voyageHunt.png')} style={styles.logo} resizeMode="contain" />
+                    <Text style={styles.title}>Ready to explore?</Text>
+                    <Text style={styles.signChild}> Sign up now!</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Name"
+                        placeholderTextColor="#A0A0A0"
+                        value={name}
+                        onChangeText={setName}
+                    />
+                    
+                    <View style={styles.input}>
+                        <Text className='text-[#A0A0A0]'>Select Category</Text>
+                        <Picker 
+                            selectedValue={userType}
+                            onValueChange={(itemValue) => setUserType(itemValue)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Tourist" value="Tourist" />
+                            <Picker.Item label="Business" value="Business" />
+                        </Picker>
+                    </View>
 
-            {/* Name Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Name"
-                value={name}
-                onChangeText={setName}
-            />
-
-            {/* Location Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Location"
-                value={location}
-                onChangeText={setLocation}
-            />
-
-            {/* Email Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Email"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={setEmail}
-            />
-
-            {/* Password Input */}
-            <TextInput
-                className="w-full p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-                placeholder="Password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-            />
-
-            {/* User Type Dropdown */}
-            <View className="border border-gray-300 rounded-lg mb-4">
-                <Picker
-                    selectedValue={userType}
-                    onValueChange={(itemValue) => setUserType(itemValue)}
-                >
-                    <Picker.Item label="Tourist" value="Tourist" />
-                    <Picker.Item label="Business" value="Business" />
-                </Picker>
-            </View>
-
-            {/* Business Type Dropdown (Visible only if 'Business' is selected) */}
-            {userType === 'Business' && (
-                <View className="border border-gray-300 rounded-lg mb-4">
-                    <Picker
-                        selectedValue={businessType}
-                        onValueChange={(itemValue) => setBusinessType(itemValue)}
-                    >
-                        <Picker.Item label="Select Business Type" value="" />
-                        <Picker.Item label="Restaurant" value="Restaurant" />
-                        <Picker.Item label="Hotel" value="Hotel" />
-                        <Picker.Item label="Guides" value="Guides" />
-                        <Picker.Item label="Shops" value="Shops" />
-                    </Picker>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Location"
+                        placeholderTextColor="#A0A0A0"
+                        value={location}
+                        onChangeText={setLocation}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        placeholderTextColor="#A0A0A0"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        placeholderTextColor="#A0A0A0"
+                        value={password}
+                        onChangeText={handlePasswordChange}
+                        secureTextEntry
+                    />
+                    
+                    <View style={styles.strengthIndicatorContainer}>
+                        <View style={[styles.strengthIndicator, (passwordStrength === 'easy' && styles.easy) || (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong)]} />
+                        <View style={[styles.strengthIndicator, (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong) ]} />
+                        <View style={[styles.strengthIndicator, (passwordStrength === 'strong' && styles.strong) ]} />
+                        <Text style={styles.strengthText}>
+                            {passwordStrength === 'strong' ? 'Strong' : passwordStrength === 'medium' ? 'Medium' : passwordStrength === 'easy' ? 'Easy' : ''}
+                        </Text>
+                    </View>
+                    
+                    <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+                        <Text style={styles.signUpButtonText}>Sign Up</Text>
+                    </TouchableOpacity>
+                    <View style={styles.loginContainer}>
+                        <Text style={styles.loginText}>Have an account?</Text>
+                        <TouchableOpacity onPress={() => router.push('/pages/login')}>
+                            <Text style={styles.backToLogin}> Login</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            )}
-            {/* Submit Button */}
-            <TouchableOpacity
-                className="w-full p-4 bg-blue-600 rounded-lg"
-                onPress={handleSubmit}
-            >
-                <Text className="text-center text-white text-lg font-semibold">Register</Text>
-            </TouchableOpacity>
-            {/* Login Button */}
-            <TouchableOpacity
-                className="w-full p-4 "
-                onPress={() => router.replace('/pages/login')}
-            >
-                <Text className="text-center  text-lg font-semibold">Login if you have an account</Text>
-            </TouchableOpacity>
-
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
-export default RegisterScreen;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#1E1E2E',
+    },
+    content: {
+        alignItems: 'center',
+        padding: 20,
+        marginTop: 40,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        marginBottom: 10,
+    },
+    signChild: {
+        fontSize: 14,
+        color: '#CCCCCC',
+        marginBottom: 30,
+    },
+    loginText: {
+        color: '#fff',
+    },
+    loginContainer: {
+        flexDirection: 'row',
+        marginTop: 10,
+    },
+    input: {
+        width: '90%',
+        padding: 15,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 10,
+        marginBottom: 15,
+        color: '#FFFFFF',
+    },
+    picker: {
+        height: 0,
+        marginBottom: 40,
+        width: '100%',
+        color: '#FFFFFF',
+    },
+    signUpButton: {
+        width: '88%',
+        backgroundColor: '#FFD700',
+        padding: 10,
+        borderRadius: 50,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    signUpButtonText: {
+        color: '#000000',
+        fontWeight: 'bold',
+    },
+    backToLogin: {
+        color: '#FFD700',
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        marginBottom: 20,
+    },
+    strengthIndicatorContainer: {
+        flexDirection: 'row',
+        marginLeft: -150,
+        width: '40%',
+        marginBottom: 15,
+        borderRadius: 15,
+    },
+    strengthIndicator: {
+        height: 5,
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: "gray",
+        marginRight: 2,
+    },
+    easy: {
+        backgroundColor: 'red',
+    },
+    medium: {
+        backgroundColor: 'orange',
+    },
+    strong: {
+        backgroundColor: 'green',
+    },
+    strengthText: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        marginLeft: 10,
+        marginTop: -6,
+    },
+});
+
+export default SignUpScreen;
