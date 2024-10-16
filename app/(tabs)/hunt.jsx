@@ -12,62 +12,43 @@ import {
   Alert,
 } from 'react-native';
 
-const locations = [
-  {
-    id: '1',
-    name: 'Sri Krishna Temple',
-    clue: 'To find your first stop, seek the place where prayers fill the air, and colorful flags dance with flair.',
-    image: 'https://kediyoorhotels.com/wp-content/uploads/2023/12/udupi-temple-1.jpg',
-    info: 'A famous temple dedicated to Lord Krishna, known for its unique architecture.',
-  },
-  {
-    id: '2',
-    name: 'Malpe Beach',
-    clue: 'Now head to the shores where the waves crash and play, where sun and surf welcome you every day.',
-    image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/45/6c/bb/early-morning-at-the.jpg?w=1200&h=-1&s=1',
-    info: 'A beautiful beach known for its serene beauty and water sports.',
-  },
-  {
-    id: '3',
-    name: 'Udupi Sri Krishna Matha',
-    clue: 'Next, visit the birthplace of a wise philosopher, where devotion runs deep and the food is a flavor.',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXgGYJZ_IyvOINE6_-AiN9AocYtD1skcKVUg&s',
-    info: 'The birthplace of the famous Dvaita philosopher Madhvacharya.',
-  },
-  {
-    id: '4',
-    name: 'Kaup Beach',
-    clue: 'Finally, to finish this treasure hunt with glee, find the lighthouse that watches over the sea.',
-    image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/45/6c/bb/early-morning-at-the.jpg?w=1200&h=-1&s=1',
-    info: 'Known for its lighthouse and stunning sunset views.',
-  },
-];
-
 const Hunt = () => {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
-  const [places, setplaces] = useState([]);
+  const [places_db, setplaces_db] = useState([]);
   const [locations, setLocations] = useState([]);
+
+  const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
   useEffect(() => {
-    getplaces();
+    getplaces_db();
   }, []);
   useEffect(() => {
-    places.map((place, index) => (
-      setLocations(prevItems => [...prevItems, {
-        id: index,
-        name: place.place_names,
-        clue: place.clue,
-        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/45/6c/bb/early-morning-at-the.jpg?w=1200&h=-1&s=1',
-      }])
-    ));
-  }, [places]);
-  useEffect(() => {
     console.log(locations)
-  }, [locations])
+  }, [locations]);
+  useEffect(() => {
+    if (locations.length === 0) {
 
-  async function getplaces() {
-    const { data } = await supabase.from("hotspots").select().limit(4);
-    setplaces(data);
+      let newlocations = shuffle(places_db).slice(0, 5);
+      console.log("new locations: ", newlocations.length)
+      newlocations.map((place, index) => (
+        setLocations(prevItems => [...prevItems, {
+          id: index,
+          name: place.place_names,
+          clue: place.clue,
+          image: place.image,
+          info: place.info_history
+        }])
+      ));
+
+    }
+
+  }, [places_db]);
+
+  async function getplaces_db() {
+    const { data } = await supabase.from("hotspots").select();
+    if (places_db.length === 0) {
+      setplaces_db(data);
+    }
   }
   const [completedLocations, setCompletedLocations] = useState([]);
   const [rewards, setRewards] = useState(0);
@@ -76,7 +57,6 @@ const Hunt = () => {
 
   const handleGuess = () => {
     const currentLocation = locations[currentClueIndex];
-
     if (guess.toLowerCase() === currentLocation.name.toLowerCase()) {
       Alert.alert('Correct!', `You guessed ${currentLocation.name}!\n\n${currentLocation.info}`, [
         {
@@ -100,11 +80,9 @@ const Hunt = () => {
     setGuess('');
     setCurrentClueIndex(0);
   };
-  const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
   const renderCurrentClue = () => {
     const currentLocation = locations[currentClueIndex];
-    const newlocations = shuffle(locations);
-
+    const locationsforpicker = shuffle(locations)
     return (
       <View style={styles.clueContainer}>
         <Text style={styles.clue}>{currentLocation.clue}</Text>
@@ -113,15 +91,15 @@ const Hunt = () => {
           selectedValue={guess}
           onValueChange={(itemValue) => setGuess(itemValue)}
         >
-          {newlocations.map((location, index) => (
-            <Picker.Item label={location.name} value={location.name} />
+          {locationsforpicker.map((location, index) => (
+            <Picker.Item key={index} label={location.name} value={location.name} />
           ))}
-
         </Picker>
+        <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
+
         <TouchableOpacity style={styles.button} onPress={handleGuess}>
           <Text style={styles.buttonText}>Submit Guess</Text>
         </TouchableOpacity>
-        <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
       </View>
     );
   };
@@ -166,7 +144,8 @@ const styles = StyleSheet.create({
   },
   clue: {
     fontSize: 18,
-    color: '#FFF',
+    textAlign: 'center',
+    marginTop: 8,
     marginBottom: 8,
   },
   input: {
@@ -220,6 +199,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  buttonText: {
+    textAlign: 'center'
+  }
 });
 
 export default Hunt;
