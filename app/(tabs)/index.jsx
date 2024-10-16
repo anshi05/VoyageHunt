@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Home, Search, Book, MapPin } from 'lucide-react-native'; // Assuming you are using a compatible package
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
 
