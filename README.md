@@ -2,12 +2,23 @@
 
 **Team Name:** Access Denied
 
-**Problem Statement:** `<Tourism often lacks engagement and interactive experiences, leading to missed opportunities for travelers to discover unique local attractions and fully immerse themselves in local culture. Design a sophisticated gamified tourism application that motivates users to thoroughly explore their destination by earning points through uncovering hidden attractions and completing challenges and quests such as uploading photos taken from specific angles to match reference images. The application should also feature leaderboards, rewards, and integrated social sharing capabilities.
+**Problem Statement:** `<Tourism often lacks engaging and interactive experiences, resulting in missed opportunities for travelers to discover unique local attractions and fully immerse themselves in the local culture. Design a sophisticated gamified tourism app that encourages users to deeply explore their destination by earning points for uncovering hidden attractions and completing challenges and quests. These could include tasks like uploading photos taken from specific angles to match reference images. The app should also feature leaderboards, rewards, and integrated social sharing, enhancing the overall experience and fostering a sense of competition and achievement.
 >`
 
 ## 📜 Introduction
 
-Our project allows `<insert consumer segment>` to do A, B and C by D, E and F. We have utilised X, Y and Z technologies to do P, Q and R.
+Our project empowers tourists and businesses to seamlessly explore, engage, and connect by leveraging role-based authentication, dynamic treasure hunt creation, and immersive community features. We've harnessed the power of React Native, Native Wind, and Supabase to craft a platform where users can discover hidden attractions, collaborate on adventures, and share their experiences.
+
+Key Features:
+
+Authentication & Role Management: Securely differentiating between tourists and businesses, allowing them to access tailored features.
+Business Account Features: Empowering businesses to create interactive treasure hunts, providing a unique way to engage tourists.
+Tourist Features: Offering tourists the ability to join hunts, form teams, and upload pictures as part of challenges.
+Community Features: Enabling users to share their adventures and photos, fostering a collaborative and vibrant community.
+Technological Stack:
+
+React Native for cross-platform mobile development
+Native Wind for seamless styling and responsive design
 
 ## ✨ Features
 
@@ -77,45 +88,14 @@ Follow these steps to run the project locally:
 
 1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
-2. Start the app
+1. Start server
 
-   ```bash
-    npx expo start
-   ```
+    ```bash
+    npm run start
+    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Access the application at http://localhost:3000
