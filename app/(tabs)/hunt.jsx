@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import React, { useEffect, useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+
 import {
   View,
   Text,
@@ -41,6 +44,31 @@ const locations = [
 ];
 
 const Hunt = () => {
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+
+  const [places, setplaces] = useState([]);
+  const [locations, setLocations] = useState([]);
+  useEffect(() => {
+    getplaces();
+  }, []);
+  useEffect(() => {
+    places.map((place, index) => (
+      setLocations(prevItems => [...prevItems, {
+        id: index,
+        name: place.place_names,
+        clue: place.clue,
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/45/6c/bb/early-morning-at-the.jpg?w=1200&h=-1&s=1',
+      }])
+    ));
+  }, [places]);
+  useEffect(() => {
+    console.log(locations)
+  }, [locations])
+
+  async function getplaces() {
+    const { data } = await supabase.from("hotspots").select().limit(4);
+    setplaces(data);
+  }
   const [completedLocations, setCompletedLocations] = useState([]);
   const [rewards, setRewards] = useState(0);
   const [guess, setGuess] = useState('');
@@ -72,18 +100,24 @@ const Hunt = () => {
     setGuess('');
     setCurrentClueIndex(0);
   };
-
+  const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
   const renderCurrentClue = () => {
     const currentLocation = locations[currentClueIndex];
+    const newlocations = shuffle(locations);
+
     return (
       <View style={styles.clueContainer}>
         <Text style={styles.clue}>{currentLocation.clue}</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Type your guess here"
-          value={guess}
-          onChangeText={setGuess}
-        />
+        <Text>Select your guess here</Text>
+        <Picker
+          selectedValue={guess}
+          onValueChange={(itemValue) => setGuess(itemValue)}
+        >
+          {newlocations.map((location, index) => (
+            <Picker.Item label={location.name} value={location.name} />
+          ))}
+
+        </Picker>
         <TouchableOpacity style={styles.button} onPress={handleGuess}>
           <Text style={styles.buttonText}>Submit Guess</Text>
         </TouchableOpacity>
@@ -117,13 +151,13 @@ const Hunt = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E1E2E',
+    backgroundColor: 'white',
     padding: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFD700',
+    color: 'black',
     marginBottom: 16,
     textAlign: 'center',
   },

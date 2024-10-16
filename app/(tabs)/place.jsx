@@ -25,7 +25,6 @@ export default function TabThreeScreen() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Places</Text>
       <ScrollView>
         {places.map((place, index) => 
         (
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 20,

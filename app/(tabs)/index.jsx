@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { LoginSessionContext } from '../../context/AuthProvider';
+import { Link, router } from 'expo-router';
 export default function HomePage() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
   const [places, setplaces] = useState([]);
@@ -43,9 +41,7 @@ export default function HomePage() {
 
     checkUser();
   }, []);
-  const { LoginSession, setLoginSession } = useContext(LoginSessionContext)
 
-  console.log("LoginSession: ", LoginSession)
   return (
     <ScrollView>
       <ImageBackground
@@ -78,11 +74,11 @@ export default function HomePage() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Local Businesses</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {['Restaurants', 'Hotels', 'Shops', 'Tours'].map((business, index) => (
-              <TouchableOpacity key={index} style={styles.businessCard}>
+            {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
+              <Link href={business[1]} key={index} style={styles.businessCard}>
                 <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
-                <Text style={styles.businessText}>{business}</Text>
-              </TouchableOpacity>
+                <Text style={styles.businessText}>{business[0]}</Text>
+              </Link>
             ))}
           </ScrollView>
         </View>
@@ -95,10 +91,9 @@ export default function HomePage() {
             // console.log(place)
             <Card place={place} key={index}></Card>
           ))}
-
-          <TouchableOpacity style={styles.seeMoreButton}>
+          <Link href={'/(tabs)/place/'} style={styles.seeMoreButton}>
             <Text style={styles.seeMoreText}>See More Places</Text>
-          </TouchableOpacity>
+          </Link>
         </View>
 
         {/* Gamification Section */}
@@ -169,6 +164,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
   },
   businessText: {
     marginTop: 5,
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   seeMoreButton: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 20,
     alignSelf: 'center',

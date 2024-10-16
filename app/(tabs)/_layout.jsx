@@ -2,7 +2,7 @@ import React from 'react';
 import { router, Tabs } from 'expo-router';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 // Tab icon and label component
 function TabBarIcon({
   name,
@@ -25,11 +25,28 @@ function ProfileCircle() {
     </TouchableOpacity>
   );
 }
+// Profile circle component
+function Signout() {
+  return (
+    <TouchableOpacity style={styles.profileCircle}>
+      <FontAwesome5 name="sign-out-alt" size={24} color="white" onPress={async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+          console.error('Error signing out:', error.message);
+        } else {
+          // Sign-out successful, redirect to login page
+          router.replace('/pages/login'); // Adjust the route as necessary
+        }
+      }} />
+    </TouchableOpacity>
+  );
+}
 
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={({ route }) => ({
+      screenOptions={() => ({
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 80,
@@ -53,7 +70,7 @@ export default function TabLayout() {
           color: '#fff',
           fontWeight: 'bold',
         },
-        headerRight: route.name === 'index' ? () => <ProfileCircle /> : undefined,
+        headerRight: () => <View style={{display:'flex', flexDirection:'row'}}><ProfileCircle /><Signout /></View>,
       })}
     >
       <Tabs.Screen
@@ -132,7 +149,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
