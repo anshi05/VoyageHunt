@@ -5,24 +5,25 @@ import { supabase } from '../utils/supabase';
 
 export default function Index() {
   useEffect(() => {
-    const getTodos = async () => {
+    const getEvents = async () => {
       try {
-        const { data, error } = await supabase.from('Events').select();
+
+        const { data, error } = await supabase
+          .from('PlaceDetails')
+          .select('*')  // Fetches all columns
 
         if (error) {
-          console.error('Error fetching todos:', error.message);
-          return;
+          console.error('Error fetching data:', error)
+        } else {
+          console.log('Data:', data)
         }
-
-        if (data) {
-          console.log(data)
-        }
+        return data
       } catch (error) {
-        console.error('Error fetching todos:', error.message);
+        console.error('Error fetching events:', error.message);
       }
     };
 
-    getTodos();
+    getEvents();
   }, []);
 
   return (
