@@ -4,20 +4,18 @@ import { View, Text, FlatList } from 'react-native';
 import { supabase } from '../utils/supabase';
 
 export default function Index() {
-  const [todos, setTodos] = useState([]);
-
   useEffect(() => {
     const getTodos = async () => {
       try {
-        const { data: todos, error } = await supabase.from('todos').select();
+        const { data, error } = await supabase.from('Events').select();
 
         if (error) {
           console.error('Error fetching todos:', error.message);
           return;
         }
 
-        if (todos && todos.length > 0) {
-          setTodos(todos);
+        if (data) {
+          console.log(data)
         }
       } catch (error) {
         console.error('Error fetching todos:', error.message);
@@ -30,11 +28,6 @@ export default function Index() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Todo List</Text>
-      <FlatList
-        data={todos}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text key={item.id}>{item.title}</Text>}
-      />
     </View>
   );
 };
