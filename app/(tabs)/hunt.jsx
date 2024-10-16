@@ -17,19 +17,19 @@ const Hunt = () => {
 
   const [places_db, setplaces_db] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [pickeroptions, setpickeroptions] = useState([])
 
   const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
   useEffect(() => {
     getplaces_db();
   }, []);
   useEffect(() => {
-    console.log(locations)
-  }, [locations]);
-  useEffect(() => {
     if (locations.length === 0) {
 
       let newlocations = shuffle(places_db).slice(0, 5);
-      console.log("new locations: ", newlocations.length)
+      newlocations.map((place, index)=>(
+        console.log(place.place_names)
+      ));
       newlocations.map((place, index) => (
         setLocations(prevItems => [...prevItems, {
           id: index,
@@ -38,6 +38,9 @@ const Hunt = () => {
           image: place.image,
           info: place.info_history
         }])
+      ));
+      places_db.map((place, index) => (
+        setpickeroptions(prevItems => [...prevItems, place.place_names])
       ));
 
     }
@@ -82,7 +85,6 @@ const Hunt = () => {
   };
   const renderCurrentClue = () => {
     const currentLocation = locations[currentClueIndex];
-    const locationsforpicker = shuffle(locations)
     return (
       <View style={styles.clueContainer}>
         <Text style={styles.clue}>{currentLocation.clue}</Text>
@@ -91,8 +93,8 @@ const Hunt = () => {
           selectedValue={guess}
           onValueChange={(itemValue) => setGuess(itemValue)}
         >
-          {locationsforpicker.map((location, index) => (
-            <Picker.Item key={index} label={location.name} value={location.name} />
+          {pickeroptions.map((location, index) => (
+            <Picker.Item key={index} label={location} value={location} />
           ))}
         </Picker>
         <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
