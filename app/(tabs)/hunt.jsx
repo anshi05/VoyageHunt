@@ -1,209 +1,82 @@
-import { createClient } from '@supabase/supabase-js';
-import React, { useEffect, useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { useRoute } from '@react-navigation/native';
+import { router } from 'expo-router';
 
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-
-const Hunt = () => {
-  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
-
-  const [places_db, setplaces_db] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [pickeroptions, setpickeroptions] = useState([])
-
-  const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
-  useEffect(() => {
-    getplaces_db();
-  }, []);
-  useEffect(() => {
-    if (locations.length === 0) {
-
-      let newlocations = shuffle(places_db).slice(0, 5);
-      newlocations.map((place, index)=>(
-        console.log(place.place_names)
-      ));
-      newlocations.map((place, index) => (
-        setLocations(prevItems => [...prevItems, {
-          id: index,
-          name: place.place_names,
-          clue: place.clue,
-          image: place.image,
-          info: place.info_history
-        }])
-      ));
-      places_db.map((place, index) => (
-        setpickeroptions(prevItems => [...prevItems, place.place_names])
-      ));
-
-    }
-
-  }, [places_db]);
-
-  async function getplaces_db() {
-    const { data } = await supabase.from("hotspots").select();
-    if (places_db.length === 0) {
-      setplaces_db(data);
-    }
-  }
-  const [completedLocations, setCompletedLocations] = useState([]);
-  const [rewards, setRewards] = useState(0);
-  const [guess, setGuess] = useState('');
-  const [currentClueIndex, setCurrentClueIndex] = useState(0);
-
-  const handleGuess = () => {
-    const currentLocation = locations[currentClueIndex];
-    if (guess.toLowerCase() === currentLocation.name.toLowerCase()) {
-      Alert.alert('Correct!', `You guessed ${currentLocation.name}!\n\n${currentLocation.info}`, [
-        {
-          text: 'Next Clue',
-          onPress: () => {
-            setRewards(rewards + 1);
-            setCompletedLocations([...completedLocations, currentLocation.id]);
-            setGuess('');
-            setCurrentClueIndex(currentClueIndex + 1);
-          },
-        },
-      ]);
-    } else {
-      Alert.alert('Try Again!', 'Your guess is not correct. Please try again.');
-    }
-  };
-
-  const restartGame = () => {
-    setCompletedLocations([]);
-    setRewards(0);
-    setGuess('');
-    setCurrentClueIndex(0);
-  };
-  const renderCurrentClue = () => {
-    const currentLocation = locations[currentClueIndex];
-    return (
-      <View style={styles.clueContainer}>
-        <Text style={styles.clue}>{currentLocation.clue}</Text>
-        <Text>Select your guess here</Text>
-        <Picker
-          selectedValue={guess}
-          onValueChange={(itemValue) => setGuess(itemValue)}
-        >
-          {pickeroptions.map((location, index) => (
-            <Picker.Item key={index} label={location} value={location} />
-          ))}
-        </Picker>
-        <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
-
-        <TouchableOpacity style={styles.button} onPress={handleGuess}>
-          <Text style={styles.buttonText}>Submit Guess</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
+const GameCard = ({ title, clue, difficulty, icon, onStart }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Udupi Treasure Hunt</Text>
-      {currentClueIndex < locations.length ? (
-        renderCurrentClue()
-      ) : (
-        <View style={styles.congratulationsContainer}>
-          <Text style={styles.congratulations}>
-            Congratulations! You've completed the treasure hunt! Total Rewards: {rewards}
-          </Text>
-          <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
-            <Text style={styles.restartButtonText}>Restart Game</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      <Text style={styles.footer}>
-        Rewards Earned: {rewards}
-      </Text>
+    <View className="bg-yellow-100 p-4 m-2 rounded-lg shadow-md">
+      <Image source={icon} className="w-12 h-12 mb-4" />
+      <Text className="text-xl font-bold mb-2">{title}</Text>
+      <Text className="text-gray-700 mb-4">{clue}</Text>
+      <View className="flex-row items-center mb-2">
+        <Text className="text-sm font-bold text-gray-800">Difficulty: </Text>
+        <Text className="text-yellow-600">{difficulty}</Text>
+      </View>
+      <TouchableOpacity onPress={onStart} className="bg-yellow-600 p-2 rounded-lg">
+        <Text className="text-white text-center">Start Quest</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  clueContainer: {
-    marginBottom: 16,
-  },
-  clue: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  input: {
-    height: 40,
-    borderColor: '#A0A0A0',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    color: '#FFF',
-    backgroundColor: '#2A2A3A',
-  },
-  button: {
-    backgroundColor: '#FFD700',
-    borderRadius: 8,
-    paddingVertical: 10,
-    marginTop: 10,
-  },
-  restartButton: {
-    backgroundColor: '#FF6347',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    marginTop: 10,
-  },
-  restartButtonText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#FFF',
-  },
-  cardImage: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    borderRadius: 12,
-    marginTop: 10,
-  },
-  footer: {
-    marginTop: 16,
-    fontSize: 16,
-    color: '#FFF',
-    textAlign: 'center',
-  },
-  congratulations: {
-    marginTop: 16,
-    fontSize: 18,
-    color: 'green',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  congratulationsContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  buttonText: {
-    textAlign: 'center'
-  }
-});
+const Hunt = () => {
+  // Dummy data for game cards
+  const games = [
+    {
+      title: "Photo Quest",
+      clue: "Unravel the Clues, Spot the Landmarks—Can You Guess the Place?",
+      difficulty: "Easy",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path,
+      href: "pages/games/photo_quest"
+    },
+    {
+      title: "Nritya Gyaan",
+      clue: "Yakshagana Unveiled: Truth or Tale? Test Your Knowledge!",
+      difficulty: "Medium",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path
+      href: "pages/games/nritya_gyaan"
+    },
+    {
+      title: "Snap & Seek: Udupi Edition",
+      clue: "Capture the Spirit of Udupi: Your Lens, Your Adventure!",
+      difficulty: "Hard",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path
+      href: "pages/games/snap_seek"
+    }
+  ];
+
+  const startQuest = (href) => {
+    router.push(href)
+  };
+
+  return (
+    <ScrollView className="bg-yellow-200">
+      <View className="p-4">
+        {/* Title Section */}
+        <Text className="text-2xl font-bold text-center mb-6">Select Your Treasure Hunt</Text>
+
+        {/* Game Cards */}
+        {games.map((game, index) => (
+          <GameCard
+            key={index}
+            title={game.title}
+            clue={game.clue}
+            difficulty={game.difficulty}
+            icon={game.icon}
+            onStart={() => startQuest(game.href)}
+          />
+        ))}
+        {/* Link to Leaderboard */}
+        <View className="mt-6">
+          <Link href="/leaderboard" className="text-center text-blue-600 underline">
+            View Leaderboard
+          </Link>
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
 
 export default Hunt;

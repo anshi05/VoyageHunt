@@ -37,6 +37,13 @@ export function InititalLayout() {
           ...headerOptions // Apply common header options
         }}
       />
+      <Stack.Screen
+        name="pages/tourists"
+        options={{
+          title: 'Tourists',
+          ...headerOptions // Apply common header options
+        }}
+      />
     </Stack>
   )
 }
@@ -46,7 +53,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <InititalLayout/>
+      <InititalLayout />
     </AuthProvider>
   );
 }

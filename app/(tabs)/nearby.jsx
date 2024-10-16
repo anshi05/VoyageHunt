@@ -24,7 +24,7 @@ export default function TabFourScreen() {
     },
     {
       heading: "Tourists",
-      href: "../pages/Nearby Tourists",
+      href: "../pages/tourists",
       subtitle: "20 nearby",
       icon: "person"
     },

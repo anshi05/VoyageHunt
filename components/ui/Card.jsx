@@ -1,25 +1,35 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet, Image } from 'react-native';
 
 const Card = ({ place }) => {
     const handlePress = () => {
-        const url = `https://www.google.com/maps?q=${place.latitude},${place.longitude}`; // Make sure to use place.longitude
+        Alert.alert(place.place_names, place.info_history, [
+            {
+                text: 'Get Location',
+                onPress: () => {
+                    const url = `https://www.google.com/maps?q=${place.latitude},${place.longitude}`; // Make sure to use place.longitude
 
-        // Check if the device can open the link
-        Linking.canOpenURL(url)
-            .then((supported) => {
-                if (supported) {
-                    Linking.openURL(url);
-                } else {
-                    Alert.alert('Error', 'Unable to open map link.');
-                }
-            })
-            .catch((err) => console.error('An error occurred', err));
+                    // Check if the device can open the link
+                    Linking.canOpenURL(url)
+                        .then((supported) => {
+                            if (supported) {
+                                Linking.openURL(url);
+                            } else {
+                                Alert.alert('Error', 'Unable to open map link.');
+                            }
+                        })
+                        .catch((err) => console.error('An error occurred', err));
+                },
+            },
+            {
+                text: "Back", onPress: () => { }
+            },
+        ]);
     };
-
     return (
         <View style={styles.card}>
+            <Image source={{ uri: place.image }} style={styles.cardImage} />
             {/* Card Title */}
             <Text style={styles.title}>{place.place_names}</Text>
 
@@ -28,7 +38,7 @@ const Card = ({ place }) => {
 
             {/* Button */}
             <TouchableOpacity style={styles.button} onPress={handlePress}>
-                <Text style={styles.buttonText}>Get Location</Text>
+                <Text style={styles.buttonText}>View Details</Text>
             </TouchableOpacity>
         </View>
     );
@@ -66,6 +76,14 @@ const styles = StyleSheet.create({
         color: 'white', // Equivalent to text-white
         fontSize: 18, // Equivalent to text-lg
         fontWeight: '600', // Equivalent to font-semibold
+    },
+    cardImage: {
+        width: '100%',
+        height: 200,
+        resizeMode: 'cover',
+        borderRadius: 12,
+        marginTop: 10,
+        marginBottom: 10
     },
 });
 

@@ -39,7 +39,7 @@ const questions = {
   //... (rest of the questions remain unchanged) 
 };
 
-export default function YakshaganaQuiz() {
+export default function NrityaGyaan() {
   const [currentLevel, setCurrentLevel] = useState('easy');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isCorrect, setIsCorrect] = useState(null);
