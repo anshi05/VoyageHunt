@@ -23,15 +23,10 @@ Native Wind for seamless styling and responsive design
 
 App:
 
--   Ultra cool feature #1
--   Pro max feature #2
--   Feature #3
+-   Destination Guides: Provide detailed guides for popular destinations, including information on attractions, restaurants, and activities.
+-   Maps and Navigation: Integrate maps and navigation features to help users find their way around unfamiliar cities.
+-   Reviews and Ratings: Allow users to leave reviews and ratings for destinations, attractions, and businesses.
 
-Website:
-
--   Ultra cool feature #1
--   Pro max feature #2
--   Feature #3
 
 ## 🟢 Access
 
