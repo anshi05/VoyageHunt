@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -21,7 +21,7 @@ function TabBarIcon({
 function ProfileCircle() {
   return (
     <TouchableOpacity style={styles.profileCircle}>
-      <MaterialCommunityIcons name="account-circle" size={38} color="#fff" />
+      <MaterialCommunityIcons onPress={() => { router.push('/pages/profile'); console.log("Hello") }} name="account-circle" size={38} color="#fff" />
     </TouchableOpacity>
   );
 }
@@ -37,8 +37,8 @@ export default function TabLayout() {
         },
         headerStyle: {
           height: 110, // Increased height 
-          borderBottomLeftRadius:8,
-          borderBottomRightRadius:8,
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8,
           backgroundColor: '#2C3E50',
           shadowColor: '#000',
           shadowOffset: {
@@ -47,7 +47,7 @@ export default function TabLayout() {
           },
           shadowOpacity: 0.5,
           shadowRadius: 6,
-          
+
         },
         headerTitleStyle: {
           color: '#fff',
@@ -95,6 +95,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="community"
+        options={{
+          title: 'Community',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name="near-me" label="Nearby" focused={focused} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
@@ -123,7 +132,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    
+
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,

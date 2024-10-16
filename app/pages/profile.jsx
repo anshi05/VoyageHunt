@@ -1,35 +1,37 @@
 // app/pages/EditProfile.js
+import { createClient } from '@supabase/supabase-js';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { supabase } from '../supabase'; // Adjust path if needed
 
 const EditProfile = () => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [bio, setBio] = useState('');
     const [loading, setLoading] = useState(true);
+    const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
     // Fetch current user profile data
     useEffect(() => {
         const fetchProfile = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data, error } = await supabase.auth.getSession()
 
-            if (session) {
-                const { data, error } = await supabase
-                    .from('TouristsData') // Table where user profile data is stored
-                    .select('name, location, bio')
-                    .eq('uid', session.user.id) // Assuming uid stores the user ID
-                    .single();
+            console.log(data, error)
+            // if (session) {
+            //     const { data, error } = await supabase
+            //         .from('TouristsData') // Table where user profile data is stored
+            //         .select('name, location, bio')
+            //         .eq('uid', session.user.id) // Assuming uid stores the user ID
+            //         .single();
 
-                if (error) {
-                    console.error('Error fetching profile:', error);
-                } else {
-                    setName(data.name);
-                    setLocation(data.location);
-                    setBio(data.bio);
-                }
-            }
-            setLoading(false);
+            //     if (error) {
+            //         console.error('Error fetching profile:', error);
+            //     } else {
+            //         setName(data.name);
+            //         setLocation(data.location);
+            //         setBio(data.bio);
+            //     }
+            // }
+            // setLoading(false);
         };
 
         fetchProfile();

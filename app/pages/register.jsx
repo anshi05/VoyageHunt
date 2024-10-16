@@ -2,8 +2,6 @@ import { Picker } from '@react-native-picker/picker';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
-import { IsLoggedInContext } from '@/app/context/isLoginContext';
-
 import 'react-native-url-polyfill/auto'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createClient } from '@supabase/supabase-js'
@@ -27,7 +25,6 @@ const RegisterScreen = () => {
     const [userType, setUserType] = useState('Tourist');  // Default to "Tourist"
     const [location, setLocation] = useState('Udupi');
     const [businessType, setBusinessType] = useState('');
-    const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
 
     useEffect(() => {
         if (userType === 'Tourist') {
@@ -54,45 +51,28 @@ const RegisterScreen = () => {
                     })
                     data && console.log("email from data: " + data.user.email)
 
+                    console.log(data.session.user.aud)
                     //insert user in table
                     if (data.user) {
                         const userobj = data.user;
-                        if (userType === "Business") {
-                            const { error } = await supabase
-                                .from('BusinessData')  // Replace 'Users' with your table name
-                                .insert([
-                                    {
-                                        uid: userobj.id,
-                                        email: userobj.email,
-                                        name: name,
-                                        location: location,
-                                        business_type: businessType
-                                    }
-                                ]);
-                            if (error) {
-                                console.error('Error inserting data:', error);
-                            } else {
-                                router.replace('/(tabs)/')
-                                console.log('Data inserted successfully:');
+                        const d = [
+                            {
+                                uid: userobj.id,
+                                email: userobj.email,
+                                name,
+                                location,
+                                business_type: businessType
                             }
-                        }
-                        else if (userType === "Tourist") {
-                            const { error } = await supabase
-                                .from('TouristsData')
-                                .insert([
-                                    {
-                                        uid: userobj.id,
-                                        email: userobj.email,
-                                        name: name,
-                                        location: location,
-                                    },
-                                ]);
-
-                            if (error) {
-                                console.error('Error inserting data:', error);
-                            } else {
-                                console.log('Data inserted successfully:');
-                            }
+                        ]
+                        console.log(d)
+                        const { error } = await supabase
+                            .from('Users')  // Replace 'Users' with your table name
+                            .insert(d);
+                        if (error) {
+                            console.error('Error inserting data:', error);
+                        } else {
+                            router.replace('/(tabs)/')
+                            console.log('Data inserted successfully:');
                         }
                     }
                 } catch (error) {

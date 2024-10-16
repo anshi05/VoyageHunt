@@ -1,9 +1,8 @@
-import { ScrollView } from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 import FormUI from '../../components/ui/Form'
-import { IsLoggedInContext } from '../context/isLoginContext';
+import AppBar from '../../components/ui/AppBar';
 
 const AddEvent = () => {
-    const { eventsData, setEventsData } = useContext(IsLoggedInContext);
     return (
         <ScrollView>
             <FormUI />

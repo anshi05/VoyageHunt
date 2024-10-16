@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { LoginSessionContext } from '../../context/AuthProvider';
 export default function HomePage() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
-
   const [places, setplaces] = useState([]);
 
   useEffect(() => {
     getplaces();
 
   }, []);
-  useEffect(() => {
-    // console.log(places)
-  }, [places])
-
 
   async function getplaces() {
-    console.log(supabase)
     const { data, error } = await supabase.from("hotspots").select().limit(3);
     if (data) {
       setplaces(data);
@@ -28,6 +24,7 @@ export default function HomePage() {
       console.log(error)
     }
   }
+
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
 
@@ -38,7 +35,17 @@ export default function HomePage() {
       router.replace('/pages/login'); // Adjust the route as necessary
     }
   };
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getUser();
+      console.log("session: ", session)
+    };
 
+    checkUser();
+  }, []);
+  const { LoginSession, setLoginSession } = useContext(LoginSessionContext)
+
+  console.log("LoginSession: ", LoginSession)
   return (
     <ScrollView>
       <ImageBackground
@@ -52,6 +59,9 @@ export default function HomePage() {
           <Text style={styles.title}>Welcome to Udupi!</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Location &gt;</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+            <Text style={styles.buttonText}>Signout</Text>
           </TouchableOpacity>
         </View>
 
@@ -100,7 +110,7 @@ export default function HomePage() {
             <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
           </View>
         </View>
-        </ImageBackground>
+      </ImageBackground>
     </ScrollView>
   );
 }

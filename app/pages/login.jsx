@@ -2,7 +2,6 @@ import { Picker } from '@react-native-picker/picker';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
-import { IsLoggedInContext } from '@/app/context/isLoginContext';
 
 import 'react-native-url-polyfill/auto'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -35,17 +34,23 @@ const LoginScreen = () => {
             async function loginUser() {
                 try {
                     const { data, error } = await supabase.auth.signInWithPassword({
-                        email: 'abhijithsogal@gmail.com',
-                        password: 'abhijith',
+                        email: email,
+                        password: password,
                     })
-
+                    console.log(data.session.user.id)
                     if (error) {
                         Alert.alert('Error', error.message);
                     }
-                    alert('Logged in successfully');
-                    console.log("error: ", error)
-                    router.replace('/(tabs)/')
+                    else {
+                        alert('Logged in successfully');
+                        console.log("data: ".data)
+                        const { data, error } = await supabase.auth.getSession()
+                        console.log(data, error)
+                        router.push('/(tabs)/')
+                    }
+
                     console.log('Data inserted successfully:');
+
                 } catch (error) {
                     console.log("catch error: " + error)
                 }
