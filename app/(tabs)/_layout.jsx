@@ -36,8 +36,7 @@ export default function TabLayout() {
           paddingBottom: 7,
         },
         headerStyle: {
-          height: 110, // Increased height
-          paddingTop: 20, 
+          height: 110, // Increased height 
           borderBottomLeftRadius:8,
           borderBottomRightRadius:8,
           backgroundColor: '#2C3E50',
@@ -48,7 +47,7 @@ export default function TabLayout() {
           },
           shadowOpacity: 0.5,
           shadowRadius: 6,
-          elevation: 10,
+          
         },
         headerTitleStyle: {
           color: '#fff',

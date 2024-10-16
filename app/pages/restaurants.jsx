@@ -25,7 +25,7 @@ const restaurants = [
     id: '2',
     name: 'HOTEL NEW SHANTI SAGAR',
     rating: 4.2,
-    image: 'https://images.unsplash.com/photo-1514933651103-005eec06c5cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    image: 'https://assets.architecturaldigest.in/photos/64f85037ec0bc118bdd98aba/4:3/w_1440,h_1080,c_limit/Untitled%20design%20(14).png',
     isVeg: true,
     location: { latitude: 12.9719, longitude: 77.6412 },
   },
@@ -41,7 +41,7 @@ const restaurants = [
     id: '4',
     name: 'Sitaram Sagar',
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://b.zmtcdn.com/data/collections/684397cd092de6a98862220e8cc40aca_1709810207.png',
     isVeg: true,
     location: { latitude: 12.9719, longitude: 77.6412 },
     isLocalFavorite: true,
@@ -82,10 +82,7 @@ export default function Component() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Restaurants</Text>
+        
       </View>
       <FlatList
         data={restaurants}
@@ -106,7 +103,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#3A3A4A',
   },

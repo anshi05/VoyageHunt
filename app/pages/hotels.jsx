@@ -63,15 +63,32 @@ const HotelCard = ({ hotel }) => (
   </TouchableOpacity>
 );
 
+export default function Component() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.header}>
+        
+      </View>
+      <FlatList
+        data={hotels}
+        renderItem={({ item }) => <HotelCard hotel={item} />}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+      />
+    
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1E1E2E',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
+    
+    padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#3A3A4A',
   },
