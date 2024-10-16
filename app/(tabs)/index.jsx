@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
+import { router } from 'expo-router';
 
 export default function TabOneScreen() {
 
@@ -34,6 +35,17 @@ const Welcome = () => {
       console.log(error)
     }
   }
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error('Error signing out:', error.message);
+    } else {
+      // Sign-out successful, redirect to login page
+      router.replace('/pages/login'); // Adjust the route as necessary
+    }
+  };
+
   return (
     <ImageBackground
       source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
@@ -47,6 +59,11 @@ const Welcome = () => {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Change Location &gt;</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+          <Text style={styles.buttonText}>Signout</Text>
+        </TouchableOpacity>
+
       </View>
 
       <ScrollView contentContainerStyle={styles.main}>

@@ -2,21 +2,24 @@ import { View, Text } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 
 import { IsLoggedInContext } from '@/app/context/isLoginContext';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
+import { supabase } from '@/utils/supabase';
 
 const index = () => {
-    const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                // User is authenticated, redirect to dashboard or home
+                router.push('/(tabs)/)'); // Adjust the route as necessary
+            } else {
+                router.push('/pages/login)');// Set loading to false if no session
+            }
+        };
 
-    const router = useRouter();
-    useFocusEffect(() => {
-        if (!isLoggedIn) {
-            router.replace('/pages/register');
-        }
-        else {
-            router.replace('/(tabs)/')
-        }
-    })
+        checkUser();
+    }, []);
     return (
         <View>
             <Text>index</Text>
