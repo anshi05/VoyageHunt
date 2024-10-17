@@ -9,6 +9,7 @@ import { createClient } from '@supabase/supabase-js';
 export default function TabFourScreen() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
   const [isBusiness, setisBusiness] = useState(false)
+  const [business_type, setbusiness_type] = useState('')
   const [data, setdata] = useState([
     {
       heading: "Restaurants",
@@ -33,12 +34,6 @@ export default function TabFourScreen() {
       href: "../pages/tourists",
       subtitle: "20 nearby",
       icon: "person"
-    },
-    {
-      heading: "View Events",
-      href: "../pages/viewevents",
-      subtitle: "20 nearby",
-      icon: "event"
     }
 
   ])
@@ -64,6 +59,7 @@ export default function TabFourScreen() {
           else {
             setisBusiness(true)
           }
+          setbusiness_type(data[0].business_type)
           return data[0]; // Return the first matching user
         } else {
           console.log('No user found with this UID');
@@ -78,7 +74,7 @@ export default function TabFourScreen() {
   }, [])
 
   useEffect(() => {
-    if (data.business_type !== "" && data.length === 5) {
+    if (business_type !== '') {
       console.log(data.business_type === "")
       setdata(prevItems => [...prevItems, {
         heading: "Add Events",

@@ -28,7 +28,7 @@
 //     const [userType, setUserType] = useState('Tourist');
 //     const [referralCode, setReferralCode] = useState('');
 //     const [passwordStrength, setPasswordStrength] = useState('');
-    
+
 //     // Additional states for business type
 //     const [businessType, setBusinessType] = useState('');
 //     const [customBusinessType, setCustomBusinessType] = useState(''); // For 'Others' option
@@ -349,6 +349,7 @@ const SignUpScreen = () => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [tags, settags] = useState([]);
+    const [phone, setphone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -380,7 +381,7 @@ const SignUpScreen = () => {
     };
 
     const handleSignUp = async () => {
-        if (!name || !location || !email || !password || !confirmPassword || !userType) {
+        if (!name || !location || !email || !password || !confirmPassword || !userType || !phone) {
             Alert.alert('Error', 'Please fill all fields.');
         } else if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match.');
@@ -392,6 +393,7 @@ const SignUpScreen = () => {
                 location,
                 referralCode,
                 tags,
+                phone,
                 business_type: userType === 'Business' ? (businessType === 'Others' ? customBusinessType : businessType) : '',
             };
             console.log("Formdata: ", formData);
@@ -402,7 +404,7 @@ const SignUpScreen = () => {
                         email,
                         password
                     };
-                    
+
                     // Sign up the user
                     const { data, error } = await supabase.auth.signUp(form);
                     if (error) {
@@ -410,10 +412,10 @@ const SignUpScreen = () => {
                         if (error.message.includes("User already registered")) {
                             Alert.alert('Error', 'User already exists. Please try logging in.');
                         } else {
-                           
+
                             Alert.alert('Error', error.message);
                         }
-                    } 
+                    }
                     else if (data && data.user) {
                         const userobj = data.user;
                         const d = [
@@ -423,29 +425,30 @@ const SignUpScreen = () => {
                                 name,
                                 location,
                                 referralCode,
+                                phone,
                                 business_type: formData.business_type,  // Include business type
                             }
                         ];
                         const { error } = await supabase
-                            .from('Users') 
+                            .from('Users')
                             .insert(d);
                         if (error) {
                             console.log('Error inserting user data:', error);
-                            
+
                         } else {
                             // Show success message
                             Alert.alert('Success', 'Registered successfully. Answer some question before proceeding...');
-                            
+
                             // Delay navigation by 2 seconds
                             setTimeout(() => {
                                 router.replace('/pages/onboarding1');
                             }, 2000);
-                            
-                    
+
+
                         }
                     }
                 } catch (error) {
-                    
+
                     console.log("catch error: " + error);
                 }
             }
@@ -565,7 +568,7 @@ const SignUpScreen = () => {
                     </TouchableOpacity>
                     <View style={styles.loginContainer}>
                         <Text style={styles.loginText}>Have an account?</Text>
-                        <TouchableOpacity onPress={() => router.push('/pages/onboarding')}>
+                        <TouchableOpacity onPress={() => router.push('/pages/login')}>
                             <Text style={styles.backToLogin}> Login</Text>
                         </TouchableOpacity>
                     </View>
@@ -577,95 +580,95 @@ const SignUpScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-                flex: 1,
-                backgroundColor: '#1E1E2E',
-            },
-            content: {
-                alignItems: 'center',
-                padding: 20,
-                marginTop: 40,
-            },
-            title: {
-                fontSize: 24,
-                fontWeight: 'bold',
-                color: '#FFFFFF',
-                marginBottom: 10,
-            },
-            signChild: {
-                fontSize: 14,
-                color: '#CCCCCC',
-                marginBottom: 30,
-            },
-            loginText: {
-                color: '#fff',
-            },
-            loginContainer: {
-                flexDirection: 'row',
-                marginTop: 10,
-            },
-            input: {
-                width: '90%',
-                padding: 15,
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: 10,
-                marginBottom: 15,
-                color: '#FFFFFF',
-            },
-            picker: {
-                height: 0,
-                marginBottom: 40,
-                width: '100%',
-                color: '#FFFFFF',
-            },
-            signUpButton: {
-                width: '88%',
-                backgroundColor: '#FFD700',
-                padding: 10,
-                borderRadius: 50,
-                alignItems: 'center',
-                marginTop: 10,
-            },
-            signUpButtonText: {
-                color: '#000000',
-                fontWeight: 'bold',
-            },
-            backToLogin: {
-                color: '#FFD700',
-            },
-            logo: {
-                width: 150,
-                height: 150,
-                marginBottom: 20,
-            },
-            strengthIndicatorContainer: {
-                flexDirection: 'row',
-                marginLeft: -150,
-                width: '40%',
-                marginBottom: 15,
-                borderRadius: 15,
-            },
-            strengthIndicator: {
-                height: 5,
-                flex: 1,
-                borderRadius: 10,
-                backgroundColor: "gray",
-                marginRight: 2,
-            },
-            easy: {
-                backgroundColor: 'red',
-            },
-            medium: {
-                backgroundColor: 'orange',
-            },
-            strong: {
-                backgroundColor: 'green',
-            },
-            strengthText: {
-                color: '#FFFFFF',
-                fontSize: 10,
-                marginLeft: 10,
-                marginTop: -6,
-            },
+        flex: 1,
+        backgroundColor: '#1E1E2E',
+    },
+    content: {
+        alignItems: 'center',
+        padding: 20,
+        marginTop: 40,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        marginBottom: 10,
+    },
+    signChild: {
+        fontSize: 14,
+        color: '#CCCCCC',
+        marginBottom: 30,
+    },
+    loginText: {
+        color: '#fff',
+    },
+    loginContainer: {
+        flexDirection: 'row',
+        marginTop: 10,
+    },
+    input: {
+        width: '90%',
+        padding: 15,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 10,
+        marginBottom: 15,
+        color: '#FFFFFF',
+    },
+    picker: {
+        height: 0,
+        marginBottom: 40,
+        width: '100%',
+        color: '#FFFFFF',
+    },
+    signUpButton: {
+        width: '88%',
+        backgroundColor: '#FFD700',
+        padding: 10,
+        borderRadius: 50,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    signUpButtonText: {
+        color: '#000000',
+        fontWeight: 'bold',
+    },
+    backToLogin: {
+        color: '#FFD700',
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        marginBottom: 20,
+    },
+    strengthIndicatorContainer: {
+        flexDirection: 'row',
+        marginLeft: -150,
+        width: '40%',
+        marginBottom: 15,
+        borderRadius: 15,
+    },
+    strengthIndicator: {
+        height: 5,
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: "gray",
+        marginRight: 2,
+    },
+    easy: {
+        backgroundColor: 'red',
+    },
+    medium: {
+        backgroundColor: 'orange',
+    },
+    strong: {
+        backgroundColor: 'green',
+    },
+    strengthText: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        marginLeft: 10,
+        marginTop: -6,
+    },
 });
 
 export default SignUpScreen;

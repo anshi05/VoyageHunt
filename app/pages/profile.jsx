@@ -1,31 +1,70 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { router } from 'expo-router';
 
 const EditProfile = () => {
-  useEffect(() => {
-    async function getUid() {
-      const data = await SecureStore.getItemAsync('session');
-      console.log(JSON.parse(data).session.user.id)
-      return data;
-    }
-    getUid()
-  }, [])
-
+  const [user, setuser] = useState()
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
   // State for managing user profile
   const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit
-  const [name, setName] = useState('John Doe');
-  const [location, setLocation] = useState('Udupi');
-  const [bio, setBio] = useState('Adventurer, Explorer, and Udupi lover.');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setphone] = useState('');
 
-  // Function to handle save
-  const handleSave = () => {
-    // Logic to save changes to the database
-    console.log('Profile updated:', { name, location, bio });
-    setIsEditing(false); // Switch back to view mode after saving
-  };
+  useEffect(() => {
+    async function getUserByUID() {
+      const data = await SecureStore.getItemAsync('session');
+      const uid = JSON.parse(data).session.user.id;
+      try {
+        const { data, error } = await supabase
+          .from('Users') // The table name is 'Users'
+          .select('*') // Selecting all columns
+          .eq('uid', uid); // Where the 'uid' column matches the provided UID
+
+        if (error) {
+          console.error('Error fetching user:', error);
+          return null;
+        }
+        if (data.length > 0) {
+          console.log('User found:', data[0]);
+
+          setuser(data[0]) // Return the first matching user
+        } else {
+          console.log('No user found with this UID');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error during fetching user by UID:', error);
+        return null;
+      }
+    }
+    getUserByUID()
+  }, [])
+  useEffect(() => {
+    console.log(user)
+    if (user) {
+      setName(user.name)
+      setEmail(user.email)
+      setphone(user.phone)
+    }
+  }, [user])
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    async function deleteAuthToken() {
+      await SecureStore.deleteItemAsync('session');
+    }
+    deleteAuthToken()
+    if (error) {
+      console.error('Error signing out:', error.message);
+    } else {
+      // Sign-out successful, redirect to login page
+      router.replace('/pages/login'); // Adjust the route as necessary
+    }
+  }
 
   return (
     <View className="flex-1 bg-white p-4">
@@ -45,21 +84,14 @@ const EditProfile = () => {
             />
           </View>
 
-          <View className="mb-4">
-            <Text className="text-gray-600 mb-1">Location</Text>
-            <TextInput
-              className="border border-gray-300 rounded-lg p-2"
-              value={location}
-              onChangeText={setLocation}
-            />
-          </View>
+
 
           <View className="mb-4">
-            <Text className="text-gray-600 mb-1">Bio</Text>
+            <Text className="text-gray-600 mb-1">email</Text>
             <TextInput
               className="border border-gray-300 rounded-lg p-2 h-24"
-              value={bio}
-              onChangeText={setBio}
+              value={email}
+              onChangeText={setEmail}
               multiline
             />
           </View>
@@ -77,17 +109,15 @@ const EditProfile = () => {
           </View>
 
           <View className="mb-6">
-            <Text className="text-lg font-bold">Location:</Text>
-            <Text className="text-gray-700">{location}</Text>
+            <Text className="text-lg font-bold">Email:</Text>
+            <Text className="text-gray-700">{email}</Text>
           </View>
-
           <View className="mb-6">
-            <Text className="text-lg font-bold">Bio:</Text>
-            <Text className="text-gray-700">{bio}</Text>
+            <Text className="text-lg font-bold">Phone:</Text>
+            <Text className="text-gray-700">{phone}</Text>
           </View>
-
-          <TouchableOpacity onPress={() => setIsEditing(true)} className="bg-blue-500 rounded-lg p-3">
-            <Text className="text-white text-center font-bold">Edit Profile</Text>
+          <TouchableOpacity onPress={logout} className="bg-blue-500 rounded-lg p-3 mb-4">
+            <Text className="text-white text-center font-bold">Logout</Text>
           </TouchableOpacity>
         </>
       )}

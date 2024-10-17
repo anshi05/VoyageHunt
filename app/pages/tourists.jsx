@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,24 +9,35 @@ import {
   TouchableOpacity,
   StatusBar,
   ImageBackground,
-  Modal, 
+  Modal,
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import bg from '@/assets/images/background.jpg';
+import { createClient } from '@supabase/supabase-js';
 
-const tourists = [
-  { id: '1', name: 'Abhijith', phone: '1234567890', email: 'abhijith@gmail.com' },
-  { id: '2', name: 'Agnirudra', phone: '0987654321', email: 'rudrasil@gmail.com' },
-  { id: '3', name: 'Anshi Sachan', phone: '1122334455', email: 'anshijio@gmail.com' },
-  { id: '4', name: 'Shreyas Lal', phone: '5566778899', email: 'shreyaslal03@gmail.com' },
-  { id: '5', name: 'Aryan', phone: '9988776655', email: 'aryan@gmail.com' },
-];
 
 export default function NearbyTourists() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTourist, setSelectedTourist] = useState(null);
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  const [tourists, settourists] = useState([])
+  useEffect(() => {
+    const getTourists = async () => {
+      const { data, error } = await supabase
+        .from('Users')                      // The table you're querying
+        .select('*')                        // Selecting all columns
+        .eq('business_type', '');     // Filtering where business_type is 'Tourists'
 
+      if (error) {
+        console.error('Error fetching tourists:', error);
+      } else {
+        console.log('List of tourists:', data);
+        settourists(data)
+      }
+    };
+    getTourists()
+  }, [])
   const renderTourist = ({ item, index }) => (
     <View style={styles.touristCard}>
       <View style={styles.touristInfo}>
@@ -56,49 +67,49 @@ export default function NearbyTourists() {
   };
 
   return (
-    
-      <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      
-      <View style={styles.header}>
-        
-      </View>
-        <FlatList
-          data={tourists}
-          renderItem={renderTourist}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-        />
-        <Modal
-          transparent={true}
-          animationType="slide"
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              {selectedTourist && (
-                <>
-                  <Text style={styles.modalTitle}>{selectedTourist.name}</Text>
-                  <Text style={styles.modalText}>Name: {selectedTourist.name}</Text>
-                  <Text style={styles.modalText}>Email: {selectedTourist.email}</Text>
-                  
-                  
-                  <Text style={styles.modalText}>Phone: {selectedTourist.phone}</Text>
 
-                  <TouchableOpacity onPress={handleCallPress} style={styles.callButton}>
-                    <Text style={styles.callButtonText}>Team Up? Call</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
+      <View style={styles.header}>
+
+      </View>
+      <FlatList
+        data={tourists}
+        renderItem={renderTourist}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+      />
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            {selectedTourist && (
+              <>
+                <Text style={styles.modalTitle}>{selectedTourist.name}</Text>
+                <Text style={styles.modalText}>Name: {selectedTourist.name}</Text>
+                <Text style={styles.modalText}>Email: {selectedTourist.email}</Text>
+
+
+                <Text style={styles.modalText}>Phone: {selectedTourist.phone}</Text>
+
+                <TouchableOpacity onPress={handleCallPress} style={styles.callButton}>
+                  <Text style={styles.callButtonText}>Team Up? Call</Text>
+                </TouchableOpacity>
+              </>
+            )}
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      </SafeAreaView>
-    
+        </View>
+      </Modal>
+    </SafeAreaView>
+
   );
 }
 
@@ -109,12 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E2E',
   },
   header: {
-    
+
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#3A3A4A',
   },
-  
+
   listContent: {
     padding: 10,
     paddingTop: 30,
@@ -189,14 +200,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10, // Softer, more diffused shadow
     // Add gradient background
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     // Add border
-    borderWidth: 2, 
+    borderWidth: 2,
     borderColor: '#eaeaea', // Soft border color for elegance
     transform: [{ scale: 1 }], // For subtle animations
     transition: 'transform 0.3s ease-in-out', // Smooth transition when opened
   },
-  
+
   modalTitle: {
     fontSize: 22,
     fontWeight: '700',
