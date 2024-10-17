@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   StatusBar,
   ImageBackground,
-  Modal, 
+  Modal,
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -56,49 +56,49 @@ export default function NearbyTourists() {
   };
 
   return (
-    
-      <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      
-      <View style={styles.header}>
-        
-      </View>
-        <FlatList
-          data={tourists}
-          renderItem={renderTourist}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-        />
-        <Modal
-          transparent={true}
-          animationType="slide"
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContainer}>
-              {selectedTourist && (
-                <>
-                  <Text style={styles.modalTitle}>{selectedTourist.name}</Text>
-                  <Text style={styles.modalText}>Name: {selectedTourist.name}</Text>
-                  <Text style={styles.modalText}>Email: {selectedTourist.email}</Text>
-                  
-                  
-                  <Text style={styles.modalText}>Phone: {selectedTourist.phone}</Text>
 
-                  <TouchableOpacity onPress={handleCallPress} style={styles.callButton}>
-                    <Text style={styles.callButtonText}>Team Up? Call</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
+      <View style={styles.header}>
+
+      </View>
+      <FlatList
+        data={tourists}
+        renderItem={renderTourist}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+      />
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            {selectedTourist && (
+              <>
+                <Text style={styles.modalTitle}>{selectedTourist.name}</Text>
+                <Text style={styles.modalText}>Name: {selectedTourist.name}</Text>
+                <Text style={styles.modalText}>Email: {selectedTourist.email}</Text>
+
+
+                <Text style={styles.modalText}>Phone: {selectedTourist.phone}</Text>
+
+                <TouchableOpacity onPress={handleCallPress} style={styles.callButton}>
+                  <Text style={styles.callButtonText}>Team Up? Call</Text>
+                </TouchableOpacity>
+              </>
+            )}
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      </SafeAreaView>
-    
+        </View>
+      </Modal>
+    </SafeAreaView>
+
   );
 }
 
@@ -109,12 +109,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E2E',
   },
   header: {
-    
+
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#3A3A4A',
   },
-  
+
   listContent: {
     padding: 10,
     paddingTop: 30,
@@ -189,14 +189,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10, // Softer, more diffused shadow
     // Add gradient background
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     // Add border
-    borderWidth: 2, 
+    borderWidth: 2,
     borderColor: '#eaeaea', // Soft border color for elegance
     transform: [{ scale: 1 }], // For subtle animations
     transition: 'transform 0.3s ease-in-out', // Smooth transition when opened
   },
-  
+
   modalTitle: {
     fontSize: 22,
     fontWeight: '700',

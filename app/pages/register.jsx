@@ -565,7 +565,7 @@ const SignUpScreen = () => {
                     </TouchableOpacity>
                     <View style={styles.loginContainer}>
                         <Text style={styles.loginText}>Have an account?</Text>
-                        <TouchableOpacity onPress={() => router.push('/pages/onboarding')}>
+                        <TouchableOpacity onPress={() => router.push('/pages/login')}>
                             <Text style={styles.backToLogin}> Login</Text>
                         </TouchableOpacity>
                     </View>
