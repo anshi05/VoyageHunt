@@ -13,6 +13,7 @@ const EditProfile = () => {
   const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setphone] = useState('');
 
   useEffect(() => {
     async function getUserByUID() {
@@ -48,6 +49,7 @@ const EditProfile = () => {
     if (user) {
       setName(user.name)
       setEmail(user.email)
+      setphone(user.phone)
     }
   }, [user])
   const logout = async () => {
@@ -107,8 +109,12 @@ const EditProfile = () => {
           </View>
 
           <View className="mb-6">
-            <Text className="text-lg font-bold">email:</Text>
+            <Text className="text-lg font-bold">Email:</Text>
             <Text className="text-gray-700">{email}</Text>
+          </View>
+          <View className="mb-6">
+            <Text className="text-lg font-bold">Phone:</Text>
+            <Text className="text-gray-700">{phone}</Text>
           </View>
           <TouchableOpacity onPress={logout} className="bg-blue-500 rounded-lg p-3 mb-4">
             <Text className="text-white text-center font-bold">Logout</Text>

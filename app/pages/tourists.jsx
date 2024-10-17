@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,30 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import bg from '@/assets/images/background.jpg';
+import { createClient } from '@supabase/supabase-js';
 
-const tourists = [
-  { id: '1', name: 'Abhijith', phone: '1234567890', email: 'abhijith@gmail.com' },
-  { id: '2', name: 'Agnirudra', phone: '0987654321', email: 'rudrasil@gmail.com' },
-  { id: '3', name: 'Anshi Sachan', phone: '1122334455', email: 'anshijio@gmail.com' },
-  { id: '4', name: 'Shreyas Lal', phone: '5566778899', email: 'shreyaslal03@gmail.com' },
-  { id: '5', name: 'Aryan', phone: '9988776655', email: 'aryan@gmail.com' },
-];
 
 export default function NearbyTourists() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTourist, setSelectedTourist] = useState(null);
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  const [tourists, settourists] = useState([])
+  useEffect(() => {
+    const getTourists = async () => {
+      const { data, error } = await supabase
+        .from('Users')                      // The table you're querying
+        .select('*')                        // Selecting all columns
+        .eq('business_type', '');     // Filtering where business_type is 'Tourists'
 
+      if (error) {
+        console.error('Error fetching tourists:', error);
+      } else {
+        console.log('List of tourists:', data);
+        settourists(data)
+      }
+    };
+    getTourists()
+  }, [])
   const renderTourist = ({ item, index }) => (
     <View style={styles.touristCard}>
       <View style={styles.touristInfo}>
