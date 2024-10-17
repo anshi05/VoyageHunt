@@ -64,7 +64,7 @@ export default function HomePage() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Local Businesses</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
+              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events'], ['SDG', 'pages/sdg']].map((business, index) => (
                 <Link href={business[1]} key={index} style={styles.businessCard}>
                   <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
                   <Text style={styles.businessText}>{business[0]}</Text>
