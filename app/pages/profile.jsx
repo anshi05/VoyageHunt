@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
@@ -11,9 +11,7 @@ const EditProfile = () => {
   // State for managing user profile
   const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit
   const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
-  const [bio, setBio] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     async function getUserByUID() {
@@ -48,19 +46,10 @@ const EditProfile = () => {
     console.log(user)
     if (user) {
       setName(user.name)
-      setLocation(user.location)
-      setBio(user.bio)
-      setIsPublic(user.public)
+      setEmail(user.email)
     }
   }, [user])
 
-
-  // Function to handle save
-  const handleSave = () => {
-    // Logic to save changes to the database
-    console.log('Profile updated:', { name, location, bio });
-    setIsEditing(false); // Switch back to view mode after saving
-  };
 
   return (
     <View className="flex-1 bg-white p-4">
@@ -80,21 +69,14 @@ const EditProfile = () => {
             />
           </View>
 
-          <View className="mb-4">
-            <Text className="text-gray-600 mb-1">Location</Text>
-            <TextInput
-              className="border border-gray-300 rounded-lg p-2"
-              value={location}
-              onChangeText={setLocation}
-            />
-          </View>
+        
 
           <View className="mb-4">
-            <Text className="text-gray-600 mb-1">Bio</Text>
+            <Text className="text-gray-600 mb-1">email</Text>
             <TextInput
               className="border border-gray-300 rounded-lg p-2 h-24"
-              value={bio}
-              onChangeText={setBio}
+              value={email}
+              onChangeText={setEmail}
               multiline
             />
           </View>
@@ -112,18 +94,10 @@ const EditProfile = () => {
           </View>
 
           <View className="mb-6">
-            <Text className="text-lg font-bold">Location:</Text>
-            <Text className="text-gray-700">{location}</Text>
+            <Text className="text-lg font-bold">email:</Text>
+            <Text className="text-gray-700">{email}</Text>
           </View>
 
-          <View className="mb-6">
-            <Text className="text-lg font-bold">Bio:</Text>
-            <Text className="text-gray-700">{bio}</Text>
-          </View>
-
-          <TouchableOpacity onPress={() => setIsEditing(true)} className="bg-blue-500 rounded-lg p-3">
-            <Text className="text-white text-center font-bold">Edit Profile</Text>
-          </TouchableOpacity>
         </>
       )}
     </View>
