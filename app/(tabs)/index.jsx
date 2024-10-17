@@ -275,6 +275,42 @@ sectionContent: {
       lineHeight: 28,  // Increased line height for better readability
       fontStyle: 'italic',
       fontWeight: '300',  // Lighter weight for distinction
-    }
-  });  // Closing parenthesis for the styles object
+    },
+
+    modalView: {
+      flex: 1,
+      justifyContent: 'center', // Ensure modal content is centered
+      alignItems: 'center', // Ensure content is horizontally centered
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
+    },
+    modalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: 'white', // Make sure it's visible
+      padding: 10,
+      borderBottomWidth: 1,
+      borderColor: '#ddd',
+      width: '100%',
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#333',
+    },
+    chatButton: {
+      position: 'absolute',
+      bottom: 20,
+      right: 20,
+      backgroundColor: '#007AFF', // Visible background color
+      borderRadius: 50,
+      padding: 15,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+    },
+  });
+   // Closing parenthesis for the styles object
   
