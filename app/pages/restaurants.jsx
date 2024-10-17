@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,43 +11,8 @@ import {
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { createClient } from '@supabase/supabase-js';
 
-const restaurants = [
-  {
-    id: '1',
-    name: 'Woodlands Restaurants',
-    rating: 4.5,
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    isVeg: true,
-    location: { latitude: 12.9716, longitude: 77.5946 },
-  },
-  {
-    id: '2',
-    name: 'HOTEL NEW SHANTI SAGAR',
-    rating: 4.2,
-    image: 'https://assets.architecturaldigest.in/photos/64f85037ec0bc118bdd98aba/4:3/w_1440,h_1080,c_limit/Untitled%20design%20(14).png',
-    isVeg: true,
-    location: { latitude: 12.9719, longitude: 77.6412 },
-  },
-  {
-    id: '3',
-    name: 'MADHURAM RESTAURANT',
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    isVeg: false,
-    location: { latitude: 12.9165, longitude: 77.6101 },
-  },
-  {
-    id: '4',
-    name: 'Sitaram Sagar',
-    rating: 4.9,
-    image: 'https://b.zmtcdn.com/data/collections/684397cd092de6a98862220e8cc40aca_1709810207.png',
-    isVeg: true,
-    location: { latitude: 12.9719, longitude: 77.6412 },
-    isLocalFavorite: true,
-  },
-  // Add other restaurants here...
-];
 
 const RestaurantCard = ({ restaurant }) => {
   const openMap = () => {
@@ -58,31 +23,40 @@ const RestaurantCard = ({ restaurant }) => {
   return (
     <TouchableOpacity style={[styles.card, restaurant.isLocalFavorite && styles.localFavoriteCard]}>
       <View style={styles.row}>
-        <Image source={{ uri: restaurant.image }} style={styles.cardImage} />
+        <Image source={{ uri: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" }} style={styles.cardImage} />
         <View style={styles.cardContent}>
           <Text style={styles.restaurantName}>{restaurant.name}</Text>
-          <View style={styles.detailsRow}>
-            <View style={styles.ratingWrapper}>
-              <Ionicons name="star" size={16} color="#FFD700" />
-              <Text style={styles.ratingText}>{restaurant.rating}</Text>
-            </View>
-          </View>
-          <Text style={styles.vegStatus}>{restaurant.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}</Text>
+          <Text style={styles.restaurantName}>{restaurant.email}</Text>
         </View>
-        <TouchableOpacity onPress={openMap} style={styles.locationButton}>
-          <Ionicons name="location-outline" size={24} color="#FFF" />
-        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
 };
 
 export default function Component() {
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  const [restaurants, setrestaurants] = useState([])
+  useEffect(() => {
+    const getRestaurants = async () => {
+      const { data, error } = await supabase
+        .from('Users')                      // The table you're querying
+        .select('*')                        // Selecting all columns
+        .eq('business_type', 'Restaurants');     // Filtering where business_type is 'Restaurants'
+
+      if (error) {
+        console.error('Error fetching restaurants:', error);
+      } else {
+        console.log('List of restaurants:', data);
+        setrestaurants(data)
+      }
+    };
+    getRestaurants()
+  }, [])
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
-        
+
       </View>
       <FlatList
         data={restaurants}
@@ -90,7 +64,7 @@ export default function Component() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
       />
-    
+
     </SafeAreaView>
   );
 }

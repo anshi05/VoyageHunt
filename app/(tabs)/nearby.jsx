@@ -33,12 +33,6 @@ export default function TabFourScreen() {
       href: "../pages/tourists",
       subtitle: "20 nearby",
       icon: "person"
-    },
-    {
-      heading: "View Events",
-      href: "../pages/viewevents",
-      subtitle: "20 nearby",
-      icon: "event"
     }
 
   ])
