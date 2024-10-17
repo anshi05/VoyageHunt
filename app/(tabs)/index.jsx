@@ -40,10 +40,11 @@ export default function HomePage() {
         <ImageBackground
           source={bg}
           style={styles.image}
-          blurRadius={2}
+          blurRadius={1}
+
         >
           <View style={styles.overlay} />
-          <View className="m-10">
+          <View className="m-5">
             <Text style={styles.greeting}>Hello Abhi!</Text>
             <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
             <TouchableOpacity style={styles.changeLocationButton}>
@@ -59,13 +60,22 @@ export default function HomePage() {
               Explore its rich culture and beautiful beaches!
             </Text>
           </View>
-
           {/* Local Businesses */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Local Businesses</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Local Businesses</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events'], ['SDG', 'pages/sdg']].map((business, index) => (
-                <Link href={business[1]} key={index} style={styles.businessCard}>
+              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
+                <Link href={business[1]} key={index} style={{
+                  backgroundColor: 'white',
+                  borderRadius: 10,
+                  padding: 10,
+                  alignItems: "center",
+                  marginRight: 10,
+                  width: 200,
+                  marginBottom: 10,
+                  flex: 1,
+                  flexDirection: "column"
+                }}>
                   <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
                   <Text style={styles.businessText}>{business[0]}</Text>
                 </Link>
@@ -74,8 +84,8 @@ export default function HomePage() {
           </View>
 
           {/* Places to Discover */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Places to Discover</Text>
+          <View>
+            <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: 'bold' }}>Places to Discover</Text>
             {places.map((place, index) => (
               <Card place={place} key={index}></Card>
             ))}
@@ -84,6 +94,10 @@ export default function HomePage() {
             </Link>
           </View>
 
+          {/* Link to Maps */}
+          <Link href="/pages/map" className="m-3 text-center text-blue-600 underline bg-yellow-600 p-2 rounded-lg">
+            <Text className="text-white text-center">See in maps</Text>
+          </Link>
           {/* Gamification Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Your Adventure</Text>
@@ -125,26 +139,16 @@ export default function HomePage() {
 }
 
 const styles = StyleSheet.create({
- 
+
   welcomeTitle: {
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
-    color: '#FFFFFF',
     marginBottom: 10,
-    textAlign: 'center',
-     // Adds elegance with spacing
   },
 
   greeting: {
-    fontSize: 35, // Large and bold for emphasis
+    fontSize: 20, // Large and bold for emphasis
     fontWeight: 'bold',
-    color: 'green', // White for contrast on a dark background
-    textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)', // Light shadow for depth
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4, // Slight blur for a soft shadow effect
-    letterSpacing: 1.5, // Adds some elegance
-    overflow: 'hidden', // Ensures the text stays inside the rounded corners
   },
 
 
@@ -158,48 +162,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',  // Vibrant blue to make it pop
     borderWidth: 2,  // Add a border for extra definition
     borderColor: '#005BB5',  // Darker blue for contrast
-    
-   
+
+
   },
-  
+
   changeLocationText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
-// Section Styling
-section: {
-  padding: 15,  // Increased padding for more generous space
-   // Light background for subtle contrast
-    // Rounded corners to modernize the section
-    // Increased margin for clearer separation between sections
-  borderWidth: 2,  // Added a subtle border for definition
-  borderColor: '#E5E7EB',  // Light border color to keep it soft
-},
+  // Section Styling
+  section: {
+    margin: 20,
+  },
 
-sectionTitle: {
-  fontSize: 20,  // Slightly larger for emphasis
-  fontWeight: 'bold',
-  color: '#1F2937',  // Darker shade for contrast
-  marginBottom: 15,  // Slightly increased spacing below the title
-  letterSpacing: 0.8,  // More balanced spacing between letters
-  textAlign: 'center',  // Keeps the title aligned at the center
-  backgroundColor: 'black',  // Light grey background for subtle highlight
-  paddingVertical: 4,  // Increased vertical padding for a more prominent title area
-  paddingHorizontal: 1,  // Horizontal padding for spacious feel
-  borderRadius: 30,  // Rounded corners for smoother look
-  overflow: 'hidden',
-  color: 'white'
-},
+  sectionTitle: {
+    fontSize: 20,  // Slightly larger for emphasis
+    fontWeight: 'bold',
+  },
 
-sectionContent: {
-  fontSize: 15,
-  textAlign: 'center',
-  color: '#4B5563',  // A medium grey for text that's easier on the eyes
-  lineHeight: 24,  // Improved readability with slightly larger line height
-  paddingHorizontal: 10,  // Added padding for more breathing room around content
-},
+  sectionContent: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#4B5563',  // A medium grey for text that's easier on the eyes
+    lineHeight: 24,  // Improved readability with slightly larger line height
+    paddingHorizontal: 10,  // Added padding for more breathing room around content
+  },
 
   // Business Card Styling
   businessCard: {
@@ -209,7 +198,9 @@ sectionContent: {
     alignItems: 'center',
     marginRight: 12,
     width: 120,
-    
+    marginBottom: 10,
+    flex: 1,
+    flexDirection: 'column',
     transform: [{ scale: 1 }],  // Starting point for animation
   },
   businessText: {
@@ -243,55 +234,65 @@ sectionContent: {
   },
 
 
-    gamificationCard: {
-      padding: 20,  // Reduced padding for better spacing
-      alignItems: 'center',
-      backgroundColor: 'white',  // Changed background to white
-      borderRadius: 15,  // Slightly smaller border radius for a modern look
-      margin: 16,
-      transform: [{ translateY: 0 }],  // Base for animation
-      transition: 'transform 0.2s ease-in-out',  // Smooth transition for hover
-    },
-    gamificationText: {
-      fontSize: 26,  // Slightly larger font size for emphasis
-      fontWeight: '700',  // Use bold weight for more prominence
-      marginTop: 12,
-      color: '#2C3E50',  // Darker blue for improved readability
-      textAlign: 'center',  // Center align the text
-    },
-    gamificationSubtext: {
-      fontSize: 16,
-      color: '#BDC3C7',  // Lighter grey for secondary text
-      marginTop: 8,
-      textAlign: 'center',
-      lineHeight: 28,  // Increased line height for better readability
-      fontStyle: 'italic',
-      fontWeight: '300',  // Lighter weight for distinction
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      textAlign: 'center',
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay for modal
-    },
-    modalContent: {
-      width: '80%',
-      backgroundColor: '#FFFFFF',
-      borderRadius: 10,
-      padding: 20,
-      alignItems: 'center',
-    },
-    modalTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom: 20, // Add some margin for spacing
-    },
-    closeButton: {
-      // Add styles for close button if needed
-      marginTop: 20,
-    },
-  });  
+  gamificationCard: {
+    padding: 20,  // Reduced padding for better spacing
+    alignItems: 'center',
+    backgroundColor: 'white',  // Changed background to white
+    borderRadius: 15,  // Slightly smaller border radius for a modern look
+    margin: 16,
+    transform: [{ translateY: 0 }],  // Base for animation
+    transition: 'transform 0.2s ease-in-out',  // Smooth transition for hover
+  },
+  gamificationText: {
+    fontSize: 26,  // Slightly larger font size for emphasis
+    fontWeight: '700',  // Use bold weight for more prominence
+    marginTop: 12,
+    color: '#2C3E50',  // Darker blue for improved readability
+    textAlign: 'center',  // Center align the text
+  },
+  gamificationSubtext: {
+    fontSize: 16,
+    color: '#BDC3C7',  // Lighter grey for secondary text
+    marginTop: 8,
+    textAlign: 'center',
+    lineHeight: 28,  // Increased line height for better readability
+    fontStyle: 'italic',
+    fontWeight: '300',  // Lighter weight for distinction
+  },
+
+  modalView: {
+    flex: 1,
+    justifyContent: 'center', // Ensure modal content is centered
+    alignItems: 'center', // Ensure content is horizontally centered
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white', // Make sure it's visible
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  chatButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF', // Visible background color
+    borderRadius: 50,
+    padding: 15,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+});
+// Closing parenthesis for the styles object

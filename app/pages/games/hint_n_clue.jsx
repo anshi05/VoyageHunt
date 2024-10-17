@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, Button, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -117,6 +118,7 @@ export default function TournamentGame() {
 
       // Check if all clues have been answered
       if (updatedAnsweredClues.every(Boolean)) {
+        router.push('pages/feedback')
         setGameOver(true);  // End the game
         setPointMessage(`Game Over! Your final score is: ${newScore}`);
       }

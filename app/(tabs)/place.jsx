@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { createClient } from "@supabase/supabase-js";
 import Card from "@/components/ui/Card";
-
+import { Link } from "expo-router";
 
 export default function TabThreeScreen() {
   const supabase = createClient(
@@ -44,8 +44,8 @@ export default function TabThreeScreen() {
   const filteredPlaces =
     selectedTags.length > 0
       ? places.filter((place) =>
-          selectedTags.some((tag) => place.tags.includes(tag))
-        )
+        selectedTags.some((tag) => place.tags.includes(tag))
+      )
       : places;
 
 
@@ -94,7 +94,10 @@ export default function TabThreeScreen() {
         )}
       </ScrollView>
 
-
+      {/* Link to Maps */}
+      <Link href="/pages/map" className="m-3 text-center text-blue-600 underline bg-yellow-600 p-2 rounded-lg">
+        <Text className="text-white text-center">See in maps</Text>
+      </Link>
       {/* Display Places */}
       <ScrollView>
         {filteredPlaces.length > 0 ? (
