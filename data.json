@@ -1,52 +1,26 @@
 {
-    "session": {
-        "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6ImN3QVFxMHQ4clVtYVY2Wi8iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL21leml0eXFneG5hdWFubWpqa2d2LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmNTMzYjNjMi04MzI5LTQ2N2EtYTQ0Yi1jMmRiNDI2MjIwYTAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzI5MTU1MTYwLCJpYXQiOjE3MjkxNTE1NjAsImVtYWlsIjoiYTFAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImExQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiJmNTMzYjNjMi04MzI5LTQ2N2EtYTQ0Yi1jMmRiNDI2MjIwYTAifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcyOTE1MTU2MH1dLCJzZXNzaW9uX2lkIjoiMWQ4N2IzMDQtMmFkOC00NDcwLTg2YTMtYjA3YzdhN2MwOWQ4IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.B-TjkuH2mGWGk49txXRiu8A9c18cDVO1Lk_oepnoWmU",
-        "token_type": "bearer",
-        "expires_in": 3600,
-        "expires_at": 1729155160,
-        "refresh_token": "41c29q1ukBrDS5jCXdJUJg",
-        "user": {
-            "id": "f533b3c2-8329-467a-a44b-c2db426220a0",
-            "aud": "authenticated",
-            "role": "authenticated",
-            "email": "a1@gmail.com",
-            "email_confirmed_at": "2024-10-16T12:02:58.351034Z",
-            "phone": "",
-            "confirmed_at": "2024-10-16T12:02:58.351034Z",
-            "last_sign_in_at": "2024-10-17T07:52:40.319345224Z",
-            "app_metadata": {
-                "provider": "email",
-                "providers": [
-                    "email"
-                ]
-            },
-            "user_metadata": {
-                "email": "a1@gmail.com",
-                "email_verified": false,
-                "phone_verified": false,
-                "sub": "f533b3c2-8329-467a-a44b-c2db426220a0"
-            },
-            "identities": [
-                {
-                    "identity_id": "dde700de-405b-4c97-b7fb-308cad81da28",
-                    "id": "f533b3c2-8329-467a-a44b-c2db426220a0",
-                    "user_id": "f533b3c2-8329-467a-a44b-c2db426220a0",
-                    "identity_data": {
-                        "email": "a1@gmail.com",
-                        "email_verified": false,
-                        "phone_verified": false,
-                        "sub": "f533b3c2-8329-467a-a44b-c2db426220a0"
-                    },
-                    "provider": "email",
-                    "last_sign_in_at": "2024-10-16T12:02:58.348132Z",
-                    "created_at": "2024-10-16T12:02:58.348185Z",
-                    "updated_at": "2024-10-16T12:02:58.348185Z",
-                    "email": "a1@gmail.com"
-                }
-            ],
-            "created_at": "2024-10-16T12:02:58.343684Z",
-            "updated_at": "2024-10-17T07:52:40.325414Z",
-            "is_anonymous": false
-        }
-    }
+    "avatars_on_map": "https://www.nativeplanet.com/img/2022/12/25-1456400937-juhubeach-1671794988.jpg",
+    "clue": "A beach famous for its serenity, known for the 'Mattu Gulla' vegetable grown nearby.",
+    "created_at": "2024-10-16T05:29:51.098657+00:00",
+    "difficulty": 10,
+    "hints": "A hidden stretch of sand near a village known for its unique eggplant crop",
+    "id": 5,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3H45Uo_HyT2cP5rpythnRFUXO1dBg99W95Q&s",
+    "info_history": "known for its bioluminescence, or sea sparkles, which make the beach glow at night.",
+    "latitude": "13°16'25.1\"N",
+    "latitude_vr": null,
+    "longitude": " 74°43'29.9\"E",
+    "longitude_vr": null,
+    "non_veg_restaurant": "Machali Restaurant",
+    "place_names": "Mattu Beach",
+    "ratings_nonveg": 4.3,
+    "ratings_veg": 4.2,
+    "tags": [
+        "Beach",
+        "Sunset",
+        "Peaceful",
+        "Coastal",
+        "Secluded"
+    ],
+    "veg_restaurant": "Kediyoor Gazebo Restaurant"
 }
