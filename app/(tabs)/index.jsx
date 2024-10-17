@@ -268,41 +268,30 @@ sectionContent: {
       fontStyle: 'italic',
       fontWeight: '300',  // Lighter weight for distinction
     },
-
-    modalView: {
-      flex: 1,
-      justifyContent: 'center', // Ensure modal content is centered
-      alignItems: 'center', // Ensure content is horizontally centered
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
+    buttonText: {
+      color: '#FFFFFF',
+      textAlign: 'center',
     },
-    modalHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'white', // Make sure it's visible
-      padding: 10,
-      borderBottomWidth: 1,
-      borderColor: '#ddd',
-      width: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Background overlay for modal
+    },
+    modalContent: {
+      width: '80%',
+      backgroundColor: '#FFFFFF',
+      borderRadius: 10,
+      padding: 20,
+      alignItems: 'center',
     },
     modalTitle: {
       fontSize: 18,
       fontWeight: 'bold',
-      color: '#333',
+      marginBottom: 20, // Add some margin for spacing
     },
-    chatButton: {
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-      backgroundColor: '#007AFF', // Visible background color
-      borderRadius: 50,
-      padding: 15,
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
+    closeButton: {
+      // Add styles for close button if needed
+      marginTop: 20,
     },
-  });
-   // Closing parenthesis for the styles object
-  
+  });  
