@@ -1,7 +1,6 @@
 import React from 'react';
 import MapView, { UrlTile } from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
-import { cacheTile } from '@/utils/createTileDir'; // Import your caching utility
 
 export default function MapPage() {
     // const { latitude, longitude } = useLocalSearchParams();
@@ -21,10 +20,6 @@ export default function MapPage() {
     }, []);
     const tileUrlTemplate = 'https://c.tile.openstreetmap.org/10/200/200.png';
 
-    const renderTile = async (z, x, y) => {
-        const filePath = await cacheTile(tileUrlTemplate, z, x, y);
-        return filePath;
-    };
 
     return (
         <View style={styles.container}>
