@@ -7,7 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 
 const SignUpScreen = () => {
     const supabase = createClient(
-        "https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
+        "https://mezityqgxnauanmjjkgv.supabase.co", 
+        "your_supabase_anon_key",
         {
             auth: {
                 storage: AsyncStorage,
@@ -22,7 +23,9 @@ const SignUpScreen = () => {
     const [location, setLocation] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userType, setUserType] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [userType, setUserType] = useState('Tourist');
+    const [referralCode, setReferralCode] = useState('');
     const [passwordStrength, setPasswordStrength] = useState('');
 
     const handlePasswordChange = (inputPassword) => {
@@ -45,27 +48,25 @@ const SignUpScreen = () => {
     };
 
     const handleSignUp = async () => {
-        if (!name || !location || !email || !password || !userType) {
+        if (!name || !location || !email || !password || !confirmPassword || !userType) {
             Alert.alert('Error', 'Please fill all fields.');
+        } else if (password !== confirmPassword) {
+            Alert.alert('Error', 'Passwords do not match.');
         } else {
             // Handle registration logic here
             const formData = {
-                name, email, userType, businessType, location
-            }
-            console.log("Formdata: ", formData)
+                name, email, userType, location, referralCode
+            };
+            console.log("Formdata: ", formData);
+
             async function signUpNewUser() {
                 try {
                     const form = {
                         email,
                         password
-                    }
-                    console.log(form)
-                    //signup
-                    const { data, error } = await supabase.auth.signUp(form)
-                    data && console.log("email from data: " + data.user)
-                    console.log("error:", error)
-                    // console.log(data.session.user.aud)
-                    // insert user in table
+                    };
+                    // signup
+                    const { data, error } = await supabase.auth.signUp(form);
                     if (data.user) {
                         const userobj = data.user;
                         const d = [
@@ -74,26 +75,25 @@ const SignUpScreen = () => {
                                 email: userobj.email,
                                 name,
                                 location,
-                                business_type: businessType
+                                userType,
+                                referralCode,
                             }
-                        ]
-                        console.log(d)
+                        ];
                         const { error } = await supabase
                             .from('Users')  // Replace 'Users' with your table name
                             .insert(d);
                         if (error) {
                             console.error('Error inserting data:', error);
                         } else {
-                            router.replace('/(tabs)/')
+                            router.replace('/(tabs)/');
                             console.log('Data inserted successfully:');
                         }
                     }
                 } catch (error) {
-                    console.log("catch error: " + error)
+                    console.log("catch error: " + error);
                 }
             }
-            signUpNewUser()
-            // Alert.alert('Success', `Registered as ${userType}${businessType ? ` - ${businessType}` : ''}`);
+            signUpNewUser();
         }
     };
 
@@ -103,7 +103,8 @@ const SignUpScreen = () => {
                 <View style={styles.content}>
                     <Image source={require('../../assets/images/voyageHunt.png')} style={styles.logo} resizeMode="contain" />
                     <Text style={styles.title}>Ready to explore?</Text>
-                    <Text style={styles.signChild}> Sign up now!</Text>
+                    <Text style={styles.signChild}>Sign up now!</Text>
+                    
                     <TextInput
                         style={styles.input}
                         placeholder="Name"
@@ -148,7 +149,17 @@ const SignUpScreen = () => {
                         onChangeText={handlePasswordChange}
                         secureTextEntry
                     />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirm Password"
+                        placeholderTextColor="#A0A0A0"
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        secureTextEntry
+                    />
                     
+                    
+
                     <View style={styles.strengthIndicatorContainer}>
                         <View style={[styles.strengthIndicator, (passwordStrength === 'easy' && styles.easy) || (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong)]} />
                         <View style={[styles.strengthIndicator, (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong) ]} />
@@ -157,6 +168,14 @@ const SignUpScreen = () => {
                             {passwordStrength === 'strong' ? 'Strong' : passwordStrength === 'medium' ? 'Medium' : passwordStrength === 'easy' ? 'Easy' : ''}
                         </Text>
                     </View>
+                    
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Referral Code (Optional)"
+                        placeholderTextColor="#A0A0A0"
+                        value={referralCode}
+                        onChangeText={setReferralCode}
+                    />
                     
                     <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
                         <Text style={styles.signUpButtonText}>Sign Up</Text>
