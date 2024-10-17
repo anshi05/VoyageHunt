@@ -1,6 +1,9 @@
-import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet, Image, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MapPin, ChevronRight } from 'lucide-react-native';
+
+const { width } = Dimensions.get('window');
 
 const Card = ({ place }) => {
     const handlePress = () => {
@@ -8,9 +11,7 @@ const Card = ({ place }) => {
             {
                 text: 'Get Location',
                 onPress: () => {
-                    const url = `https://www.google.com/maps?q=${place.latitude},${place.longitude}`; // Make sure to use place.longitude
-
-                    // Check if the device can open the link
+                    const url = `https://www.google.com/maps?q=${place.latitude},${place.longitude}`;
                     Linking.canOpenURL(url)
                         .then((supported) => {
                             if (supported) {
@@ -27,63 +28,142 @@ const Card = ({ place }) => {
             },
         ]);
     };
+
     return (
         <View style={styles.card}>
             <Image source={{ uri: place.image }} style={styles.cardImage} />
-            {/* Card Title */}
-            <Text style={styles.title}>{place.place_names}</Text>
+            <LinearGradient
+                colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
+                style={styles.gradient}
+            >
+                
+            </LinearGradient>
+            
+            <View style={styles.content}>
+                <Text style={styles.title}>{place.place_names}</Text>
+                <View style={styles.locationContainer}>
+                    <MapPin color="#fff" size={14} />
+                    <Text style={styles.locationText}>View on Map</Text>
+                </View>
 
-            {/* Card Description */}
-            <Text style={styles.description}>{place.info_history.substring(0, 100)}...</Text>
-
-            {/* Button */}
-            <TouchableOpacity style={styles.button} onPress={handlePress}>
-                <Text style={styles.buttonText}>View Details</Text>
-            </TouchableOpacity>
+                <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
+                    {place.info_history}
+                </Text>
+                
+                <View style={styles.tagContainer}>
+                    {place.tags && place.tags.length > 0 ? (
+                        place.tags.map((tag, index) => (
+                            <View key={index} style={styles.tag}>
+                                <Text style={styles.tagText}>{tag}</Text>
+                            </View>
+                        ))
+                    ) : (
+                        <Text style={styles.noTags}>No Tags Available</Text>
+                    )}
+                </View>
+                
+                <TouchableOpacity style={styles.button} onPress={handlePress}>
+                    <Text style={styles.buttonText}>Explore</Text>
+                    <ChevronRight color="#FFF" size={18} />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: 'white',
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
-        shadowRadius: 3,
-        elevation: 5, // Adds a shadow for Android
-        borderRadius: 15, // Rounded corners
-        padding: 16, // Padding
-        margin: 10, // Margin
-    },
-    title: {
-        fontSize: 24, // Equivalent to text-2xl
-        fontWeight: 'bold', // Equivalent to font-bold
-        marginBottom: 8, // Equivalent to mb-2
-    },
-    description: {
-        fontSize: 16, // Equivalent to text-base
-        marginBottom: 16, // Equivalent to mb-4
-        color: '#333', // Text color
-    },
-    button: {
-        backgroundColor: '#007bff', // Equivalent to bg-blue-600
-        padding: 12, // Equivalent to p-3
-        borderRadius: 10, // Rounded corners for the button
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: 'white', // Equivalent to text-white
-        fontSize: 18, // Equivalent to text-lg
-        fontWeight: '600', // Equivalent to font-semibold
+        shadowRadius: 12,
+        elevation: 5,
+        margin: 12,
+        overflow: 'hidden',
+        width: width - 24,
     },
     cardImage: {
         width: '100%',
         height: 200,
         resizeMode: 'cover',
-        borderRadius: 12,
-        marginTop: 10,
-        marginBottom: 10
+    },
+    gradient: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: '100%',
+        justifyContent: 'flex-end',
+        paddingHorizontal: 16,
+        paddingBottom: 16,
+    },
+    content: {
+        padding: 16,
+    },
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#FFF',
+        marginBottom: 4,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10
+    },
+    description: {
+        fontSize: 15,
+        color: 'black',
+        marginBottom: 30,
+        marginTop: 15,
+        lineHeight: 20,
+    },
+    tagContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginBottom: 16,
+    },
+    tag: {
+        backgroundColor: '#eef6ff',
+        paddingVertical: 2,
+        paddingHorizontal: 6,
+        borderRadius: 12, 
+        marginRight: 3,
+        marginBottom: 3,
+    },
+    tagText: {
+        color: 'black',
+        fontSize: 10,
+    },
+    noTags: {
+        fontSize: 12,
+        color: '#888',
+    },
+    button: {
+        backgroundColor: '#007bff',
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        fontSize: 14,
+        color: 'white',
+        fontWeight: 'bold',
+        marginRight: 4,
+    },
+    locationContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 0,
+    },
+    locationText: {
+        marginLeft: 4,
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: '400',
     },
 });
 
