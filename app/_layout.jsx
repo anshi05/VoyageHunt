@@ -44,6 +44,13 @@ export function InititalLayout() {
           ...headerOptions // Apply common header options
         }}
       />
+      <Stack.Screen
+        name="pages/guides"
+        options={{
+          title: 'Connect with Guides',
+          ...headerOptions // Apply common header options
+        }}
+      />
     </Stack>
   )
 }
