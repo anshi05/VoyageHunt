@@ -69,11 +69,32 @@ const Hunt = () => {
       href: "pages/games/nritya_gyaan"
     },
     {
-      title: "Snap & Seek: Udupi Edition",
+      title: "Snap and Seek",
       clue: "Capture the Spirit of Udupi: Your Lens, Your Adventure!",
       difficulty: "Hard",
       icon: require('@/assets/images/hunt1.png'), // Add your image path
       href: "pages/games/snap_seek"
+    },
+    {
+      title: "Hint N Clue",
+      clue: "Unlock Udupi's secrets with hidden gems and clues around every corner!",
+      difficulty: "Hard",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path
+      href: "pages/games/hint_n_clue"
+    },
+    {
+      title: "Flute of Madhusudan: Pre-Matha Quiz ",
+      clue: "You think you can play a flute that good?",
+      difficulty: "Medium",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path
+      href: "pages/games/flutegame"
+    },
+    {
+      title: "Fins and Folklore",
+      clue: "Karnataka fishermen weave tales of daring seas and ancient legends.",
+      difficulty: "Read Only",
+      icon: require('@/assets/images/hunt1.png'), // Add your image path
+      href: "pages/games/folklore"
     }
   ];
 
