@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 
 
 export default function TravelChatbot() {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hi there! What's your name?", sender: 'bot' },
+    { id: 1, text: "Hi, your assistant here! May I know your name?", sender: 'bot' },
   ]);
   const [input, setInput] = useState('');
   const [step, setStep] = useState(0);
@@ -20,24 +20,24 @@ export default function TravelChatbot() {
 
       switch (step) {
         case 0:
-          botResponse = `Hi ${input}! How would you like to travel? (e.g., beach, mountains, city)`;
+          botResponse = `Hi ${input}! How would you like to travel? (e.g., Beach, Mountains, Temples)`;
           setStep(1);
           break;
         case 1:
-          botResponse = `Great choice! ${input} travel is amazing. What kind of activities do you enjoy? (e.g., relaxing, adventure, culture)`;
+          botResponse = `Great choice! What kind of activities do you enjoy? (e.g., Relaxing, Adventure, Culture)`;
           setStep(2);
           break;
         case 2:
           botResponse = `Based on your preference for ${input}, here are some suggestions:
 
 Activities:
-${input === 'relaxing' ? '- Spa treatments\n- Yoga classes\n- Beach lounging' :
- input === 'adventure' ? '- Hiking\n- Water sports\n- Rock climbing' :
+${input === 'Relaxing' ? '- Spa treatments\n- Yoga classes\n- Beach lounging' :
+ input === 'Adventure' ? '- Hiking\n- Water sports\n- Rock climbing' :
  '- Museum visits\n- Local tours\n- Cooking classes'}
 
 Restaurants:
-${input === 'relaxing' ? '- Beachfront cafes\n- Rooftop lounges\n- Quiet bistros' :
- input === 'adventure' ? '- Local street food\n- Themed restaurants\n- Picnic spots' :
+${input === 'Relaxing' ? '- Beachfront cafes\n- Rooftop lounges\n- Quiet bistros' :
+ input === 'Adventure' ? '- Local street food\n- Themed restaurants\n- Picnic spots' :
  '- Fine dining\n- Local cuisine\n- Food markets'}
 
 Is there anything specific you'd like to know more about?`;
@@ -72,7 +72,7 @@ Is there anything specific you'd like to know more about?`;
           style={styles.input}
           value={input}
           onChangeText={setInput}
-          placeholder="Type a message..."
+          placeholder="Type your message!"
           placeholderTextColor="#999"
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
@@ -86,55 +86,77 @@ Is there anything specific you'd like to know more about?`;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#121212',  // Darker, sleek background
   },
   chatContainer: {
     flex: 1,
-    padding: 10,
+    padding: 15,
+    backgroundColor: '#1E1E1E', // Dark mode panel feel
   },
   messageBubble: {
     maxWidth: '80%',
-    padding: 10,
-    borderRadius: 20,
-    marginBottom: 10,
+    padding: 12,
+    borderRadius: 25,  // More rounded for a modern look
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,  // Subtle shadow for depth
+    shadowRadius: 5,
+    elevation: 3,  // For Android shadow effect
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#0A84FF', // Vibrant blue for user messages
+    borderTopRightRadius: 0,  // Extra style by tweaking one corner
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius: 25,
   },
   botBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#E5E5EA',
+    backgroundColor: '#2D2D2D',  // Contrast color for bot messages
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 25,
+    borderBottomRightRadius: 25,
   },
   messageText: {
     fontSize: 16,
-    color: '#333',
+    color: '#E1E1E1',  // Lighter text for dark background
   },
   inputContainer: {
     flexDirection: 'row',
-    padding: 10,
-    backgroundColor: '#fff',
+    padding: 12,
+    backgroundColor: '#292929', // Input background to match the dark theme
+    borderTopWidth: 1,
+    borderTopColor: '#444',  // Light border to separate input area
+    alignItems: 'center',  // Align the input and button nicely
   },
   input: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
+    backgroundColor: '#404040',  // Dark input field
+    borderRadius: 30,  // More rounded for a clean look
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 12,
     fontSize: 16,
-    color: '#333',
+    color: '#FFF',  // White text for better readability
+    marginRight: 10,  // Space between input and button
   },
   sendButton: {
-    marginLeft: 10,
-    backgroundColor: '#007AFF',
-    borderRadius: 20,
+    backgroundColor: '#0A84FF',  // Consistent vibrant blue for the button
+    borderRadius: 30,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 12,
     justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,  // Subtle shadow for a lifted button effect
+    elevation: 3,  // For Android elevation effect
   },
   sendButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
+
