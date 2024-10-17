@@ -96,7 +96,6 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'; export default fun
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     map: {
         flex: 1,
