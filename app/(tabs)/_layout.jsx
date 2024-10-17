@@ -6,8 +6,9 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { createClient } from '@supabase/supabase-js';
 import * as SecureStore from 'expo-secure-store';
+import { Linking } from 'react-native'; 
 
-// Tab icon and label component
+
 const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
 function TabBarIcon({
@@ -31,7 +32,8 @@ function ProfileCircle() {
     </TouchableOpacity>
   );
 }
-// Profile circle component
+
+// Signout component
 function Signout() {
   return (
     <TouchableOpacity style={styles.profileCircle}>
@@ -40,14 +42,22 @@ function Signout() {
         async function deleteAuthToken() {
           await SecureStore.deleteItemAsync('session');
         }
-        deleteAuthToken()
+        deleteAuthToken();
         if (error) {
           console.error('Error signing out:', error.message);
         } else {
-          // Sign-out successful, redirect to login page
-          router.replace('/pages/login'); // Adjust the route as necessary
+          router.replace('/pages/login'); 
         }
       }} />
+    </TouchableOpacity>
+  );
+}
+
+// SOS Call button component
+function SOSCall() {
+  return (
+    <TouchableOpacity style={styles.sosButton} onPress={() => Linking.openURL('tel:100')}>
+      <MaterialIcons name="phone-in-talk" size={24} color="#fff" />
     </TouchableOpacity>
   );
 }
@@ -62,8 +72,7 @@ export default function TabLayout() {
           paddingBottom: 7,
         },
         headerStyle: {
-          height: 110, // Increased height 
-
+          height: 110, 
           backgroundColor: '#2C3E50',
           shadowColor: '#000',
           shadowOffset: {
@@ -72,13 +81,18 @@ export default function TabLayout() {
           },
           shadowOpacity: 0.5,
           shadowRadius: 6,
-
         },
         headerTitleStyle: {
           color: '#fff',
           fontWeight: 'bold',
         },
-        headerRight: () => <View style={{ display: 'flex', flexDirection: 'row' }}><ProfileCircle /><Signout /></View>,
+        headerRight: () => (
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <ProfileCircle />
+            <Signout />
+            <SOSCall /> 
+          </View>
+        ),
       })}
     >
       <Tabs.Screen
@@ -150,6 +164,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 15,
+  },
+  sosButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red', 
     marginRight: 15,
   },
 });

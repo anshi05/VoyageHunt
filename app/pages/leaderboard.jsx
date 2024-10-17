@@ -1,21 +1,11 @@
-import React, { useRef } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, Image, ScrollView } from 'react-native';
+import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Share } from 'react-native';
 import { styled } from 'nativewind';
-import ViewShot from 'react-native-view-shot';
-
-// Dummy data for leaderboard users
-const leaderboardData = [
-    { id: 1, name: 'User 1', avatar: 'https://avatar.iran.liara.run/public/boy', score: 120 },
-    { id: 2, name: 'User 2', avatar: 'https://avatar.iran.liara.run/public/boy', score: 110 },
-    { id: 3, name: 'User 3', avatar: 'https://avatar.iran.liara.run/public/boy', score: 100 },
-    { id: 4, name: 'User 4', avatar: 'https://avatar.iran.liara.run/public/boy', score: 90 },
-    { id: 5, name: 'User 5', avatar: 'https://avatar.iran.liara.run/public/boy', score: 80 },
-    { id: 6, name: 'User 6', avatar: 'https://avatar.iran.liara.run/public/boy', score: 75 },
-    { id: 7, name: 'User 7', avatar: 'https://avatar.iran.liara.run/public/boy', score: 70 },
-    { id: 8, name: 'User 8', avatar: 'https://avatar.iran.liara.run/public/boy', score: 65 },
-    { id: 9, name: 'User 9', avatar: 'https://avatar.iran.liara.run/public/boy', score: 60 },
-    { id: 10, name: 'User 10', avatar: 'https://avatar.iran.liara.run/public/boy', score: 55 },
-];
+import { createClient } from '@supabase/supabase-js';
 
 // Styling component
 const StyledView = styled(View);
@@ -23,47 +13,185 @@ const StyledText = styled(Text);
 const StyledImage = styled(Image);
 
 const Leaderboard = () => {
-    const viewShotRef = useRef(null);
+    const imgurl = "https://avatar.iran.liara.run/public/boy";
+    const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+
+    const [users, setUsers] = useState([]);
+    const [status, requestPermission] = MediaLibrary.usePermissions();
+    const [loading, setLoading] = useState(true); // Add loading state
+    const leaderboardRef = useRef(null); // Reference for screenshot
+
+    useEffect(() => {
+        const getTopUsers = async () => {
+            const { data, error } = await supabase
+                .from('Users')
+                .select('name, points')
+                .order('points', { ascending: false })
+                .limit(10);
+
+            if (error) {
+                console.error('Error fetching users:', error);
+            } else {
+                setUsers(data);
+            }
+            setLoading(false); // Set loading to false after fetching
+        };
+
+        getTopUsers();
+
+        if (status === null) {
+            requestPermission();
+        }
+    }, [status, requestPermission]);
+
+    const onCapture = async () => {
+        try {
+            const localUri = await captureRef(leaderboardRef, {
+                height: 800,
+                quality: 1,
+            });
+    
+            await MediaLibrary.saveToLibraryAsync(localUri);
+    
+            Alert.alert('Screenshot Taken', 'Screenshot has been saved to your library.');
+        } catch (error) {
+            console.error('Error capturing screenshot:', error);
+            Alert.alert('Error', 'Failed to capture and save the screenshot.');
+        }
+    };
     return (
-        <ScrollView className="flex-1 bg-gray-100 p-4">
-
-            {/* Top 3 Users */}
-            <StyledView className="flex-row justify-around mb-6">
-                {leaderboardData.slice(0, 3).map((user, index) => (
-                    <StyledView key={user.id} className="items-center">
-                        <StyledImage
-                            source={{ uri: user.avatar }}
-                            className="w-20 h-20 rounded-full border-2 border-yellow-400"
-                            resizeMode="cover"
-                        />
-                        <StyledText className="text-lg font-semibold mt-2">{user.name}</StyledText>
-                        <StyledText className="text-sm text-gray-600">Score: {user.score}</StyledText>
-                    </StyledView>
-                ))}
-            </StyledView>
-
-            {/* Users from 4th to 10th */}
-            <StyledView>
-                {leaderboardData.slice(3, 10).map((user, index) => (
-                    <StyledView
-                        key={user.id}
-                        className="flex-row items-center p-4 mb-3 bg-white rounded-lg shadow-sm"
-                    >
-                        <StyledImage
-                            source={{ uri: user.avatar }}
-                            className="w-12 h-12 rounded-full mr-4"
-                            resizeMode="cover"
-                        />
-                        <StyledView className="flex-1">
-                            <StyledText className="font-semibold">{user.name}</StyledText>
-                            <StyledText className="text-gray-600">Score: {user.score}</StyledText>
+        <GestureHandlerRootView style={styles.container}>
+            {loading ? (
+                <Text>Loading leaderboard...</Text>
+            ) : (
+                <View style={styles.leaderboardContainer} ref={leaderboardRef}>
+                    <ScrollView>
+                        {/* Top 3 Users */}
+                        <StyledView style={styles.topUsers}>
+                            {users.slice(0, 3).map((user, index) => (
+                                <StyledView key={index} style={styles.userCard}>
+                                    <StyledImage
+                                        source={{ uri: imgurl }}
+                                        style={styles.topUserImage}
+                                        resizeMode="cover"
+                                    />
+                                    <StyledText style={styles.userName}>{user.name}</StyledText>
+                                    <StyledText style={styles.userScore}>Score: {user.points}</StyledText>
+                                </StyledView>
+                            ))}
                         </StyledView>
-                    </StyledView>
-                ))}
-            </StyledView>
 
-        </ScrollView>
+                        {/* Remaining Users */}
+                        <StyledView>
+                            {users.slice(3, 10).map((user, index) => (
+                                <StyledView key={index} style={styles.regularUserCard}>
+                                    <StyledImage
+                                        source={{ uri: imgurl }}
+                                        style={styles.userImage}
+                                        resizeMode="cover"
+                                    />
+                                    <StyledView style={styles.userInfo}>
+                                        <StyledText style={styles.userName}>{user.name}</StyledText>
+                                        <StyledText style={styles.userScore}>Score: {user.points}</StyledText>
+                                    </StyledView>
+                                </StyledView>
+                            ))}
+                        </StyledView>
+                    </ScrollView>
+                </View>
+            )}
+
+            {/* Button to Capture Screenshot */}
+            <View style={styles.footerContainer}>
+                <TouchableOpacity
+                    style={[styles.button, styles.primaryButton]}
+                    onPress={onCapture}
+                >
+                    <Text style={styles.buttonLabel}>Capture & Save Leaderboard</Text>
+                </TouchableOpacity>
+            </View>
+        </GestureHandlerRootView>
     );
 };
 
 export default Leaderboard;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f2f2f2',
+    },
+    leaderboardContainer: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        margin: 10,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 5,
+    },
+    topUsers: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 20,
+    },
+    userCard: {
+        alignItems: 'center',
+    },
+    topUserImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        borderWidth: 2,
+        borderColor: '#FFD700',
+    },
+    userImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 12,
+    },
+    userInfo: {
+        flex: 1,
+    },
+    regularUserCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    userName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    userScore: {
+        fontSize: 14,
+        color: '#777',
+    },
+    footerContainer: {
+        padding: 16,
+        alignItems: 'center',
+    },
+    button: {
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        backgroundColor: '#1a73e8',
+    },
+    primaryButton: {
+        backgroundColor: '#1a73e8',
+    },
+    buttonLabel: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+});
