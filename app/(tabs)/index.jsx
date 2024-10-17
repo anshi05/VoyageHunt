@@ -43,23 +43,20 @@ export default function HomePage() {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView>
-        <ImageBackground
-          source={bg}
-          style={styles.background}
-          blurRadius={2}
-        >
-          <View style={styles.header}>
-            {/* Header and Welcome section */}
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.greeting}>Hello Abhi!</Text>
-            <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
-            <TouchableOpacity style={styles.changeLocationButton}>
-              <Text style={styles.changeLocationText}>Change Location &gt;</Text>
-            </TouchableOpacity>
-          </View>
+    <ScrollView>
+      <ImageBackground
+        source={bg}
+        style={styles.image}
+        blurRadius={2}
+      >
+        <View style={styles.overlay} />
+        <View className="m-10">
+          <Text style={styles.sectionTitle}>Hello Abhi!</Text>
+          <Text style={{ fontSize: 20 }}>Welcome to Udupi!</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Change Location &gt;</Text>
+          </TouchableOpacity>
+        </View>
 
           {/* About Section */}
           <View style={styles.section}>

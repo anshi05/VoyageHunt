@@ -26,7 +26,7 @@ export default function TabThreeScreen() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        {places.map((place, index) => 
+        {places && places.map((place, index) =>
         (
           // console.log(place)
           <Card place={place} key={index}></Card>

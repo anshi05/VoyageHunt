@@ -6,12 +6,15 @@ import 'react-native-url-polyfill/auto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 
 
 const LoginScreen = () => {
+    async function storeAuthToken(session) {
+        await SecureStore.setItemAsync('session', session);
+    }
     const supabase = createClient(
-        process.env.EXPO_PUBLIC_SUPABASE_URL || "",
-        process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
+        "https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
         {
             auth: {
                 storage: AsyncStorage,
@@ -29,75 +32,89 @@ const LoginScreen = () => {
     const handleSubmit = () => {
         if (!email || !password) {
             Alert.alert('Error', 'Please fill all fields.');
-            return;
-        }
-
-        async function loginUser() {
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) {
-                    Alert.alert('Error', error.message);
-                } else {
-                    Alert.alert('Success', 'Logged in successfully');
-                    router.push('/(tabs)'); // Navigate to the main tabs
-                }
-            } catch (error) {
-                console.log("Catch error: " + error);
+        } else {
+            // Handle registration logic here
+            const formData = {
+                email, password
             }
-        }
+            console.log("Formdata: ", formData)
+            async function loginUser() {
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    })
+                    console.log(data)
+                    if (error) {
+                        Alert.alert('Error', error.message);
+                    }
+                    else {
+                        alert('Logged in successfully');
+                        console.log("data: ".data)
+                        const { data, error } = await supabase.auth.getSession()
+                        storeAuthToken(JSON.stringify(data)).then(console.log("Data: ", data))
+                        router.push('/(tabs)/')
+                    }
 
-        loginUser();
+                    console.log('Data inserted successfully:');
+
+                } catch (error) {
+                    console.log("catch error: " + error)
+                }
+            }
+            loginUser()
+        }
     };
 
     return (
-        
+
         <SafeAreaView style={styles.container}>
             <ScrollView>
-            <View style={styles.content}>
-                <Image source={require('../../assets/images/login.png')} style={styles.logo} resizeMode="contain" />
-                <Text style={styles.welcomeText}>Fun's calling, you in?</Text>
-                <Text style={styles.subText}>Login to dive back in!</Text>
+                <View style={styles.content}>
+                    <Image source={require('../../assets/images/login.png')} style={styles.logo} resizeMode="contain" />
+                    <Text style={styles.welcomeText}>Fun's calling, you in?</Text>
+                    <Text style={styles.subText}>Login to dive back in!</Text>
 
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        placeholderTextColor="#A0A0A0"
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor="#A0A0A0"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
+                    </View>
 
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        placeholderTextColor="#A0A0A0"
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry={!showPassword}
-                    />
-                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                        <Icon name={showPassword ? "eye" : "eye-off"} size={20} color="#A0A0A0" marginTop={5} />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            placeholderTextColor="#A0A0A0"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry={!showPassword}
+                        />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                            <Icon name={showPassword ? "eye" : "eye-off"} size={20} color="#A0A0A0" marginTop={5} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+                        <Text style={styles.loginButtonText}>Login</Text>
                     </TouchableOpacity>
-                </View>
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
-
-                <View style={styles.signupContainer}>
-                    <Text style={styles.signupText}>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => router.push('/pages/register')}>
-                        <Text style={styles.signupLink}>Sign up</Text>
-                    </TouchableOpacity>
+                    <View style={styles.signupContainer}>
+                        <Text style={styles.signupText}>Don't have an account? </Text>
+                        <TouchableOpacity onPress={() => router.push('/pages/register')}>
+                            <Text style={styles.signupLink}>Sign up</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
             </ScrollView>
         </SafeAreaView>
-        
+
     );
 };
 
@@ -110,7 +127,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 0,
         position: 'relative',
-        
+
     },
     logo: {
         marginTop: 40,

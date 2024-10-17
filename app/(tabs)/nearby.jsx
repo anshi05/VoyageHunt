@@ -2,8 +2,14 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import bg from '@/assets/images/background.jpg'
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
 export default function TabFourScreen() {
-  const data = [
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  const [isBusiness, setisBusiness] = useState(false)
+  const [data, setdata] = useState([
     {
       heading: "Restaurants",
       href: "../pages/restaurants",
@@ -30,18 +36,62 @@ export default function TabFourScreen() {
     },
     {
       heading: "View Events",
-      href: "../pages/ViewEvents",
+      href: "../pages/viewevents",
       subtitle: "20 nearby",
       icon: "event"
-    },
-    {
-      heading: "Add Events",
-      href: "../pages/AddEvents",
-      subtitle: "",
-      icon: "note-add"
-    },
+    }
 
-  ]
+  ])
+  useEffect(() => {
+    async function getUserByUID() {
+      const data = await SecureStore.getItemAsync('session');
+      const uid = JSON.parse(data).session.user.id;
+      try {
+        const { data, error } = await supabase
+          .from('Users') // The table name is 'Users'
+          .select('*') // Selecting all columns
+          .eq('uid', uid); // Where the 'uid' column matches the provided UID
+
+        if (error) {
+          console.error('Error fetching user:', error);
+          return null;
+        }
+        if (data.length > 0) {
+          console.log('User found:', data[0]);
+          if (data[0].business_type.length === 0) {
+            setisBusiness(false)
+          }
+          else {
+            setisBusiness(true)
+          }
+          return data[0]; // Return the first matching user
+        } else {
+          console.log('No user found with this UID');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error during fetching user by UID:', error);
+        return null;
+      }
+    }
+    getUserByUID()
+  }, [])
+
+  useEffect(() => {
+    if (data.business_type !== "" && data.length === 5) {
+      console.log(data.business_type === "")
+      setdata(prevItems => [...prevItems, {
+        heading: "Add Events",
+        href: "../pages/addevents",
+        subtitle: "",
+        icon: "note-add"
+      }])
+    }
+  }, [isBusiness])
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
   return (
     <ImageBackground
       source={bg} // Background image

@@ -1,16 +1,19 @@
 // FormUI.js
+import { createClient } from '@supabase/supabase-js';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 const FormUI = () => {
   // State variables
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
 
   const [eventName, setEventName] = useState('Event 1');
   const [place, setPlace] = useState('Plce');
+  const [desc, setDesc] = useState('Plce');
   const [fromDateTime, setFromDateTime] = useState('gh');
   const [toDateTime, setToDateTime] = useState('hhgfd');
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState([{ locations: 'MIT Stadium', mapLink: 'https://maps.app.goo.gl/gpFsYVWsS9QpNn589', clue: 'MIT Stadium clue', hint: 'MIT Stadium hint' }]);
   // const [eventName, setEventName] = useState(formData.name);
   // const [place, setPlace] = useState(formData.place);
   // const [fromDateTime, setFromDateTime] = useState(formData.form);
@@ -20,7 +23,7 @@ const FormUI = () => {
 
   // Function to add a new location field
   const addLocation = () => {
-    setLocations([...locations, { location: '', mapLink: '', clue: '', hint: '' }]);
+    setLocations([...locations, { locations: '', mapLink: '', clue: '', hint: '' }]);
   };
 
   // Function to remove a location field
@@ -39,16 +42,23 @@ const FormUI = () => {
 
   // Function to handle form submission
   const handleSubmit = () => {
-    const data = {
-      name: eventName,
-      place: place,
-      from: fromDateTime,
-      to: toDateTime,
-      location: locations, // array of maps of locations
+    const formdata = {
+      event_name: eventName,
+      event_place: place,
+      desc,
+      // from: fromDateTime,
+      // to: toDateTime,
+      locations: locations, // array of maps of locations
     };
     // You can store the data in state or send it to a server here
-    console.log(data);
-    Alert.alert('Form Submitted', 'Data has been logged to the console.');
+    async function insertData() {
+      const { error } = await supabase
+        .from('Events')  // Replace 'Users' with your table name
+        .insert(formdata);
+      console.log(error)
+    }
+    insertData()
+    // Alert.alert('Form Submitted', 'Data has been logged to the console.');
   };
 
   return (
@@ -69,6 +79,14 @@ const FormUI = () => {
         placeholder="Enter place"
         value={place}
         onChangeText={setPlace}
+      />
+      {/* Desc */}
+      <Text className="text-lg font-bold mb-2">Description</Text>
+      <TextInput
+        className="border rounded p-2 mb-4"
+        placeholder="Enter Description"
+        value={desc}
+        onChangeText={setDesc}
       />
 
       {/* From Date, Time */}
@@ -117,7 +135,7 @@ const FormUI = () => {
           <TextInput
             className="border rounded p-2 mb-2"
             placeholder="Location"
-            value={loc.location}
+            value={loc.locations}
             onChangeText={(text) => handleLocationChange(index, 'location', text)}
           />
           {/* Map Link */}

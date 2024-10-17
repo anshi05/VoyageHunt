@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sogalabhi.AccessDenied"
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +33,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7a3d133d-df45-4817-b255-36237bb4a7d9"
+      }
     }
   }
 }

@@ -1,12 +1,11 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { AuthContext, AuthProvider } from "@/context/AuthProvider";
 import { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import TravelChatbot from './TravelChatbot';
 
 export function InititalLayout() {
-  const { session, initialized, signOut } = useContext(AuthContext)
+  const { session, initialized, signOut } = {}
   const segments = useSegments();
   const router = useRouter();
   useEffect(() => {
@@ -24,6 +23,9 @@ export function InititalLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="pages/login" options={{ title: 'Login', headerShown: false }} />
       <Stack.Screen name="pages/register" options={{ title: 'Register', headerShown: false }} />
+      <Stack.Screen name="pages/addevents" options={{ title: 'Add Events' }} />
+      <Stack.Screen name="pages/leaderboard" options={{ title: 'Leaderboard' }} />
+      <Stack.Screen name="pages/profile" options={{ title: 'Profile' }} />
       <Stack.Screen
         name="pages/restaurants"
         options={{
@@ -60,9 +62,7 @@ export default function RootLayout() {
 
 
   return (
-    <AuthProvider>
-      <InititalLayout />
-    </AuthProvider>
+    <InititalLayout />
   );
 }
 
