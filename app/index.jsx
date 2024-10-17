@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { router, Link } from 'expo-router'; // Import usePathname to get current path
-import { supabase } from '@/utils/supabase';
+import * as SecureStore from 'expo-secure-store';
 
 const SplashScreen = ({ onTimeout }) => {
     useEffect(() => {
@@ -26,25 +26,21 @@ const SplashScreen = ({ onTimeout }) => {
 
 const Index = () => {
     const [showSplash, setShowSplash] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    const checkUser = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            // User is authenticated, redirect to home/dashboard
-            setIsLoggedIn(true);
-            setShowSplash(false);
-            router.push('/(tabs)'); // Adjust the route as necessary to go to the tabs layout
-        } else {
-            setIsLoggedIn(false);
-            setShowSplash(false);
-            router.push('/pages/login'); // If not logged in, redirect to login
-        }
-    };
-
+    
     useEffect(() => {
-        checkUser();
-    }, []);
+        const getsession = async () => {
+            const data = await SecureStore.getItemAsync('session');
+            if(data){
+                router.replace('/(tabs)')
+            }
+            else{
+                router.replace('/pages/login')
+            }
+        }
+        getsession()
+    }, [])
+    
+    
 
     return (
         <View style={styles.container}>
