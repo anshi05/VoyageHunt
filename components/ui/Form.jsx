@@ -7,13 +7,12 @@ const FormUI = () => {
   // State variables
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
-
   const [eventName, setEventName] = useState('Event 1');
   const [place, setPlace] = useState('Plce');
-  const [desc, setDesc] = useState('Plce');
   const [fromDateTime, setFromDateTime] = useState('gh');
   const [toDateTime, setToDateTime] = useState('hhgfd');
-  const [locations, setLocations] = useState([{ locations: 'MIT Stadium', mapLink: 'https://maps.app.goo.gl/gpFsYVWsS9QpNn589', clue: 'MIT Stadium clue', hint: 'MIT Stadium hint' }]);
+  const [desc, setDesc] = useState('Plce');
+  const [locations, setLocations] = useState([]);
   // const [eventName, setEventName] = useState(formData.name);
   // const [place, setPlace] = useState(formData.place);
   // const [fromDateTime, setFromDateTime] = useState(formData.form);
@@ -23,7 +22,7 @@ const FormUI = () => {
 
   // Function to add a new location field
   const addLocation = () => {
-    setLocations([...locations, { locations: '', mapLink: '', clue: '', hint: '' }]);
+    setLocations([...locations, { location: '', latitudes: '', longitudes: '', clue: '', hint: '' }]);
   };
 
   // Function to remove a location field
@@ -45,12 +44,9 @@ const FormUI = () => {
     const formdata = {
       event_name: eventName,
       event_place: place,
-      desc,
-      // from: fromDateTime,
-      // to: toDateTime,
       locations: locations, // array of maps of locations
+      desc: desc
     };
-    // You can store the data in state or send it to a server here
     async function insertData() {
       const { error } = await supabase
         .from('Events')  // Replace 'Users' with your table name
@@ -58,7 +54,10 @@ const FormUI = () => {
       console.log(error)
     }
     insertData()
-    // Alert.alert('Form Submitted', 'Data has been logged to the console.');
+
+    // You can store the data in state or send it to a server here
+    console.log(formdata);
+    Alert.alert('Form Submitted', 'Data has been logged to the console.');
   };
 
   return (
@@ -80,32 +79,33 @@ const FormUI = () => {
         value={place}
         onChangeText={setPlace}
       />
-      {/* Desc */}
+
+      {/* Description */}
       <Text className="text-lg font-bold mb-2">Description</Text>
       <TextInput
         className="border rounded p-2 mb-4"
-        placeholder="Enter Description"
+        placeholder="Enter place"
         value={desc}
         onChangeText={setDesc}
       />
 
       {/* From Date, Time */}
-      <Text className="text-lg font-bold mb-2">From Date and Time</Text>
+      {/* <Text className="text-lg font-bold mb-2">From Date and Time</Text>
       <TextInput
         className="border rounded p-2 mb-4"
         placeholder="Enter from date and time"
         value={fromDateTime}
         onChangeText={setFromDateTime}
-      />
+      /> */}
 
       {/* To Date, Time */}
-      <Text className="text-lg font-bold mb-2">To Date and Time</Text>
+      {/* <Text className="text-lg font-bold mb-2">To Date and Time</Text>
       <TextInput
         className="border rounded p-2 mb-4"
         placeholder="Enter to date and time"
         value={toDateTime}
         onChangeText={setToDateTime}
-      />
+      /> */}
 
       {/* Locations */}
       <View className="flex-row justify-between items-center mb-2">
@@ -135,15 +135,22 @@ const FormUI = () => {
           <TextInput
             className="border rounded p-2 mb-2"
             placeholder="Location"
-            value={loc.locations}
+            value={loc.location}
             onChangeText={(text) => handleLocationChange(index, 'location', text)}
           />
-          {/* Map Link */}
+          {/*  Latitudes */}
           <TextInput
             className="border rounded p-2 mb-2"
-            placeholder="Map Link"
-            value={loc.mapLink}
-            onChangeText={(text) => handleLocationChange(index, 'mapLink', text)}
+            placeholder="Latitudes"
+            value={loc.latitudes}
+            onChangeText={(text) => handleLocationChange(index, 'latitudes', text)}
+          />
+          {/* Longitudes */}
+          <TextInput
+            className="border rounded p-2 mb-2"
+            placeholder="Longitudes"
+            value={loc.longitudes}
+            onChangeText={(text) => handleLocationChange(index, 'longitudes', text)}
           />
           {/* Clue */}
           <TextInput

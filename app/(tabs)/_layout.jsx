@@ -63,7 +63,7 @@ export default function TabLayout() {
         },
         headerStyle: {
           height: 110, // Increased height 
-          
+
           backgroundColor: '#2C3E50',
           shadowColor: '#000',
           shadowOffset: {
@@ -117,15 +117,6 @@ export default function TabLayout() {
           title: 'Nearby',
           tabBarIcon: ({ focused }) => (
             <TabBarIcon name="near-me" label="Nearby" focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="community"
-        options={{
-          title: 'Community',
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="forum" label="FOrum" focused={focused} />
           ),
         }}
       />

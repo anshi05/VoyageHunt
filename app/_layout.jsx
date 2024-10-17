@@ -26,6 +26,8 @@ export function InititalLayout() {
       <Stack.Screen name="pages/addevents" options={{ title: 'Add Events' }} />
       <Stack.Screen name="pages/leaderboard" options={{ title: 'Leaderboard' }} />
       <Stack.Screen name="pages/profile" options={{ title: 'Profile' }} />
+      <Stack.Screen name="pages/map2" options={{ title: 'Maps - Click on the pin' }} />
+      <Stack.Screen name="pages/map" options={{ title: 'Maps' }} />
       <Stack.Screen
         name="pages/restaurants"
         options={{

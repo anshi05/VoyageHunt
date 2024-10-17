@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useLocalSearchParams, useSearchParams } from 'expo-router';
-import { PROVIDER_GOOGLE } from 'react-native-maps';
+import { useSearchParams } from 'expo-router';
 import { createClient } from '@supabase/supabase-js';
-export default function MapPage() {
-    // const { latitude, longitude } = { latitude: 13.483155, longitude: 74.691371 }
-    const [currentLocation, setCurrentLocation] = useState(null);
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'; export default function MapPage() {
+    const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
-    const supabase = createClient(
-        "https://mezityqgxnauanmjjkgv.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw"
-    );
-    const [markers, setmarkers] = useState([
-        {
-            coordinate: { latitude: 13.3406, longitude: 74.7421 },
-            title: 'Krishna Matha',
-        },
-        {
-            coordinate: { latitude: 13.3361, longitude: 74.7428 },
-            title: 'Anantheswara Temple',
-        },
-    ])
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [markers, setmarkers] = useState([])
+    const [showmodel, setshowmodel] = useState(false)
+    const [places, setplaces] = useState([])
     useEffect(() => {
-        (async () => {
+        const getloaction = async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 alert('Permission to access location was denied');
@@ -32,65 +20,79 @@ export default function MapPage() {
             }
 
             let location = await Location.getCurrentPositionAsync({});
-            console.log(location)
             setCurrentLocation(location.coords);
-        })();
+        };
+        getloaction()
         async function getPlaces() {
             const { data } = await supabase.from("hotspots").select();
-            console.log(data)
-
-            setmarkers(prevItems => [...prevItems, data]);
+            setplaces(data)
+            const mar = []
+            data.map((ele, index) => (
+                mar.push({
+                    coordinate: { latitude: ele.latitude, longitude: ele.longitude },
+                    title: ele.place_names,
+                    avatar: ele.avatars_on_map
+                })
+            ))
+            setmarkers(mar);
         }
         getPlaces()
     }, []);
-    const heatmapPoints = [
-        { latitude: 13.3406, longitude: 74.7421, weight: 1 }, // Krishna Matha
-        { latitude: 13.3361, longitude: 74.7428, weight: 1 }, // Anantheswara Temple
-        { latitude: 13.2520, longitude: 75.0197, weight: 2 }, // Koodlutheertha Falls
-        { latitude: 13.3125, longitude: 74.7059, weight: 3 }, // Mattu Beach
-        { latitude: 13.3447, longitude: 74.7017, weight: 2 }, // Malpe Beach
-        // Add more points with weights...
-    ];
-
+    const handlePress = (index) => {
+        Alert.alert(places[index].place_names, places[index].info_history, [
+            {
+                text: 'Get Location',
+                onPress: () => {
+                    const url = `https://www.google.com/maps?q=${places[index].latitude},${places[index].longitude}`;
+                    Linking.canOpenURL(url)
+                        .then((supported) => {
+                            if (supported) {
+                                Linking.openURL(url);
+                            } else {
+                                Alert.alert('Error', 'Unable to open map link.');
+                            }
+                        })
+                        .catch((err) => console.error('An error occurred', err));
+                },
+            },
+            {
+                text: "Back", onPress: () => { }
+            },
+        ]);
+    };
     return (
-
         <View style={{ flex: 1 }}>
-            <MapView
-                style={styles.map}
-                initialRegion={{
-                    latitude: 13.3406,
-                    longitude: 74.7421,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05,
-                }}
-            >
-                <Heatmap
-                    points={heatmapPoints}
-                    radius={40} // Radius of the heatmap points
-                    opacity={0.7} // Opacity of the heatmap layer
-                    maxIntensity={100} // Max intensity for the heatmap
-                    gradient={{
-                        colors: ['green', 'yellow', 'red'], // Colors for the gradient
-                        startPoints: [0.1, 0.5, 1],
-                        colorMapSize: 256,
+            {currentLocation ? (
+                <MapView
+                    style={{ flex: 1 }}
+                    initialRegion={{
+                        latitude: parseFloat(currentLocation.latitude),
+                        longitude: parseFloat(currentLocation.longitude),
+                        latitudeDelta: 0.01,
+                        longitudeDelta: 0.01,
                     }}
-                />
-                {markers.map((marker, index) => (
-                    <Marker key={index} coordinate={marker.coordinate}>
-                        {/* Custom view for marker */}
+                >
+                    {markers.map((marker, index) => (
+                        // <Marker key={index} coordinate={{ latitude: parseFloat(74.70385279537415), longitude: parseFloat(74.70385279537415) }} title="Your Location" pinColor="blue" />
+                        <Marker onPress={() => { handlePress(index) }} key={index} coordinate={{ latitude: parseFloat(marker.coordinate.latitude), longitude: parseFloat(marker.coordinate.longitude) }} >
+                            <View style={styles.markerContainer}>
+                                {/* <Image source={{ uri: marker.avatar }} style={{height: 20, height:20}} /> */}
+                                <MaterialIcons name="location-pin" size={24} color="black" />
+                                <Text style={styles.markerText}>{marker.title}</Text>
+                            </View>
+                        </Marker>
+                    ))}
+                    <Marker coordinate={{ latitude: currentLocation.latitude, longitude: currentLocation.longitude }} title="Your Location" pinColor="blue" >
                         <View style={styles.markerContainer}>
                             <View style={styles.markerDot} />
-                            <Text style={styles.markerText}>{marker.title}</Text>
+                            <Text style={styles.markerText}>Your Location</Text>
                         </View>
+
                     </Marker>
-                ))}
-                <Marker coordinate={{ latitude: currentLocation.latitude, longitude: currentLocation.longitude }} title="Your Location" pinColor="blue" >
-                    <View style={styles.markerContainer}>
-                        <View style={styles.markerDot} />
-                        <Text style={styles.markerText}>Your Location</Text>
-                    </View>
-                </Marker>
-            </MapView>
+                </MapView>
+            ) : (
+                <Text>Fetching current location...</Text>
+            )}
         </View>
     );
 }
@@ -103,8 +105,14 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center the text below the marker
     },
     markerDot: {
-        width: 10,
-        height: 10,
+        width: 20,
+        height: 20,
+        backgroundColor: 'green',
+        borderRadius: 5,
+    },
+    markerDot2: {
+        width: 20,
+        height: 20,
         backgroundColor: 'red',
         borderRadius: 5,
     },
@@ -112,5 +120,7 @@ const styles = StyleSheet.create({
         marginTop: 5, // Spacing between the dot and the text
         color: 'black',
         fontSize: 12,
+        backgroundColor: "white",
+        padding: 3
     },
 });

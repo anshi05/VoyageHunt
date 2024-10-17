@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E1E', // Dark mode panel feel
   },
   messageBubble: {
-    maxWidth: '80%',
+    maxWidth: '100%',
     padding: 12,
     borderRadius: 25,  // More rounded for a modern look
     marginBottom: 12,

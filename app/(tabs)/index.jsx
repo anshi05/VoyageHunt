@@ -7,6 +7,9 @@ import { Link, router } from 'expo-router';
 import Card from '@/components/ui/Card';
 import bg from '@/assets/images/background.jpg';
 import TravelChatbot from '../TravelChatbot';
+import * as SecureStore from 'expo-secure-store';
+
+
 export default function HomePage() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
   const [places, setplaces] = useState([]);
@@ -15,6 +18,35 @@ export default function HomePage() {
   useEffect(() => {
     getplaces();
   }, []);
+
+  const [uid, setuid] = useState()
+  const [points, setpoints] = useState(0)
+  useEffect(() => {
+    async function getUid() {
+      const data = await SecureStore.getItemAsync('session');
+      return JSON.parse(data).session.user.id;
+    }
+    setuid(getUid())
+  }, [])
+
+  useEffect(() => {
+    const getUserPoints = async (uid) => {
+      let { data: user, error: fetchError } = await supabase
+        .from('Users')
+        .select('*')
+        .eq('uid', uid._j)
+
+      if (fetchError) {
+        console.error('Error fetcdfhing user points:', fetchError);
+        return;
+      }
+      else {
+        console.log("user: ", user[0].points)
+      }
+      setpoints(user[0].points)
+    };
+    getUserPoints(uid)
+  }, [uid])
 
   async function getplaces() {
     const { data, error } = await supabase.from("hotspots").select().limit(3);
@@ -103,7 +135,7 @@ export default function HomePage() {
             <Text style={styles.sectionTitle}>Your Adventure</Text>
             <View style={styles.gamificationCard}>
               <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
-              <Text style={styles.gamificationText}>Level 5 Explorer</Text>
+              <Text style={styles.gamificationText}>Points: {points}</Text>
               <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
             </View>
           </View>
