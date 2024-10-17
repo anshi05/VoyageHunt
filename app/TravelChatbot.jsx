@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons'; // Importing Ionicons for the close icon
 
-export default function TravelChatbot() {
+export default function TravelChatbot({ onClose }) {  // Pass the onClose prop to control modal close
   const [messages, setMessages] = useState([
     { id: 1, text: "Hi, your assistant here! May I know your name?", sender: 'bot' },
   ]);
@@ -54,6 +55,11 @@ Is there anything specific you'd like to know more about?`;
 
   return (
     <View style={styles.container}>
+      {/* Close Button */}
+      <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+        <Ionicons name="close" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView style={styles.chatContainer}>
         {messages.map(message => (
           <View
@@ -67,6 +73,7 @@ Is there anything specific you'd like to know more about?`;
           </View>
         ))}
       </ScrollView>
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -85,63 +92,76 @@ Is there anything specific you'd like to know more about?`;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#121212',  // Darker, sleek background
+    position: 'absolute',
+    bottom: 80,
+    right: 10,
+    width: '80%',
+    height: '50%',
+    backgroundColor: '#121212',
+    borderRadius: 20,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
   },
   chatContainer: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#1E1E1E', // Dark mode panel feel
+    backgroundColor: '#1E1E1E',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   messageBubble: {
     maxWidth: '80%',
     padding: 12,
-    borderRadius: 25,  // More rounded for a modern look
+    borderRadius: 25,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,  // Subtle shadow for depth
+    shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 3,  // For Android shadow effect
+    elevation: 3,
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#0A84FF', // Vibrant blue for user messages
-    borderTopRightRadius: 0,  // Extra style by tweaking one corner
+    backgroundColor: '#0A84FF',
+    borderTopRightRadius: 0,
     borderTopLeftRadius: 25,
     borderBottomLeftRadius: 25,
   },
   botBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#2D2D2D',  // Contrast color for bot messages
+    backgroundColor: '#2D2D2D',
     borderTopLeftRadius: 0,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
   },
   messageText: {
     fontSize: 16,
-    color: '#E1E1E1',  // Lighter text for dark background
+    color: '#E1E1E1',
   },
   inputContainer: {
     flexDirection: 'row',
     padding: 12,
-    backgroundColor: '#292929', // Input background to match the dark theme
+    backgroundColor: '#292929',
     borderTopWidth: 1,
-    borderTopColor: '#444',  // Light border to separate input area
-    alignItems: 'center',  // Align the input and button nicely
+    borderTopColor: '#444',
+    alignItems: 'center',
   },
   input: {
     flex: 1,
-    backgroundColor: '#404040',  // Dark input field
-    borderRadius: 30,  // More rounded for a clean look
+    backgroundColor: '#404040',
+    borderRadius: 30,
     paddingHorizontal: 15,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#FFF',  // White text for better readability
-    marginRight: 10,  // Space between input and button
+    color: '#FFF',
+    marginRight: 10,
   },
   sendButton: {
-    backgroundColor: '#0A84FF',  // Consistent vibrant blue for the button
+    backgroundColor: '#0A84FF',
     borderRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 12,
@@ -150,13 +170,21 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,  // Subtle shadow for a lifted button effect
-    elevation: 3,  // For Android elevation effect
+    shadowRadius: 4,
+    elevation: 3,
   },
   sendButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,  // Ensures the button stays on top
+    backgroundColor: '#0A84FF',
+    padding: 1,
+    borderRadius: 100,
+  },
 });
-

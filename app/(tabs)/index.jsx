@@ -110,8 +110,8 @@ export default function HomePage() {
         </ImageBackground>
       </ScrollView>
 
-      {/* Chat Widget Button */}
-      <Modal
+{/* Chat Widget Modal */}
+<Modal
         animationType="slide"
         transparent={true}
         visible={isChatOpen}
@@ -119,22 +119,24 @@ export default function HomePage() {
       >
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Your Voyager</Text>
+            
             <TouchableOpacity onPress={() => setIsChatOpen(false)}>
               <Ionicons name="close" size={24} color="#333" />
             </TouchableOpacity>
           </View>
-          <TravelChatbot />
+          <TravelChatbot onClose={() => setIsChatOpen(false)} />
         </View>
       </Modal>
 
+      {/* Chat Button */}
       <TouchableOpacity
         style={styles.chatButton}
         onPress={() => setIsChatOpen(true)}
       >
         <Ionicons name="chatbubble-ellipses" size={24} color="#fff" />
+        
       </TouchableOpacity>
-    </View >
+    </View>
   );
 }
 
@@ -259,40 +261,40 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontWeight: '300',  // Lighter weight for distinction
   },
-
   modalView: {
     flex: 1,
-    justifyContent: 'center', // Ensure modal content is centered
-    alignItems: 'center', // Ensure content is horizontally centered
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white', // Make sure it's visible
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
     width: '100%',
+    marginBottom: 20,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 24,
+    color: '#fff',
     fontWeight: 'bold',
-    color: '#333',
   },
   chatButton: {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: '#007AFF', // Visible background color
-    borderRadius: 50,
+    bottom: 30,
+    right: 30,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
     padding: 15,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    marginLeft: 10,
+    fontSize: 16,
   },
 });
-// Closing parenthesis for the styles object
+  
