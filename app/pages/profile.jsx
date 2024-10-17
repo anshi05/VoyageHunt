@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { router } from 'expo-router';
 
 const EditProfile = () => {
   const [user, setuser] = useState()
@@ -49,7 +50,19 @@ const EditProfile = () => {
       setEmail(user.email)
     }
   }, [user])
-
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    async function deleteAuthToken() {
+      await SecureStore.deleteItemAsync('session');
+    }
+    deleteAuthToken()
+    if (error) {
+      console.error('Error signing out:', error.message);
+    } else {
+      // Sign-out successful, redirect to login page
+      router.replace('/pages/login'); // Adjust the route as necessary
+    }
+  }
 
   return (
     <View className="flex-1 bg-white p-4">
@@ -69,7 +82,7 @@ const EditProfile = () => {
             />
           </View>
 
-        
+
 
           <View className="mb-4">
             <Text className="text-gray-600 mb-1">email</Text>
@@ -97,7 +110,9 @@ const EditProfile = () => {
             <Text className="text-lg font-bold">email:</Text>
             <Text className="text-gray-700">{email}</Text>
           </View>
-
+          <TouchableOpacity onPress={logout} className="bg-blue-500 rounded-lg p-3 mb-4">
+            <Text className="text-white text-center font-bold">Logout</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
