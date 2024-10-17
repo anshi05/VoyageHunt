@@ -33,15 +33,6 @@ export default function HomePage() {
       router.replace('/pages/login'); // Adjust the route as necessary
     }
   };
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getUser();
-      console.log("session: ", session)
-    };
-
-    checkUser();
-  }, []);
-
   return (
     <ScrollView>
       <ImageBackground
@@ -50,14 +41,11 @@ export default function HomePage() {
         blurRadius={2}
       >
         <View style={styles.overlay} />
-        <View style={styles.headerContent}>
-          <Text style={styles.greeting}>Hello Abhi!</Text>
-          <Text style={styles.title}>Welcome to Udupi!</Text>
+        <View className="m-10">
+          <Text className="text-xl">Hello Abhi!</Text>
+          <Text className="text-4xl">Welcome to Udupi!</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Location &gt;</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-            <Text style={styles.buttonText}>Signout</Text>
           </TouchableOpacity>
         </View>
 
@@ -98,7 +86,7 @@ export default function HomePage() {
 
         {/* Gamification Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Adventure</Text>
+          <Text className="text-white text-2xl">Your Adventure</Text>
           <View style={styles.gamificationCard}>
             <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
             <Text style={styles.gamificationText}>Level 5 Explorer</Text>

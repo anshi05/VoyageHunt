@@ -1,112 +1,86 @@
-// app/pages/EditProfile.js
-import { createClient } from '@supabase/supabase-js';
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
 const EditProfile = () => {
-    const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
-    const [bio, setBio] = useState('');
-    const [loading, setLoading] = useState(true);
-    const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  // State for managing user profile
+  const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit
+  const [name, setName] = useState('John Doe');
+  const [location, setLocation] = useState('Udupi');
+  const [bio, setBio] = useState('Adventurer, Explorer, and Udupi lover.');
 
-    // Fetch current user profile data
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const { data, error } = await supabase.auth.getSession()
+  // Function to handle save
+  const handleSave = () => {
+    // Logic to save changes to the database
+    console.log('Profile updated:', { name, location, bio });
+    setIsEditing(false); // Switch back to view mode after saving
+  };
 
-            console.log(data, error)
-            // if (session) {
-            //     const { data, error } = await supabase
-            //         .from('TouristsData') // Table where user profile data is stored
-            //         .select('name, location, bio')
-            //         .eq('uid', session.user.id) // Assuming uid stores the user ID
-            //         .single();
+  return (
+    <View className="flex-1 bg-white p-4">
+      <Text className="text-2xl font-bold text-center mb-4">
+        {isEditing ? 'Edit Profile' : 'My Profile'}
+      </Text>
 
-            //     if (error) {
-            //         console.error('Error fetching profile:', error);
-            //     } else {
-            //         setName(data.name);
-            //         setLocation(data.location);
-            //         setBio(data.bio);
-            //     }
-            // }
-            // setLoading(false);
-        };
-
-        fetchProfile();
-    }, []);
-
-    const handleUpdateProfile = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (session) {
-            const { error } = await supabase
-                .from('TouristsData') // Table where profile data is stored
-                .update({ name, location, bio })
-                .eq('uid', session.user.id); // Update data for the current user
-
-            if (error) {
-                Alert.alert('Error', 'There was an issue updating your profile.');
-                console.error('Update error:', error);
-            } else {
-                Alert.alert('Success', 'Profile updated successfully!');
-            }
-        }
-    };
-
-    if (loading) {
-        return <View><Text>Loading...</Text></View>;
-    }
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Edit Profile</Text>
-
+      {isEditing ? (
+        // Edit Mode
+        <>
+          <View className="mb-4">
+            <Text className="text-gray-600 mb-1">Name</Text>
             <TextInput
-                style={styles.input}
-                placeholder="Name"
-                value={name}
-                onChangeText={setName}
+              className="border border-gray-300 rounded-lg p-2"
+              value={name}
+              onChangeText={setName}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Location"
-                value={location}
-                onChangeText={setLocation}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Bio"
-                value={bio}
-                onChangeText={setBio}
-                multiline
-            />
+          </View>
 
-            <Button title="Save Changes" onPress={handleUpdateProfile} />
-        </View>
-    );
+          <View className="mb-4">
+            <Text className="text-gray-600 mb-1">Location</Text>
+            <TextInput
+              className="border border-gray-300 rounded-lg p-2"
+              value={location}
+              onChangeText={setLocation}
+            />
+          </View>
+
+          <View className="mb-4">
+            <Text className="text-gray-600 mb-1">Bio</Text>
+            <TextInput
+              className="border border-gray-300 rounded-lg p-2 h-24"
+              value={bio}
+              onChangeText={setBio}
+              multiline
+            />
+          </View>
+
+          <TouchableOpacity onPress={handleSave} className="bg-blue-500 rounded-lg p-3 mb-4">
+            <Text className="text-white text-center font-bold">Save Changes</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        // View Mode
+        <>
+          <View className="mb-6">
+            <Text className="text-lg font-bold">Name:</Text>
+            <Text className="text-gray-700">{name}</Text>
+          </View>
+
+          <View className="mb-6">
+            <Text className="text-lg font-bold">Location:</Text>
+            <Text className="text-gray-700">{location}</Text>
+          </View>
+
+          <View className="mb-6">
+            <Text className="text-lg font-bold">Bio:</Text>
+            <Text className="text-gray-700">{bio}</Text>
+          </View>
+
+          <TouchableOpacity onPress={() => setIsEditing(true)} className="bg-blue-500 rounded-lg p-3">
+            <Text className="text-white text-center font-bold">Edit Profile</Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 20,
-    },
-    input: {
-        width: '100%',
-        padding: 10,
-        marginBottom: 15,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-    },
-});
 
 export default EditProfile;

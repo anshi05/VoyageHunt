@@ -36,7 +36,7 @@ export default function TabFourScreen() {
     },
     {
       heading: "Add Events",
-      href: "../pages/AddEvents",
+      href: "../pages/addevents",
       subtitle: "",
       icon: "note-add"
     },

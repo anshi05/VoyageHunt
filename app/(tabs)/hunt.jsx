@@ -83,6 +83,11 @@ const Hunt = () => {
 
   return (
     <ScrollView className="bg-yellow-200">
+
+      {/* Link to Leaderboard */}
+      <Link href="/pages/leaderboard" className="m-3 text-center text-blue-600 underline bg-yellow-600 p-2 rounded-lg">
+        <Text className="text-white text-center">Leaderboard</Text>
+      </Link>
       <View className="p-4">
         {/* Individual Section */}
         <Text className="text-2xl font-bold text-center mb-6">Individual games</Text>
@@ -113,14 +118,8 @@ const Hunt = () => {
             onStart={() => startQuest(events.href, "event")}
           />
         ))}
-        {/* Link to Leaderboard */}
-        <View className="mt-6">
-          <Link href="/leaderboard" className="text-center text-blue-600 underline">
-            View Leaderboard
-          </Link>
-        </View>
-      </View>
-    </ScrollView>
+      </View >
+    </ScrollView >
   );
 };
 

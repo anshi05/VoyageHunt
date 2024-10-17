@@ -10,8 +10,7 @@ import { router } from 'expo-router';
 
 const LoginScreen = () => {
     const supabase = createClient(
-        process.env.EXPO_PUBLIC_SUPABASE_URL || "",
-        process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
+        "https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
         {
             auth: {
                 storage: AsyncStorage,
@@ -29,24 +28,38 @@ const LoginScreen = () => {
     const handleSubmit = () => {
         if (!email || !password) {
             Alert.alert('Error', 'Please fill all fields.');
-            return;
-        }
-
-        async function loginUser() {
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) {
-                    Alert.alert('Error', error.message);
-                } else {
-                    Alert.alert('Success', 'Logged in successfully');
-                    router.push('/(tabs)'); // Navigate to the main tabs
-                }
-            } catch (error) {
-                console.log("Catch error: " + error);
+        } else {
+            // Handle registration logic here
+            const formData = {
+                email, password
             }
-        }
+            console.log("Formdata: ", formData)
+            async function loginUser() {
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    })
+                    console.log(data)
+                    if (error) {
+                        Alert.alert('Error', error.message);
+                    }
+                    else {
+                        alert('Logged in successfully');
+                        console.log("data: ".data)
+                        const { data, error } = await supabase.auth.getSession()
+                        console.log(data, error)
+                        router.push('/(tabs)/')
+                    }
 
-        loginUser();
+                    console.log('Data inserted successfully:');
+
+                } catch (error) {
+                    console.log("catch error: " + error)
+                }
+            }
+            loginUser()
+        }
     };
 
     return (

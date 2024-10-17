@@ -27,7 +27,7 @@ const PhotoQuest = () => {
     if (locations.length === 0) {
 
       let newlocations = shuffle(places_db).slice(0, 5);
-      newlocations.map((place, index)=>(
+      newlocations.map((place, index) => (
         console.log(place.place_names)
       ));
       newlocations.map((place, index) => (
@@ -103,7 +103,7 @@ const PhotoQuest = () => {
       </View>
     );
   };
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Udupi Heritage Hunt</Text>

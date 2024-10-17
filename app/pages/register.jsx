@@ -64,9 +64,14 @@ const SignUpScreen = () => {
                     const form = {
                         email,
                         password
-                    };
-                    // signup
-                    const { data, error } = await supabase.auth.signUp(form);
+                    }
+                    console.log(form)
+                    //signup
+                    const { data, error } = await supabase.auth.signUp(form)
+                    data && console.log("email from data: " + data.session)
+                    console.log("Error:", error)
+                    // console.log(data.session.user.aud)
+                    // insert user in table
                     if (data.user) {
                         const userobj = data.user;
                         const d = [
