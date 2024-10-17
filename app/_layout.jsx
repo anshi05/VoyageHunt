@@ -1,11 +1,10 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { AuthContext, AuthProvider } from "@/context/AuthProvider";
 import { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 export function InititalLayout() {
-  const { session, initialized, signOut } = useContext(AuthContext)
+  const { session, initialized, signOut } = {}
   const segments = useSegments();
   const router = useRouter();
   useEffect(() => {
@@ -62,9 +61,7 @@ export default function RootLayout() {
 
 
   return (
-    <AuthProvider>
-      <InititalLayout />
-    </AuthProvider>
+    <InititalLayout />
   );
 }
 

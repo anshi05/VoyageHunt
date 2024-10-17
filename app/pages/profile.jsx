@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect } from 'react';
 
 const EditProfile = () => {
+  useEffect(() => {
+    async function getUid() {
+      const data = await SecureStore.getItemAsync('session');
+      console.log(JSON.parse(data).session.user.id)
+      return data;
+    }
+    getUid()
+  }, [])
+
+
   // State for managing user profile
   const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit
   const [name, setName] = useState('John Doe');

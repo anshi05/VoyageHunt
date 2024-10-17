@@ -7,8 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 
 const SignUpScreen = () => {
     const supabase = createClient(
-        "https://mezityqgxnauanmjjkgv.supabase.co", 
-        "your_supabase_anon_key",
+        "https://mezityqgxnauanmjjkgv.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw",
         {
             auth: {
                 storage: AsyncStorage,
@@ -19,13 +19,14 @@ const SignUpScreen = () => {
         }
     );
 
-    const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('abhi');
+    const [location, setLocation] = useState('mys');
+    const [tags, settags] = useState(["some", "tags"]);
+    const [email, setEmail] = useState('c2@gmail.com');
+    const [password, setPassword] = useState('abhijith');
+    const [confirmPassword, setConfirmPassword] = useState('abhijith');
     const [userType, setUserType] = useState('Tourist');
-    const [referralCode, setReferralCode] = useState('');
+    const [referralCode, setReferralCode] = useState('CODE120');
     const [passwordStrength, setPasswordStrength] = useState('');
 
     const handlePasswordChange = (inputPassword) => {
@@ -55,7 +56,7 @@ const SignUpScreen = () => {
         } else {
             // Handle registration logic here
             const formData = {
-                name, email, userType, location, referralCode
+                name, email, location, referralCode, tags
             };
             console.log("Formdata: ", formData);
 
@@ -80,7 +81,6 @@ const SignUpScreen = () => {
                                 email: userobj.email,
                                 name,
                                 location,
-                                userType,
                                 referralCode,
                             }
                         ];
@@ -90,8 +90,8 @@ const SignUpScreen = () => {
                         if (error) {
                             console.error('Error inserting data:', error);
                         } else {
-                            router.replace('/(tabs)/');
-                            console.log('Data inserted successfully:');
+                            router.replace('/pages/login');
+                            console.log('Registered successfully. Please Login now');
                         }
                     }
                 } catch (error) {
@@ -109,7 +109,7 @@ const SignUpScreen = () => {
                     <Image source={require('../../assets/images/voyageHunt.png')} style={styles.logo} resizeMode="contain" />
                     <Text style={styles.title}>Ready to explore?</Text>
                     <Text style={styles.signChild}>Sign up now!</Text>
-                    
+
                     <TextInput
                         style={styles.input}
                         placeholder="Name"
@@ -117,10 +117,10 @@ const SignUpScreen = () => {
                         value={name}
                         onChangeText={setName}
                     />
-                    
+
                     <View style={styles.input}>
                         <Text className='text-[#A0A0A0]'>Select Category</Text>
-                        <Picker 
+                        <Picker
                             selectedValue={userType}
                             onValueChange={(itemValue) => setUserType(itemValue)}
                             style={styles.picker}
@@ -162,18 +162,18 @@ const SignUpScreen = () => {
                         onChangeText={setConfirmPassword}
                         secureTextEntry
                     />
-                    
-                    
+
+
 
                     <View style={styles.strengthIndicatorContainer}>
                         <View style={[styles.strengthIndicator, (passwordStrength === 'easy' && styles.easy) || (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong)]} />
-                        <View style={[styles.strengthIndicator, (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong) ]} />
-                        <View style={[styles.strengthIndicator, (passwordStrength === 'strong' && styles.strong) ]} />
+                        <View style={[styles.strengthIndicator, (passwordStrength === 'medium' && styles.medium) || (passwordStrength === 'strong' && styles.strong)]} />
+                        <View style={[styles.strengthIndicator, (passwordStrength === 'strong' && styles.strong)]} />
                         <Text style={styles.strengthText}>
                             {passwordStrength === 'strong' ? 'Strong' : passwordStrength === 'medium' ? 'Medium' : passwordStrength === 'easy' ? 'Easy' : ''}
                         </Text>
                     </View>
-                    
+
                     <TextInput
                         style={styles.input}
                         placeholder="Referral Code (Optional)"
@@ -181,7 +181,7 @@ const SignUpScreen = () => {
                         value={referralCode}
                         onChangeText={setReferralCode}
                     />
-                    
+
                     <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
                         <Text style={styles.signUpButtonText}>Sign Up</Text>
                     </TouchableOpacity>
