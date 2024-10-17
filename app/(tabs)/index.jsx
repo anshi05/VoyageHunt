@@ -52,10 +52,10 @@ export default function HomePage() {
         >
           <View style={styles.overlay} />
           <View className="m-10">
-            <Text style={styles.sectionTitle}>Hello Abhi!</Text>
-            <Text style={{ fontSize: 20 }}>Welcome to Udupi!</Text>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Change Location &gt;</Text>
+            <Text style={styles.greeting}>Hello Abhi!</Text>
+            <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
+            <TouchableOpacity style={styles.changeLocationButton}>
+              <Text style={styles.changeLocationText}>Change Location &gt;</Text>
             </TouchableOpacity>
           </View>
 
@@ -133,140 +133,148 @@ export default function HomePage() {
 }
 
 const styles = StyleSheet.create({
-  // Background and Welcome styles
-  background: {
-    flex: 1,
-    padding: 20,
-  },
-  welcomeContainer: {
-    marginBottom: 20,
-  },
-  greeting: {
-    fontSize: 18,
-    color: '#FFFFFF',
-  },
+ 
   welcomeTitle: {
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 10,
+    textAlign: 'center',
+     // Adds elegance with spacing
   },
+
+  greeting: {
+    fontSize: 35, // Large and bold for emphasis
+    fontWeight: 'bold',
+    color: 'green', // White for contrast on a dark background
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)', // Light shadow for depth
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4, // Slight blur for a soft shadow effect
+    letterSpacing: 1.5, // Adds some elegance
+    overflow: 'hidden', // Ensures the text stays inside the rounded corners
+  },
+
+
+
+  // Change Location Button
   changeLocationButton: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',  // Centers the button horizontally
+    paddingVertical: 10,  // Slightly more vertical padding for better touch target
+    paddingHorizontal: 15,  // Wider horizontal padding for a more prominent button
+    borderRadius: 20,  // More rounded corners for a modern, soft look
+    backgroundColor: '#007AFF',  // Vibrant blue to make it pop
+    borderWidth: 2,  // Add a border for extra definition
+    borderColor: '#005BB5',  // Darker blue for contrast
+    
+   
   },
+  
   changeLocationText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
-  // Sections
-  section: {
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  sectionContent: {
-    fontSize: 16,
-    color: '#333',
-  },
+// Section Styling
+section: {
+  padding: 15,  // Increased padding for more generous space
+   // Light background for subtle contrast
+    // Rounded corners to modernize the section
+    // Increased margin for clearer separation between sections
+  borderWidth: 2,  // Added a subtle border for definition
+  borderColor: '#E5E7EB',  // Light border color to keep it soft
+},
+
+sectionTitle: {
+  fontSize: 20,  // Slightly larger for emphasis
+  fontWeight: 'bold',
+  color: '#1F2937',  // Darker shade for contrast
+  marginBottom: 15,  // Slightly increased spacing below the title
+  letterSpacing: 0.8,  // More balanced spacing between letters
+  textAlign: 'center',  // Keeps the title aligned at the center
+  backgroundColor: 'black',  // Light grey background for subtle highlight
+  paddingVertical: 4,  // Increased vertical padding for a more prominent title area
+  paddingHorizontal: 1,  // Horizontal padding for spacious feel
+  borderRadius: 30,  // Rounded corners for smoother look
+  overflow: 'hidden',
+  color: 'white'
+},
+
+sectionContent: {
+  fontSize: 15,
+  textAlign: 'center',
+  color: '#4B5563',  // A medium grey for text that's easier on the eyes
+  lineHeight: 24,  // Improved readability with slightly larger line height
+  paddingHorizontal: 10,  // Added padding for more breathing room around content
+},
+
+  // Business Card Styling
   businessCard: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 18,
+    backgroundColor: '#FFF',
+    borderRadius: 25,  // More rounded corners for modern look
+    padding: 10,
     alignItems: 'center',
-    marginRight: 10,
-    width: 150,
+    marginRight: 12,
+    width: 120,
+    
+    transform: [{ scale: 1 }],  // Starting point for animation
   },
   businessText: {
-    marginTop: 10,
-    textAlign: 'right',
-  },
-  seeMoreButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignSelf: 'center',
-    marginTop: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  seeMoreText: {
-    color: 'white',
-    fontWeight: 'bold',
+    marginTop: 12,
     textAlign: 'center',
     fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
   },
-  gamificationCard: {
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 15,
+
+  // See More Button
+  seeMoreButton: {
+    backgroundColor: 'black',
+    paddingVertical: 5,
+    paddingHorizontal: 14,
+    borderRadius: 20,  // More rounded and large to make it stand out
+    alignSelf: 'center',
+    marginTop: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 5,
-    margin: 10,
-  },
-  gamificationText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: '#2C3E50',
-  },
-  gamificationSubtext: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 5,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  // Chat Widget styles
-  chatButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#007AFF',
-    borderRadius: 25,
-    padding: 10,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 6,
+    elevation: 6,
+    transition: 'transform 0.3s ease',  // For smooth interaction animations
   },
-  chatButtonText: {
-    color: '#fff',
-    marginLeft: 10,
+  seeMoreText: {
+    color: '#FFFFFF',
     fontWeight: 'bold',
+    fontSize: 18,  // Slightly larger to make it more clickable
+    textAlign: 'center',
   },
-  modalView: {
-    flex: 1,
-    backgroundColor: 'white',
-    marginTop: 50,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    overflow: 'hidden',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+
+
+    gamificationCard: {
+      padding: 20,  // Reduced padding for better spacing
+      alignItems: 'center',
+      backgroundColor: 'white',  // Changed background to white
+      borderRadius: 15,  // Slightly smaller border radius for a modern look
+      margin: 16,
+      transform: [{ translateY: 0 }],  // Base for animation
+      transition: 'transform 0.2s ease-in-out',  // Smooth transition for hover
+    },
+    gamificationText: {
+      fontSize: 26,  // Slightly larger font size for emphasis
+      fontWeight: '700',  // Use bold weight for more prominence
+      marginTop: 12,
+      color: '#2C3E50',  // Darker blue for improved readability
+      textAlign: 'center',  // Center align the text
+    },
+    gamificationSubtext: {
+      fontSize: 16,
+      color: '#BDC3C7',  // Lighter grey for secondary text
+      marginTop: 8,
+      textAlign: 'center',
+      lineHeight: 28,  // Increased line height for better readability
+      fontStyle: 'italic',
+      fontWeight: '300',  // Lighter weight for distinction
+    }
+  });  // Closing parenthesis for the styles object
+  
