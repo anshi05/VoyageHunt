@@ -1,145 +1,168 @@
+// HomePage.jsx
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground, Modal } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
-import Card from '@/components/ui/Card';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { Link, router } from 'expo-router';
+import Card from '@/components/ui/Card';
+import bg from '@/assets/images/background.jpg';
+import TravelChatbot from '../TravelChatbot';
 export default function HomePage() {
-  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "YOUR_SUPABASE_KEY");
   const [places, setplaces] = useState([]);
+  const [isChatOpen, setIsChatOpen] = useState(false); // State for chat widget
 
   useEffect(() => {
     getplaces();
-
   }, []);
 
   async function getplaces() {
     const { data, error } = await supabase.from("hotspots").select().limit(3);
     if (data) {
       setplaces(data);
-    }
-    else {
-      console.log(error)
+    } else {
+      console.log(error);
     }
   }
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
-
     if (error) {
       console.error('Error signing out:', error.message);
     } else {
-      // Sign-out successful, redirect to login page
-      router.replace('/pages/login'); // Adjust the route as necessary
+      router.replace('/pages/login');
     }
   };
+
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getUser();
-      console.log("session: ", session)
+      console.log("session: ", session);
     };
-
     checkUser();
   }, []);
 
   return (
-    <ScrollView>
-      <ImageBackground
-        source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
-        style={styles.image}
-        blurRadius={2}
-      >
-        <View style={styles.overlay} />
-        <View style={styles.headerContent}>
-          <Text style={styles.greeting}>Hello Abhi!</Text>
-          <Text style={styles.title}>Welcome to Udupi!</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Change Location &gt;</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-            <Text style={styles.buttonText}>Signout</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* About Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About Udupi</Text>
-          <Text style={styles.sectionContent}>
-            Udupi is a coastal town in Karnataka, famous for its Krishna Temple and delicious cuisine.
-            Explore its rich culture and beautiful beaches!
-          </Text>
-        </View>
-
-        {/* Our Businesses Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Local Businesses</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
-              <Link href={business[1]} key={index} style={styles.businessCard}>
-                <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
-                <Text style={styles.businessText}>{business[0]}</Text>
-              </Link>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Places to Discover */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Places to Discover</Text>
-          {places.map((place, index) =>
-          (
-            // console.log(place)
-            <Card place={place} key={index}></Card>
-          ))}
-          <Link href={'/(tabs)/place/'} style={styles.seeMoreButton}>
-            <Text style={styles.seeMoreText}>See More Places</Text>
-          </Link>
-        </View>
-
-        {/* Gamification Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Adventure</Text>
-          <View style={styles.gamificationCard}>
-            <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
-            <Text style={styles.gamificationText}>Level 5 Explorer</Text>
-            <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView>
+        <ImageBackground
+          source={bg}
+          style={styles.background}
+          blurRadius={2}
+        >
+          <View style={styles.header}>
+            {/* Header and Welcome section */}
           </View>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.greeting}>Hello Abhi!</Text>
+            <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
+            <TouchableOpacity style={styles.changeLocationButton}>
+              <Text style={styles.changeLocationText}>Change Location &gt;</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* About Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>About Udupi</Text>
+            <Text style={styles.sectionContent}>
+              Udupi is a coastal town in Karnataka, famous for its Krishna Temple and delicious cuisine.
+              Explore its rich culture and beautiful beaches!
+            </Text>
+          </View>
+
+          {/* Local Businesses */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Local Businesses</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
+                <Link href={business[1]} key={index} style={styles.businessCard}>
+                  <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
+                  <Text style={styles.businessText}>{business[0]}</Text>
+                </Link>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Places to Discover */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Places to Discover</Text>
+            {places.map((place, index) => (
+              <Card place={place} key={index}></Card>
+            ))}
+            <Link href={'/(tabs)/place/'} style={styles.seeMoreButton}>
+              <Text style={styles.seeMoreText}>See More Places</Text>
+            </Link>
+          </View>
+
+          {/* Gamification Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Your Adventure</Text>
+            <View style={styles.gamificationCard}>
+              <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
+              <Text style={styles.gamificationText}>Level 5 Explorer</Text>
+              <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
+            </View>
+          </View>
+        </ImageBackground>
+      </ScrollView>
+
+      {/* Chat Widget Button */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isChatOpen}
+        onRequestClose={() => setIsChatOpen(false)}
+      >
+        <View style={styles.modalView}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Travel Assistant</Text>
+            <TouchableOpacity onPress={() => setIsChatOpen(false)}>
+              <Ionicons name="close" size={24} color="#333" />
+            </TouchableOpacity>
+          </View>
+          <TravelChatbot />
         </View>
-      </ImageBackground>
-    </ScrollView>
+      </Modal>
+
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => setIsChatOpen(true)}
+      >
+        <Ionicons name="chatbubble-ellipses" size={24} color="#fff" />
+        <Text style={styles.chatButtonText}>Chat with us</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  // Background and Welcome styles
+  background: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-
-
-  welcomeSection: {
     padding: 20,
-
   },
-  welcomeText: {
+  welcomeContainer: {
+    marginBottom: 20,
+  },
+  greeting: {
     fontSize: 18,
-    color: '#2C3E50',
+    color: '#FFFFFF',
   },
-  locationText: {
-    fontSize: 28,
+  welcomeTitle: {
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#2C3E50',
-    marginTop: 5,
+    color: '#FFFFFF',
+    marginBottom: 10,
   },
   changeLocationButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-
     alignSelf: 'flex-start',
-    marginTop: 10,
   },
   changeLocationText: {
-    color: 'gray',
+    color: '#FFFFFF',
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
+  // Sections
   section: {
     padding: 20,
   },
@@ -154,95 +177,99 @@ const styles = StyleSheet.create({
   },
   businessCard: {
     backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
+    borderRadius: 20,
+    padding: 18,
     alignItems: 'center',
     marginRight: 10,
-    width: 100,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column'
+    width: 150,
   },
   businessText: {
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  placeCard: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  placeImage: {
-    width: 100,
-    height: 100,
-  },
-  placeInfo: {
-    flex: 1,
-    padding: 10,
-  },
-  placeName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  placeDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
+    marginTop: 10,
+    textAlign: 'right',
   },
   seeMoreButton: {
     backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
     alignSelf: 'center',
     marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   seeMoreText: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
   },
   gamificationCard: {
-    backgroundColor: 'white',
     padding: 20,
-    borderRadius: 10,
     alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+    margin: 10,
   },
   gamificationText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     marginTop: 10,
+    color: '#2C3E50',
   },
   gamificationSubtext: {
     fontSize: 16,
     color: '#666',
     marginTop: 5,
+    textAlign: 'center',
+    lineHeight: 22,
   },
-  navbar: {
+  // Chat Widget styles
+  chatButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'white',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
-  },
-  navItem: {
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 25,
     padding: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  chatButtonText: {
+    color: '#fff',
+    marginLeft: 10,
+    fontWeight: 'bold',
+  },
+  modalView: {
+    flex: 1,
+    backgroundColor: 'white',
+    marginTop: 50,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
