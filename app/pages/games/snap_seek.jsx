@@ -1,288 +1,84 @@
-import React, { useState } from 'react';
-import { View, Text, Button, Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, FlatList, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { useRouter } from 'expo-router';
+import { createClient } from '@supabase/supabase-js';
 
-// Sample images and clues
-const images = [
-  { uri: 'https://i.pinimg.com/originals/5c/b2/f1/5cb2f10d2121c42e75050949889a7ed9.jpg' },
-  { uri: 'https://i.pinimg.com/originals/5c/b2/f1/5cb2f10d2121c42e75050949889a7ed9.jpg' },
-  { uri: 'https://i.pinimg.com/originals/5c/b2/f1/5cb2f10d2121c42e75050949889a7ed9.jpg' },
-];
+const SnapSeek = () => {
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
-const clues = [
-  { text: "First Clue: I represent the battle between good and evil.", score: 30 },
-  { text: "Second Clue: My costume is as elaborate as my story.", score: 30 },
-  { text: "Third Clue: I'm from a southern coastal region.", score: 50 },
-];
+  const [clues, setClues] = useState([]);
+  const [selectedClue, setSelectedClue] = useState(null);
+  const [guess, setGuess] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
-const options = [
-  { answer: 'Option 1', isCorrect: true },
-  { answer: 'Option 2', isCorrect: false },
-  { answer: 'Option 3', isCorrect: false },
-];
+  useEffect(() => {
+    async function fetchClues() {
+      const { data, error } = await supabase.from('hotspots').select('*');
+      if (error) console.error(error);
+      else setClues(data);
+    }
 
-export default function SpanSeek() {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [clueIndex, setClueIndex] = useState(null);  // To store the index of the clicked clue
-  const [score, setScore] = useState(0);  // To store the user's score
-  const [animations, setAnimations] = useState(images.map(() => new Animated.Value(0)));  // Initialize animation values
-  const [currentOption, setCurrentOption] = useState([]);  // To store answer options for each clue
-  const [imagesClicked, setImagesClicked] = useState(new Array(images.length).fill(false));  // Track clicked images
-  const [answeredClues, setAnsweredClues] = useState(new Array(clues.length).fill(false));  // Track which clues have been answered
-  const [hintMessage, setHintMessage] = useState('');  // To store hint messages
-  const [pointMessage, setPointMessage] = useState('');  // To display messages about points
-  const [gameOver, setGameOver] = useState(false);  // To track game over state
+    fetchClues();
+  }, []);
 
-  // Start the game by resetting all states
-  const startGame = () => {
-    setGameStarted(true);
-    setGameOver(false);
-    resetGameStates();  // Reset all necessary game states
+  const startHunt = () => {
+    const startTime = new Date().toISOString();
+    console.log('Hunt started at:', startTime);
   };
 
-  const resetGameStates = () => {
-    setScore(0);  // Reset score
-    setClueIndex(null);
-    setAnimations(images.map(() => new Animated.Value(0)));  // Reset animations
-    setImagesClicked(new Array(images.length).fill(false));  // Reset images clicked status
-    setAnsweredClues(new Array(clues.length).fill(false));  // Reset answered clues
-    setHintMessage('');
-    setPointMessage('');
+  const handleClueSelection = (clue) => {
+    setSelectedClue(clue);
+    setModalVisible(true);
   };
 
-  // Resets the game to initial state after it ends
-  const resetGame = () => {
-    resetGameStates();
-    setGameOver(false);  // Reset game over state
-  };
-
-  // Handle image clicks
-  const handleImagePress = (index) => {
-    if (imagesClicked[index]) return;  // Prevent re-clicking of the same image
-
-    // Set the clue for the clicked image
-    setClueIndex(index);
-    setCurrentOption(options);  // Show options for the clue
-    setHintMessage('');  // Reset hint message
-
-    // Animate the clicked image
-    Animated.sequence([
-      Animated.timing(animations[index], {
-        toValue: 1,  // End animation value
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animations[index], {
-        toValue: 0,  // Reset animation back to original state
-        duration: 0,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      const updatedClicked = [...imagesClicked];
-      updatedClicked[index] = true;  // Mark image as clicked
-      setImagesClicked(updatedClicked);
-    });
-  };
-
-  // Animation styles for images
-  const getAnimationStyle = (index) => {
-    const translateX = animations[index].interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 500],
-    });
-    return {
-      transform: [{ translateX }],
-      opacity: animations[index].interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 0],  // Fade out effect
-      }),
-    };
-  };
-
-  // Handle the answer selection
-  const handleAnswer = (isCorrect, clueScore) => {
-    if (clueIndex !== null && !answeredClues[clueIndex]) {
-      let newScore = score;
-      if (isCorrect) {
-        newScore += clueScore;  // Add score if correct
-        setPointMessage(`Correct! Score added: ${clueScore}`);
-      } else {
-        setPointMessage('Incorrect! Try again!');
-      }
-
-      const updatedAnsweredClues = [...answeredClues];
-      updatedAnsweredClues[clueIndex] = true;  // Mark clue as answered
-      setAnsweredClues(updatedAnsweredClues);
-      setScore(newScore);
-
-      // Check if all clues have been answered
-      if (updatedAnsweredClues.every(Boolean)) {
-        setGameOver(true);  // End the game
-        setPointMessage(`Game Over! Your final score is: ${newScore}`);
-      }
+  const checkGuess = () => {
+    const p = { latitude: selectedClue.latitude, longitude: selectedClue.longitude }
+    console.log(p)
+    if (guess.toLowerCase() === selectedClue.place_names.toLowerCase()) {
+      setModalVisible(false);
+      router.push({
+        pathname: '/pages/map',
+        params: p,
+      });
     } else {
-      setPointMessage('This clue has already been answered.');
+      alert('Incorrect guess, try again!');
     }
   };
-
-  // Skip a clue
-  const handleLeave = () => {
-    if (clueIndex !== null) {
-      const updatedAnsweredClues = [...answeredClues];
-      updatedAnsweredClues[clueIndex] = true;  // Skip the current clue
-      setAnsweredClues(updatedAnsweredClues);
-
-      setClueIndex(null);
-      setHintMessage('');
-    }
-  };
-
-  // Show a hint for the current clue
-  const showHint = () => {
-    if (clueIndex !== null) {
-      setHintMessage('This is a less obvious clue!');
-    }
-  };
-
-  if (!gameStarted) {
-    return (
-      <View style={styles.startScreen}>
-        <Button title="Start Game" onPress={startGame} />
-      </View>
-    );
-  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.scoreText}>Score: {score}</Text>
-      <Text style={styles.progressText}>
-        {answeredClues.filter(Boolean).length} of {clues.length} clues answered
-      </Text>
+    <View style={{ padding: 20 }}>
+      <Button title="Start the Hunt" onPress={startHunt} />
+      <FlatList
+        data={clues}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => { handleClueSelection(item); console.log(item) }}>
+            <View style={{ padding: 20, backgroundColor: '#ccc', marginBottom: 10 }}>
+              <Text>{item.clue}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+      />
 
-      {images.map((image, index) => (
-        !answeredClues[index] && (
-          <View key={index} style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => handleImagePress(index)} disabled={imagesClicked[index]}>
-              <Animated.Image
-                source={image}
-                style={[styles.image, getAnimationStyle(index)]}
-              />
-            </TouchableOpacity>
-            {clueIndex === index && (
-              <View style={styles.clueContainer}>
-                <Text style={styles.clueText}>{clues[clueIndex].text}</Text>
-                <View style={styles.buttonsContainer}>
-                  {currentOption.map((option, idx) => (
-                    <Button
-                      key={idx}
-                      title={option.answer}
-                      onPress={() => handleAnswer(option.isCorrect, clues[clueIndex].score)}
-                    />
-                  ))}
-                  <Button title="Hint" onPress={showHint} />
-                  <Button title="Leave" onPress={handleLeave} />
-                </View>
-                {hintMessage !== '' && (
-                  <Text style={styles.hintText}>{hintMessage}</Text>
-                )}
-              </View>
-            )}
+      {/* Modal for guessing */}
+      <Modal visible={modalVisible} transparent={true} animationType="slide">
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View style={{ padding: 20, backgroundColor: 'white', borderRadius: 10 }}>
+            <Text>Guess the place for this clue:</Text>
+            <TextInput
+              placeholder="Your guess"
+              value={guess}
+              onChangeText={setGuess}
+              style={{ borderBottomWidth: 1, marginBottom: 20 }}
+            />
+            <Button title="Submit Guess" onPress={checkGuess} />
+            <Button title="Close" onPress={() => { setModalVisible(false) }} />
           </View>
-        )
-      ))}
-
-      {pointMessage !== '' && (
-        <View style={styles.messageBox}>
-          <Text style={styles.messageText}>{pointMessage}</Text>
         </View>
-      )}
-
-      {gameOver && (
-        <View style={styles.replayContainer}>
-          <Text style={styles.finalScoreText}>{pointMessage}</Text>
-          <Button title="Play Again" onPress={resetGame} />
-          <Button title="Exit" onPress={() => setGameStarted(false)} />
-        </View>
-      )}
+      </Modal>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  startScreen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#800080',  // Purple background
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',  // Black background
-  },
-  imageContainer: {
-    width: 200,
-    height: 200,
-    marginVertical: 10,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  scoreText: {
-    fontSize: 24,
-    color: '#fff',
-    marginBottom: 10,
-  },
-  progressText: {
-    fontSize: 18,
-    color: '#fff',
-    marginBottom: 20,
-  },
-  clueContainer: {
-    padding: 10,
-    backgroundColor: '#333',
-    borderRadius: 10,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  clueText: {
-    fontSize: 18,
-    color: '#FFD700',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
-  },
-  messageBox: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#444',
-    borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
-  },
-  messageText: {
-    color: '#FFD700',
-    fontSize: 18,
-  },
-  hintText: {
-    color: '#0f0', // Change color as desired
-    fontSize: 16,
-    marginTop: 10, // Add margin for better spacing
-  },
-  replayContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  finalScoreText: {
-    color: '#FFD700',
-    fontSize: 24,
-    marginBottom: 10,
-  },
-});
+export default SnapSeek

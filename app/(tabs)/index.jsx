@@ -2,13 +2,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, ImageBackground, Modal } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
 import Card from '@/components/ui/Card';
 import bg from '@/assets/images/background.jpg';
 import TravelChatbot from '../TravelChatbot';
 export default function HomePage() {
-  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "YOUR_SUPABASE_KEY");
+  const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
   const [places, setplaces] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false); // State for chat widget
 
@@ -34,29 +34,22 @@ export default function HomePage() {
     }
   };
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getUser();
-      console.log("session: ", session);
-    };
-    checkUser();
-  }, []);
-
   return (
-    <ScrollView>
-      <ImageBackground
-        source={bg}
-        style={styles.image}
-        blurRadius={2}
-      >
-        <View style={styles.overlay} />
-        <View className="m-10">
-          <Text style={styles.sectionTitle}>Hello Abhi!</Text>
-          <Text style={{ fontSize: 20 }}>Welcome to Udupi!</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Change Location &gt;</Text>
-          </TouchableOpacity>
-        </View>
+    <View>
+      <ScrollView>
+        <ImageBackground
+          source={bg}
+          style={styles.image}
+          blurRadius={2}
+        >
+          <View style={styles.overlay} />
+          <View className="m-10">
+            <Text style={styles.sectionTitle}>Hello Abhi!</Text>
+            <Text style={{ fontSize: 20 }}>Welcome to Udupi!</Text>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>Change Location &gt;</Text>
+            </TouchableOpacity>
+          </View>
 
           {/* About Section */}
           <View style={styles.section}>
@@ -128,7 +121,7 @@ export default function HomePage() {
         <Ionicons name="chatbubble-ellipses" size={24} color="#fff" />
         <Text style={styles.chatButtonText}>Chat with us</Text>
       </TouchableOpacity>
-    </View>
+    </View >
   );
 }
 
