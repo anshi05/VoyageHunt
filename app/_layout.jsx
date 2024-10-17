@@ -56,6 +56,55 @@ export function InititalLayout() {
           ...headerOptions // Apply common header options
         }}
       />
+      <Stack.Screen
+        name="pages/games/photo_quest"
+        options={{
+          title: 'Photo Quest',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="pages/games/nritya_gyaan"
+        options={{
+          title: 'Nritya Gyaan',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="pages/games/snap_seek"
+        options={{
+          title: 'Snap and Seek',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="pages/games/hint_n_clue"
+        options={{
+          title: 'Hint and Clue',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="pages/games/flutegame"
+        options={{
+          title: 'Flute Game',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="pages/games/folklore"
+        options={{
+          title: 'Folk Lore',
+          ...headerOptions // Apply common header options
+        }}
+      />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: 'VoyageHunt',
+          ...headerOptions // Apply common header options
+        }}
+      />
     </Stack>
   )
 }

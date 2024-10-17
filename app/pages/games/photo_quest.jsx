@@ -86,7 +86,8 @@ const PhotoQuest = () => {
     return (
       <View style={styles.clueContainer}>
         <Text style={styles.clue}>{currentLocation.clue}</Text>
-        <Text>Select your guess here</Text>
+        <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
+        <Text className="mt-5 ml-3 text-gray-500">Select your guess here</Text>
         <Picker
           selectedValue={guess}
           onValueChange={(itemValue) => setGuess(itemValue)}
@@ -95,7 +96,7 @@ const PhotoQuest = () => {
             <Picker.Item key={index} label={location} value={location} />
           ))}
         </Picker>
-        <Image source={{ uri: currentLocation.image }} style={styles.cardImage} />
+        
 
         <TouchableOpacity style={styles.button} onPress={handleGuess}>
           <Text style={styles.buttonText}>Submit Guess</Text>
