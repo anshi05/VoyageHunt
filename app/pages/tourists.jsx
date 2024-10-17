@@ -32,7 +32,7 @@ export default function NearbyTourists() {
         <View style={styles.imageContainer}>
           <Text style={styles.touristNumber}>{index + 1}</Text>
           <Image
-            source={{ uri: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Cmkbp0SYpVLZ3pcTNmGHyXo1V8ApfN.png' }}
+            source={{ uri: 'https://i.pinimg.com/736x/1e/ae/83/1eae83e9eb8a9de5c7ceec637c58dc6d.jpg' }}
             style={styles.touristImage}
           />
         </View>
