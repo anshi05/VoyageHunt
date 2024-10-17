@@ -23,6 +23,9 @@ export function InititalLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="pages/login" options={{ title: 'Login', headerShown: false }} />
       <Stack.Screen name="pages/register" options={{ title: 'Register', headerShown: false }} />
+      <Stack.Screen name="pages/addevents" options={{ title: 'Add Events' }} />
+      <Stack.Screen name="pages/leaderboard" options={{ title: 'Leaderboard' }} />
+      <Stack.Screen name="pages/profile" options={{ title: 'Profile' }} />
       <Stack.Screen
         name="pages/restaurants"
         options={{

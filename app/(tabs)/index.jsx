@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import Card from '@/components/ui/Card';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
+import bg from '@/assets/images/background.jpg'
 export default function HomePage() {
   const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
   const [places, setplaces] = useState([]);
@@ -36,14 +37,14 @@ export default function HomePage() {
   return (
     <ScrollView>
       <ImageBackground
-        source={{ uri: 'https://i0.wp.com/picjumbo.com/wp-content/uploads/gorgeous-sunset-over-the-sea-free-image.jpeg?h=800&quality=80' }}
+        source={bg}
         style={styles.image}
         blurRadius={2}
       >
         <View style={styles.overlay} />
         <View className="m-10">
           <Text style={styles.sectionTitle}>Hello Abhi!</Text>
-          <Text style={{fontSize:20}}>Welcome to Udupi!</Text>
+          <Text style={{ fontSize: 20 }}>Welcome to Udupi!</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Location &gt;</Text>
           </TouchableOpacity>
