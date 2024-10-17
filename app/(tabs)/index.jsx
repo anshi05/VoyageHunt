@@ -46,6 +46,7 @@ export default function HomePage() {
       setpoints(user[0].points)
     };
     getUserPoints(uid)
+    console.log(uid)
   }, [uid])
 
   async function getplaces() {
