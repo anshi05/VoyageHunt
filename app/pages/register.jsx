@@ -412,7 +412,6 @@ const SignUpScreen = () => {
                         if (error.message.includes("User already registered")) {
                             Alert.alert('Error', 'User already exists. Please try logging in.');
                         } else {
-
                             Alert.alert('Error', error.message);
                         }
                     }

@@ -28,6 +28,46 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'; export default fun
         longDiff = Math.abs(currentLocation.longitude - longitude)
         if (latDiff < 0.001 && longDiff < 0.001) {
             console.log("You found the place! Congrats for the rest 75 points. Keep going")
+            const [uid, setuid] = useState()
+            useEffect(() => {
+                async function getUid() {
+                    const data = await SecureStore.getItemAsync('session');
+                    console.log(JSON.parse(data).session.user.id)
+                    return JSON.parse(data).session.user.id;
+                }
+                setuid(getUid())
+            }, [])
+
+            const updateUserPoints = async (uid) => {
+                console.log(uid._j)
+                let { data: user, error: fetchError } = await supabase
+                    .from('Users')
+                    .select('*')
+                    .eq('uid', uid._j)
+
+                if (fetchError) {
+                    console.error('Error fetcdfhing user points:', fetchError);
+                    return;
+                }
+                else {
+                    console.log("points: ", user[0].points)
+                }
+
+                // Update the points (increment by 75)
+                const newPoints = user[0].points + 75;
+                console.log(newPoints)
+                const { data, error: updateError } = await supabase
+                    .from('Users')
+                    .update({ points: newPoints })
+                    .eq('uid', uid._j);
+
+                if (updateError) {
+                    console.error('Error updating user points:', updateError);
+                } else {
+                    console.log('User points updated:', data);
+                }
+            };
+            updateUserPoints()
         }
         else {
             Alert.alert(place_names, info_history, [
