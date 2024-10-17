@@ -369,9 +369,9 @@ const SignUpScreen = () => {
         let strength = '';
         if (inputPassword.length === 0) {
             strength = '';
-        } else if (inputPassword.length < 5) {
+        } else if (inputPassword.length < 6) {
             strength = 'easy';
-        } else if (inputPassword.length < 7) {
+        } else if (inputPassword.length < 8) {
             strength = 'medium';
         } else {
             strength = 'strong';
@@ -410,8 +410,8 @@ const SignUpScreen = () => {
                         if (error.message.includes("User already registered")) {
                             Alert.alert('Error', 'User already exists. Please try logging in.');
                         } else {
-                            console.error('Error during sign up:', error.message);
-                            Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+                           
+                            Alert.alert('Error', error.message);
                         }
                     } 
                     else if (data && data.user) {
@@ -434,11 +434,11 @@ const SignUpScreen = () => {
                             
                         } else {
                             // Show success message
-                            Alert.alert('Success', 'Registered successfully. Redirecting to login...');
+                            Alert.alert('Success', 'Registered successfully. Answer some question before proceeding...');
                             
                             // Delay navigation by 2 seconds
                             setTimeout(() => {
-                                router.replace('/pages/login');
+                                router.replace('/pages/onboarding1');
                             }, 2000);
                             
                     
@@ -565,7 +565,7 @@ const SignUpScreen = () => {
                     </TouchableOpacity>
                     <View style={styles.loginContainer}>
                         <Text style={styles.loginText}>Have an account?</Text>
-                        <TouchableOpacity onPress={() => router.push('/pages/login')}>
+                        <TouchableOpacity onPress={() => router.push('/pages/onboarding')}>
                             <Text style={styles.backToLogin}> Login</Text>
                         </TouchableOpacity>
                     </View>
