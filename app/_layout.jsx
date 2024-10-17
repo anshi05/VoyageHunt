@@ -2,6 +2,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useContext, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import TravelChatbot from './TravelChatbot';
 
 export function InititalLayout() {
   const { session, initialized, signOut } = {}
@@ -86,3 +87,12 @@ const headerOptions = {
     </TouchableOpacity>
   }
 };
+
+
+export function App() {
+  return (
+    <TravelChatbot />
+  );
+};
+
+

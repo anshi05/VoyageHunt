@@ -63,8 +63,7 @@ export default function TabLayout() {
         },
         headerStyle: {
           height: 110, // Increased height 
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
+          
           backgroundColor: '#2C3E50',
           shadowColor: '#000',
           shadowOffset: {
