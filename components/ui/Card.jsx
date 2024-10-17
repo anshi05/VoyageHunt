@@ -32,13 +32,6 @@ const Card = ({ place }) => {
     return (
         <View style={styles.card}>
             <Image source={{ uri: place.image }} style={styles.cardImage} />
-            <LinearGradient
-                colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']}
-                style={styles.gradient}
-            >
-                
-            </LinearGradient>
-            
             <View style={styles.content}>
                 <Text style={styles.title}>{place.place_names}</Text>
                 <View style={styles.locationContainer}>
@@ -49,7 +42,7 @@ const Card = ({ place }) => {
                 <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
                     {place.info_history}
                 </Text>
-                
+
                 <View style={styles.tagContainer}>
                     {place.tags && place.tags.length > 0 ? (
                         place.tags.map((tag, index) => (
@@ -61,7 +54,7 @@ const Card = ({ place }) => {
                         <Text style={styles.noTags}>No Tags Available</Text>
                     )}
                 </View>
-                
+
                 <TouchableOpacity style={styles.button} onPress={handlePress}>
                     <Text style={styles.buttonText}>Explore</Text>
                     <ChevronRight color="#FFF" size={18} />
@@ -107,9 +100,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#FFF',
         marginBottom: 4,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        color:'black'
     },
     description: {
         fontSize: 15,
@@ -127,7 +118,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eef6ff',
         paddingVertical: 2,
         paddingHorizontal: 6,
-        borderRadius: 12, 
+        borderRadius: 12,
         marginRight: 3,
         marginBottom: 3,
     },
