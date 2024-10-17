@@ -188,9 +188,9 @@ const styles = StyleSheet.create({
   },
   hireButton: {
     backgroundColor: '#1ABC9C',
-    padding: 12,
+    padding: 5,
     borderRadius: 10,
-    width: 200,
+    width: 100,
     alignItems: 'center',
     marginTop: 10,
   },
