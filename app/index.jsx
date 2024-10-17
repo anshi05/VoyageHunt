@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { router, Link } from 'expo-router'; // Import usePathname to get current path
-import { supabase } from '@/utils/supabase';
+import * as SecureStore from 'expo-secure-store';
 
 const SplashScreen = ({ onTimeout }) => {
     useEffect(() => {
@@ -14,7 +14,7 @@ const SplashScreen = ({ onTimeout }) => {
 
     return (
         <View style={styles.splashContainer}>
-            <Image 
+            <Image
                 source={require('../assets/images/voyageHunt.png')} // Update with your logo path
                 style={styles.logo}
                 resizeMode="contain"
@@ -26,44 +26,40 @@ const SplashScreen = ({ onTimeout }) => {
 
 const Index = () => {
     const [showSplash, setShowSplash] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    const checkUser = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            // User is authenticated, redirect to home/dashboard
-            setIsLoggedIn(true);
-            setShowSplash(false);
-            router.push('/(tabs)'); // Adjust the route as necessary to go to the tabs layout
-        } else {
-            setIsLoggedIn(false);
-            setShowSplash(false);
-            router.push('/pages/login'); // If not logged in, redirect to login
-        }
-    };
-
+    
     useEffect(() => {
-        checkUser();
-    }, []);
+        const getsession = async () => {
+            const data = await SecureStore.getItemAsync('session');
+            if(data){
+                router.replace('/(tabs)')
+            }
+            else{
+                router.replace('/pages/login')
+            }
+        }
+        getsession()
+    }, [])
+    
+    
 
     return (
         <View style={styles.container}>
             {showSplash ? (
                 <SplashScreen onTimeout={() => setShowSplash(false)} />
             ) : null}
-            <Image 
+            <Image
                 source={require('../assets/images/voyageHunt.png')} // Update with your logo path
                 style={styles.logo}
                 resizeMode="contain"
-            /> 
+            />
             <Text className="font-bold text-xl text-white">Welcome to Voyage Hunt</Text>
-            
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-   
+
     container: {
         flex: 1,
         justifyContent: 'center',
