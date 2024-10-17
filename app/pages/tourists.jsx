@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  StatusBar,
   ImageBackground,
   Modal, 
   Linking,
@@ -55,12 +56,13 @@ export default function NearbyTourists() {
   };
 
   return (
-    <ImageBackground
-      source={bg}
-      style={styles.background}
-      blurRadius={2}
-    >
+    
       <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      
+      <View style={styles.header}>
+        
+      </View>
         <FlatList
           data={tourists}
           renderItem={renderTourist}
@@ -96,22 +98,23 @@ export default function NearbyTourists() {
           </View>
         </Modal>
       </SafeAreaView>
-    </ImageBackground>
+    
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Softer background overlay for elegance
-    paddingHorizontal: 20, // Added horizontal padding for spacing
-    paddingTop: 20, 
+    justifyContent: 'flex-start',
+    backgroundColor: '#1E1E2E',
   },
+  header: {
+    
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3A3A4A',
+  },
+  
   listContent: {
     padding: 10,
     paddingTop: 30,

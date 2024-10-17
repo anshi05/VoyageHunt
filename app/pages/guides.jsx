@@ -75,6 +75,10 @@ export default function Guides() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
+      
+      <View style={styles.header}>
+        
+      </View>
       <FlatList
         data={guideslist}
         renderItem={renderGuide}
@@ -116,6 +120,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     backgroundColor: '#1E1E2E',
+  },
+  header: {
+    
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3A3A4A',
   },
   listContent: {
     padding: 16,
