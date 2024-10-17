@@ -22,7 +22,7 @@ const LoginScreen = () => {
         }
     );
 
-    const [email, setEmail] = useState('abhijithsogal@gmail.com');
+    const [email, setEmail] = useState('a1@gmail.com');
     const [password, setPassword] = useState('abhijith');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -39,7 +39,7 @@ const LoginScreen = () => {
                     Alert.alert('Error', error.message);
                 } else {
                     Alert.alert('Success', 'Logged in successfully');
-                    router.push('/(tabs)/'); // Navigate to the main tabs
+                    router.push('/(tabs)/index'); // Navigate to the main tabs
                 }
             } catch (error) {
                 console.log("Catch error: " + error);
