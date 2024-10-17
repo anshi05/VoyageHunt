@@ -60,7 +60,6 @@ export default function HomePage() {
               Explore its rich culture and beautiful beaches!
             </Text>
           </View>
-
           {/* Local Businesses */}
           <View style={styles.section}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Local Businesses</Text>
@@ -95,6 +94,10 @@ export default function HomePage() {
             </Link>
           </View>
 
+          {/* Link to Maps */}
+          <Link href="/pages/map" className="m-3 text-center text-blue-600 underline bg-yellow-600 p-2 rounded-lg">
+            <Text className="text-white text-center">See in maps</Text>
+          </Link>
           {/* Gamification Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Your Adventure</Text>
@@ -231,66 +234,65 @@ const styles = StyleSheet.create({
   },
 
 
-    gamificationCard: {
-      padding: 20,  // Reduced padding for better spacing
-      alignItems: 'center',
-      backgroundColor: 'white',  // Changed background to white
-      borderRadius: 15,  // Slightly smaller border radius for a modern look
-      margin: 16,
-      transform: [{ translateY: 0 }],  // Base for animation
-      transition: 'transform 0.2s ease-in-out',  // Smooth transition for hover
-    },
-    gamificationText: {
-      fontSize: 26,  // Slightly larger font size for emphasis
-      fontWeight: '700',  // Use bold weight for more prominence
-      marginTop: 12,
-      color: '#2C3E50',  // Darker blue for improved readability
-      textAlign: 'center',  // Center align the text
-    },
-    gamificationSubtext: {
-      fontSize: 16,
-      color: '#BDC3C7',  // Lighter grey for secondary text
-      marginTop: 8,
-      textAlign: 'center',
-      lineHeight: 28,  // Increased line height for better readability
-      fontStyle: 'italic',
-      fontWeight: '300',  // Lighter weight for distinction
-    },
+  gamificationCard: {
+    padding: 20,  // Reduced padding for better spacing
+    alignItems: 'center',
+    backgroundColor: 'white',  // Changed background to white
+    borderRadius: 15,  // Slightly smaller border radius for a modern look
+    margin: 16,
+    transform: [{ translateY: 0 }],  // Base for animation
+    transition: 'transform 0.2s ease-in-out',  // Smooth transition for hover
+  },
+  gamificationText: {
+    fontSize: 26,  // Slightly larger font size for emphasis
+    fontWeight: '700',  // Use bold weight for more prominence
+    marginTop: 12,
+    color: '#2C3E50',  // Darker blue for improved readability
+    textAlign: 'center',  // Center align the text
+  },
+  gamificationSubtext: {
+    fontSize: 16,
+    color: '#BDC3C7',  // Lighter grey for secondary text
+    marginTop: 8,
+    textAlign: 'center',
+    lineHeight: 28,  // Increased line height for better readability
+    fontStyle: 'italic',
+    fontWeight: '300',  // Lighter weight for distinction
+  },
 
-    modalView: {
-      flex: 1,
-      justifyContent: 'center', // Ensure modal content is centered
-      alignItems: 'center', // Ensure content is horizontally centered
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
-    },
-    modalHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: 'white', // Make sure it's visible
-      padding: 10,
-      borderBottomWidth: 1,
-      borderColor: '#ddd',
-      width: '100%',
-    },
-    modalTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#333',
-    },
-    chatButton: {
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-      backgroundColor: '#007AFF', // Visible background color
-      borderRadius: 50,
-      padding: 15,
-      elevation: 5,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
-    },
-  });
-   // Closing parenthesis for the styles object
-  
+  modalView: {
+    flex: 1,
+    justifyContent: 'center', // Ensure modal content is centered
+    alignItems: 'center', // Ensure content is horizontally centered
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modal
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white', // Make sure it's visible
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  chatButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF', // Visible background color
+    borderRadius: 50,
+    padding: 15,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+});
+// Closing parenthesis for the styles object

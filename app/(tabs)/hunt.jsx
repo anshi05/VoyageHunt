@@ -104,7 +104,6 @@ const Hunt = () => {
 
   return (
     <ScrollView className="bg-yellow-200">
-
       {/* Link to Leaderboard */}
       <Link href="/pages/leaderboard" className="m-3 text-center text-blue-600 underline bg-yellow-600 p-2 rounded-lg">
         <Text className="text-white text-center">Leaderboard</Text>
