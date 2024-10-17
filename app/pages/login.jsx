@@ -39,7 +39,7 @@ const LoginScreen = () => {
                     Alert.alert('Error', error.message);
                 } else {
                     Alert.alert('Success', 'Logged in successfully');
-                    router.push('/(tabs)/index'); // Navigate to the main tabs
+                    router.push('/(tabs)'); // Navigate to the main tabs
                 }
             } catch (error) {
                 console.log("Catch error: " + error);
