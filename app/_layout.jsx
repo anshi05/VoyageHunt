@@ -105,6 +105,13 @@ export function InititalLayout() {
           ...headerOptions // Apply common header options
         }}
       />
+      <Stack.Screen
+        name="pages/games/business_event"
+        options={{
+          title: 'Business Events',
+          ...headerOptions // Apply common header options
+        }}
+      />
     </Stack>
   )
 }
