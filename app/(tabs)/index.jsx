@@ -80,11 +80,6 @@ export default function HomePage() {
           <View className="m-5">
             <Text style={styles.greeting}>Holla!</Text>
             <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
-            <Link href="/pages/sdg">
-              <View className="bg-green-200 rounded-xl px-4 py-2 w-24 border-[1px] border-black">
-                <Text className="text-xs font-bold">EcoTravel</Text>
-              </View>
-            </Link>
           </View>
 
           {/* About Section */}
@@ -112,7 +107,7 @@ export default function HomePage() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Local Businesses</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['EcoTravel', 'pages/sdg']].map((business, index) => (
+              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides']].map((business, index) => (
                 <Link href={business[1]} key={index} style={{
                   backgroundColor: 'white',
                   borderRadius: 10,
@@ -137,7 +132,7 @@ export default function HomePage() {
             <Text className="text-white text-center">See in maps</Text>
           </Link>
           {/* Gamification Section */}
-          <View style={{margin:'auto', marginBottom:20}}>
+          <View style={{ margin: 'auto', marginBottom: 20 }}>
             <Text style={styles.sectionTitle}>Your Adventure</Text>
             <Link href="/hunt">
               <View style={styles.gamificationCard}>

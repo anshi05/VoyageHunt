@@ -1,23 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 import { styled } from 'nativewind';
 import ViewShot from 'react-native-view-shot';
 import { createClient } from '@supabase/supabase-js';
-
-// Dummy data for leaderboard users
-const leaderboardData = [
-    { id: 1, name: 'User 1', avatar: 'https://avatar.iran.liara.run/public/boy', score: 120 },
-    { id: 2, name: 'User 2', avatar: 'https://avatar.iran.liara.run/public/boy', score: 110 },
-    { id: 3, name: 'User 3', avatar: 'https://avatar.iran.liara.run/public/boy', score: 100 },
-    { id: 4, name: 'User 4', avatar: 'https://avatar.iran.liara.run/public/boy', score: 90 },
-    { id: 5, name: 'User 5', avatar: 'https://avatar.iran.liara.run/public/boy', score: 80 },
-    { id: 6, name: 'User 6', avatar: 'https://avatar.iran.liara.run/public/boy', score: 75 },
-    { id: 7, name: 'User 7', avatar: 'https://avatar.iran.liara.run/public/boy', score: 70 },
-    { id: 8, name: 'User 8', avatar: 'https://avatar.iran.liara.run/public/boy', score: 65 },
-    { id: 9, name: 'User 9', avatar: 'https://avatar.iran.liara.run/public/boy', score: 60 },
-    { id: 10, name: 'User 10', avatar: 'https://avatar.iran.liara.run/public/boy', score: 55 },
-];
-
+import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Share } from 'react-native';
 // Styling component
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -55,7 +44,7 @@ const Leaderboard = () => {
             {/* Top 3 Users */}
             <StyledView className="flex-row justify-around mb-6">
                 {users.slice(0, 3).map((user, index) => (
-                    <StyledView key={user.id} className="items-center">
+                    <StyledView key={index} className="items-center">
                         <StyledImage
                             source={{ uri: imgurl }}
                             className="w-20 h-20 rounded-full border-2 border-yellow-400"
@@ -91,4 +80,4 @@ const Leaderboard = () => {
     );
 };
 
-export default Leaderboard;
+export default Leaderboard

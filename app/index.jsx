@@ -14,7 +14,7 @@ const SplashScreen = ({ onTimeout }) => {
 
     return (
         <View style={styles.splashContainer}>
-            <Image 
+            <Image
                 source={require('../assets/images/voyageHunt.png')} // Update with your logo path
                 style={styles.logo}
                 resizeMode="contain"
@@ -51,19 +51,19 @@ const Index = () => {
             {showSplash ? (
                 <SplashScreen onTimeout={() => setShowSplash(false)} />
             ) : null}
-            <Image 
+            <Image
                 source={require('../assets/images/voyageHunt.png')} // Update with your logo path
                 style={styles.logo}
                 resizeMode="contain"
-            /> 
+            />
             <Text className="font-bold text-xl text-white">Welcome to Voyage Hunt</Text>
-            
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-   
+
     container: {
         flex: 1,
         justifyContent: 'center',
