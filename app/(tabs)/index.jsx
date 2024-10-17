@@ -40,31 +40,46 @@ export default function HomePage() {
         <ImageBackground
           source={bg}
           style={styles.image}
-          blurRadius={1}
+          
 
         >
           <View style={styles.overlay} />
           <View className="m-5">
-            <Text style={styles.greeting}>Hello Abhi!</Text>
+            <Text style={styles.greeting}>Holla!</Text>
             <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
-            <TouchableOpacity style={styles.changeLocationButton}>
-              <Text style={styles.changeLocationText}>Change Location &gt;</Text>
-            </TouchableOpacity>
+            <Link href="/pages/sdg">
+            <View className="bg-green-200 rounded-xl px-4 py-2 w-24 border-[1px] border-black">
+              <Text className="text-xs font-bold">EcoTravel</Text>
+            </View>
+            </Link>
           </View>
 
           {/* About Section */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>About Udupi</Text>
-            <Text style={styles.sectionContent}>
-              Udupi is a coastal town in Karnataka, famous for its Krishna Temple and delicious cuisine.
-              Explore its rich culture and beautiful beaches!
+            <Text style={styles.sectionTitle}>About</Text>
+            <Text className="font-normal text-center mb-2">UDUPI: A Coastal Gem Near Mangalore</Text>
+            <Text style={styles.sectionContent} >
+            Nestled along the serene Arabian Sea coastline, Udupi is a must-visit destination for those seeking a mix of spirituality, natural beauty, and authentic South Indian experiences. Known for its ancient temples, pristine beaches, and world-famous cuisine, Udupi offers something for every traveler.
             </Text>
+
           </View>
-          {/* Local Businesses */}
+
+          {/* Places to Discover */}
+          <View>
+            <Text style={styles.sectionTitle}>Top Attractions</Text>
+            {places.map((place, index) => (
+              <Card place={place} key={index}></Card>
+            ))}
+            <Link href={'/(tabs)/place/'} style={styles.seeMoreButton}>
+              <Text style={styles.seeMoreText}>See More Places<MaterialCommunityIcons name="arrow-top-right" size={12} color="#fff" /></Text>
+            </Link>
+          </View>
+
+            {/* Local Businesses */}
           <View style={styles.section}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Local Businesses</Text>
+            <Text style={styles.sectionTitle}>Local Businesses</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['Events', 'pages/events']].map((business, index) => (
+              {[['Restaurants', 'pages/restaurants'], ['Hotels', 'pages/hotels'], ['Guides', 'pages/guides'], ['EcoTravel', 'pages/sdg']].map((business, index) => (
                 <Link href={business[1]} key={index} style={{
                   backgroundColor: 'white',
                   borderRadius: 10,
@@ -74,24 +89,14 @@ export default function HomePage() {
                   width: 200,
                   marginBottom: 10,
                   flex: 1,
-                  flexDirection: "column"
+                  flexDirection: "column",
+                  
                 }}>
                   <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
                   <Text style={styles.businessText}>{business[0]}</Text>
                 </Link>
               ))}
             </ScrollView>
-          </View>
-
-          {/* Places to Discover */}
-          <View>
-            <Text style={{ marginLeft: 20, fontSize: 20, fontWeight: 'bold' }}>Places to Discover</Text>
-            {places.map((place, index) => (
-              <Card place={place} key={index}></Card>
-            ))}
-            <Link href={'/(tabs)/place/'} style={styles.seeMoreButton}>
-              <Text style={styles.seeMoreText}>See More Places</Text>
-            </Link>
           </View>
 
           {/* Link to Maps */}
@@ -101,11 +106,13 @@ export default function HomePage() {
           {/* Gamification Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Your Adventure</Text>
+            <Link href="/hunt">
             <View style={styles.gamificationCard}>
               <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
               <Text style={styles.gamificationText}>Level 5 Explorer</Text>
               <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
             </View>
+            </Link>
           </View>
         </ImageBackground>
       </ScrollView>
@@ -143,45 +150,38 @@ export default function HomePage() {
 const styles = StyleSheet.create({
 
   welcomeTitle: {
+    
     fontSize: 50,
     fontWeight: 'bold',
     marginBottom: 10,
   },
 
   greeting: {
+    marginTop: 10,
     fontSize: 20, // Large and bold for emphasis
     fontWeight: 'bold',
   },
 
-
-
   // Change Location Button
   changeLocationButton: {
-    alignSelf: 'center',  // Centers the button horizontally
-    paddingVertical: 10,  // Slightly more vertical padding for better touch target
-    paddingHorizontal: 15,  // Wider horizontal padding for a more prominent button
-    borderRadius: 20,  // More rounded corners for a modern, soft look
-    backgroundColor: '#007AFF',  // Vibrant blue to make it pop
-    borderWidth: 2,  // Add a border for extra definition
-    borderColor: '#005BB5',  // Darker blue for contrast
-
-
+    
   },
 
   changeLocationText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: 'gray',
+    fontSize: 14,
     textDecorationLine: 'underline',
   },
   // Section Styling
   section: {
-    margin: 20,
+    margin: 35,
   },
 
   sectionTitle: {
     fontSize: 20,  // Slightly larger for emphasis
     fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 
   sectionContent: {
@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     paddingVertical: 5,
     paddingHorizontal: 14,
+    
     borderRadius: 20,  // More rounded and large to make it stand out
     alignSelf: 'center',
     marginTop: 15,
@@ -230,8 +231,7 @@ const styles = StyleSheet.create({
   },
   seeMoreText: {
     color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 18,  // Slightly larger to make it more clickable
+    fontSize: 13,  // Slightly larger to make it more clickable
     textAlign: 'center',
   },
 
@@ -282,8 +282,8 @@ const styles = StyleSheet.create({
   },
   chatButton: {
     position: 'absolute',
-    bottom: 30,
-    right: 30,
+    bottom: 10,
+    right: 10,
     backgroundColor: '#007AFF',
     borderRadius: 30,
     padding: 15,
