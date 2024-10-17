@@ -72,7 +72,7 @@ export default function HomePage() {
         <ImageBackground
           source={bg}
           style={styles.image}
-          
+
 
         >
           <View style={styles.overlay} />
@@ -80,9 +80,9 @@ export default function HomePage() {
             <Text style={styles.greeting}>Holla!</Text>
             <Text style={styles.welcomeTitle}>Welcome to Udupi!</Text>
             <Link href="/pages/sdg">
-            <View className="bg-green-200 rounded-xl px-4 py-2 w-24 border-[1px] border-black">
-              <Text className="text-xs font-bold">EcoTravel</Text>
-            </View>
+              <View className="bg-green-200 rounded-xl px-4 py-2 w-24 border-[1px] border-black">
+                <Text className="text-xs font-bold">EcoTravel</Text>
+              </View>
             </Link>
           </View>
 
@@ -91,7 +91,7 @@ export default function HomePage() {
             <Text style={styles.sectionTitle}>About</Text>
             <Text className="font-normal text-center mb-2">UDUPI: A Coastal Gem Near Mangalore</Text>
             <Text style={styles.sectionContent} >
-            Nestled along the serene Arabian Sea coastline, Udupi is a must-visit destination for those seeking a mix of spirituality, natural beauty, and authentic South Indian experiences. Known for its ancient temples, pristine beaches, and world-famous cuisine, Udupi offers something for every traveler.
+              Nestled along the serene Arabian Sea coastline, Udupi is a must-visit destination for those seeking a mix of spirituality, natural beauty, and authentic South Indian experiences. Known for its ancient temples, pristine beaches, and world-famous cuisine, Udupi offers something for every traveler.
             </Text>
 
           </View>
@@ -107,7 +107,7 @@ export default function HomePage() {
             </Link>
           </View>
 
-            {/* Local Businesses */}
+          {/* Local Businesses */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Local Businesses</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -122,7 +122,7 @@ export default function HomePage() {
                   marginBottom: 10,
                   flex: 1,
                   flexDirection: "column",
-                  
+
                 }}>
                   <MaterialCommunityIcons name="store" size={24} color="#4A90E2" />
                   <Text style={styles.businessText}>{business[0]}</Text>
@@ -136,21 +136,21 @@ export default function HomePage() {
             <Text className="text-white text-center">See in maps</Text>
           </Link>
           {/* Gamification Section */}
-          <View style={styles.section}>
+          <View style={{margin:'auto', marginBottom:20}}>
             <Text style={styles.sectionTitle}>Your Adventure</Text>
             <Link href="/hunt">
-            <View style={styles.gamificationCard}>
-              <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
-              <Text style={styles.gamificationText}>Points: {points}</Text>
-              <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
-            </View>
+              <View style={styles.gamificationCard}>
+                <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
+                <Text style={styles.gamificationText}>Points: {points}</Text>
+                <Text style={styles.gamificationSubtext}>Complete quests to earn rewards!</Text>
+              </View>
             </Link>
           </View>
         </ImageBackground>
       </ScrollView>
 
-{/* Chat Widget Modal */}
-<Modal
+      {/* Chat Widget Modal */}
+      <Modal
         animationType="slide"
         transparent={true}
         visible={isChatOpen}
@@ -158,7 +158,7 @@ export default function HomePage() {
       >
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
-            
+
             <TouchableOpacity onPress={() => setIsChatOpen(false)}>
               <Ionicons name="close" size={24} color="#333" />
             </TouchableOpacity>
@@ -173,7 +173,7 @@ export default function HomePage() {
         onPress={() => setIsChatOpen(true)}
       >
         <Ionicons name="chatbubble-ellipses" size={24} color="#fff" />
-        
+
       </TouchableOpacity>
     </View>
   );
@@ -182,7 +182,7 @@ export default function HomePage() {
 const styles = StyleSheet.create({
 
   welcomeTitle: {
-    
+
     fontSize: 50,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
 
   // Change Location Button
   changeLocationButton: {
-    
+
   },
 
   changeLocationText: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     paddingVertical: 5,
     paddingHorizontal: 14,
-    
+
     borderRadius: 20,  // More rounded and large to make it stand out
     alignSelf: 'center',
     marginTop: 15,
@@ -329,4 +329,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-  
