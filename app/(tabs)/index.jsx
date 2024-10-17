@@ -42,8 +42,8 @@ export default function HomePage() {
       >
         <View style={styles.overlay} />
         <View className="m-10">
-          <Text className="text-xl">Hello Abhi!</Text>
-          <Text className="text-4xl">Welcome to Udupi!</Text>
+          <Text style={styles.sectionTitle}>Hello Abhi!</Text>
+          <Text style={{fontSize:20}}>Welcome to Udupi!</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Change Location &gt;</Text>
           </TouchableOpacity>

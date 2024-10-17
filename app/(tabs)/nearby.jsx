@@ -30,7 +30,7 @@ export default function TabFourScreen() {
     },
     {
       heading: "View Events",
-      href: "../pages/ViewEvents",
+      href: "../pages/viewevents",
       subtitle: "20 nearby",
       icon: "event"
     },

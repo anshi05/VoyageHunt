@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const guides = [
+const guideslist = [
   { id: '1', name: 'Abhijith', image: 'https://randomuser.me/api/portraits/men/1.jpg', rating: 4.1, booked: false },
   { id: '2', name: 'Agniudra', image: 'https://randomuser.me/api/portraits/men/2.jpg', rating: 2.4, booked: true },
   { id: '3', name: 'Anshi Sachan', image: 'https://randomuser.me/api/portraits/men/3.jpg', rating: 4.5, booked: false },
@@ -72,7 +72,7 @@ export default function GuideSelection() {
       </View>
 
       <FlatList
-        data={guides}
+        data={guideslist}
         renderItem={renderGuide}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}

@@ -29,8 +29,8 @@ const EventCard = ({ event_name, event_place, from, to, desc, onStart }) => {
       <Text className="text-gray-700 mb-4">{event_place}</Text>
       <Text className="text-gray-700 mb-4">{desc}</Text>
       <View className="flex-row items-center mb-2">
-        <Text className="text-sm font-bold text-gray-800">Difficulty: </Text>
-        <Text className="text-yellow-600">{from}</Text>
+        <Text className="text-sm font-bold text-gray-800">From - to: </Text>
+        <Text className="text-yellow-600">{from} - {to}</Text>
       </View>
       <TouchableOpacity onPress={onStart} className="bg-yellow-600 p-2 rounded-lg">
         <Text className="text-white text-center">Start Quest</Text>
