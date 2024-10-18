@@ -80,4 +80,6 @@ https://www.canva.com/design/DAGTtnzCZ88/F_ldBg58D8U-Z8O9ScsTRQ/edit
 
 
 
-[Group project.pptx](https://github.com/user-attachments/files/17426083/Group.project.pptx)
+
+
+[Group project_compressed.pdf](https://github.com/user-attachments/files/17426109/Group.project_compressed.pdf)
