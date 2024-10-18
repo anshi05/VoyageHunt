@@ -470,6 +470,13 @@ const SignUpScreen = () => {
                         value={name}
                         onChangeText={setName}
                     />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Phone"
+                        placeholderTextColor="#A0A0A0"
+                        value={phone}
+                        onChangeText={setphone}
+                    />
 
                     <View style={styles.input}>
                         <Text className='text-[#A0A0A0]'>Select Category</Text>
