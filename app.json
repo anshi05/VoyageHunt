@@ -1,8 +1,8 @@
 {
   "android.config.googleMaps.apiKey": "AIzaSyA8SEJfsSDMQ4Cq2iDO4ftpFyRiODVkSh0",
   "expo": {
-    "name": "Voyage Hunt",
-    "slug": "Voyage Hunt",
+    "name": "Access-Denied",
+    "slug": "Access-Denied",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
