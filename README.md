@@ -15,7 +15,8 @@ Our project empowers tourists and businesses to seamlessly explore, engage, and 
 - **Immersive community features**  Facilitates interaction among users, enabling them to share experiences and collaborate on adventures. 
 
 We've harnessed the power of **React Native**, **Native Wind**, and **Supabase** to craft a platform where users can discover hidden attractions, collaborate on adventures, and share their experiences.
-
+## Access
+https://github.com/ManipalHackathon2024/Access-Denied/releases/download/apk/application-0dd6a865-617e-4db5-a880-e6ef40373940.apk
 ## ✨ Key Features
 
 ### User Authentication & Role Management
