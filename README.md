@@ -43,8 +43,7 @@ We've harnessed the power of **React Native**, **Native Wind**, and **Supabase**
 
 ## 🟢 Access
 
-📱 App's APK file location: [`android/build/my-app.apk`](android/build/my-app.apk)
-
+https://www.canva.com/design/DAGTtnzCZ88/F_ldBg58D8U-Z8O9ScsTRQ/edit
 ## ⚙️ Instructions For Local Deployment Without Docker
 
 1. Clone the repository:
