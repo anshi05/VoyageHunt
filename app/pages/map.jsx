@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Pressable, Alert } from 'react-native';
-import MapView, { Heatmap, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useSearchParams } from 'expo-router';
 import { createClient } from '@supabase/supabase-js';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-export default function MapPage() {
-
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'; export default function MapPage() {
     const supabase = createClient("https://mezityqgxnauanmjjkgv.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1leml0eXFneG5hdWFubWpqa2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwNTQ3OTMsImV4cCI6MjA0NDYzMDc5M30.FnzXtfkcxM1Xq_TRIsZyb-EOHLNE6-9i0Coq1F4GnHw");
 
     const [currentLocation, setCurrentLocation] = useState(null);
     const [markers, setmarkers] = useState([])
-    const [heatMapPoints, setheatMapPoints] = useState([])
     const [showmodel, setshowmodel] = useState(false)
     const [places, setplaces] = useState([])
     useEffect(() => {
@@ -30,21 +27,14 @@ export default function MapPage() {
             const { data } = await supabase.from("hotspots").select();
             setplaces(data)
             const mar = []
-            const mar2 = []
             data.map((ele, index) => (
                 mar.push({
-                    coordinate: { latitude: parseFloat(ele.latitude), longitude: parseFloat(ele.longitude) },
+                    coordinate: { latitude: ele.latitude, longitude: ele.longitude },
                     title: ele.place_names,
                     avatar: ele.avatars_on_map
                 })
             ))
-            data.map((ele, index) => (
-                ele.visitors && mar2.push({
-                    latitude: parseFloat(ele.latitude), longitude: parseFloat(ele.longitude), weight: parseFloat(ele.visitors)/20
-                })
-            ))
             setmarkers(mar);
-            setheatMapPoints(mar2);
         }
         getPlaces()
     }, []);
@@ -76,24 +66,12 @@ export default function MapPage() {
                 <MapView
                     style={{ flex: 1 }}
                     initialRegion={{
-                        latitude: parseFloat(13.34),
-                        longitude: parseFloat(74.75204941976685),
-                        // latitude: parseFloat(currentLocation.latitude),
-                        // longitude: parseFloat(currentLocation.longitude),
+                        latitude: parseFloat(currentLocation.latitude),
+                        longitude: parseFloat(currentLocation.longitude),
                         latitudeDelta: 0.01,
                         longitudeDelta: 0.01,
                     }}
                 >
-                    <Heatmap
-                        points={heatMapPoints}
-                        opacity={1}
-                        radius={20}
-                        gradient={{
-                            colors: ["#00BCD4", "#FF8A65", "#D32F2F"],
-                            startPoints: [0.2, 0.5, 1.0],
-                            colorMapSize: 256
-                        }}
-                    />
                     {markers.map((marker, index) => (
                         // <Marker key={index} coordinate={{ latitude: parseFloat(74.70385279537415), longitude: parseFloat(74.70385279537415) }} title="Your Location" pinColor="blue" />
                         <Marker onPress={() => { handlePress(index) }} key={index} coordinate={{ latitude: parseFloat(marker.coordinate.latitude), longitude: parseFloat(marker.coordinate.longitude) }} >
