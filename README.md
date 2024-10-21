@@ -1,6 +1,4 @@
-# Manipal Hackathon 2024 README Template
-
-**Team Name:** Access Denied
+# VoyageHunt - A Gamified Tourism App
 
 **Problem Statement:** Tourism often lacks engaging and interactive experiences, resulting in missed opportunities for travelers to discover unique local attractions and fully immerse themselves in the local culture
 
