@@ -74,6 +74,3 @@ https://github.com/ManipalHackathon2024/Access-Denied/releases/download/apk/appl
 
 
 
-
-
-[Group project_compressed.pdf](https://github.com/user-attachments/files/17426109/Group.project_compressed.pdf)
