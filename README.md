@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="./pages/assets/VoyaeHunt.png" alt="comicify.ai" border="1" width="100"/>
-
 <h1 align="center">VoyageHunt</h1>
 
   <p align="center">
@@ -9,9 +7,9 @@
   </p>
 </div>
 
-<br/>
+<br>
 
-# VoyageHunt - A Gamified Tourism App
+# 
 
 **Problem Statement:** Tourism often lacks engaging and interactive experiences, resulting in missed opportunities for travelers to discover unique local attractions and fully immerse themselves in the local culture
 
